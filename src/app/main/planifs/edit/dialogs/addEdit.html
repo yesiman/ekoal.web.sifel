@@ -1,0 +1,35 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Mango (Fruit)</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout-gt-sm="row">
+        <md-input-container class="md-inline" flex>
+          <h4>Date de plantation</h4>
+          <md-datepicker ng-model="item.datePlant"></md-datepicker>
+        </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <h4>Quantité</h4>
+          <input type="number" ng-model="item.qte"></md-datepicker>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="onCancel()">
+        Annuler
+      </md-button>
+      <md-button ng-click="onValid(item)">
+        Valider
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,93 @@
+<div id="edit" class="page-layout simple left-sidenav inner-sidenav">
+    <!-- HEADER -->
+
+
+        
+
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        
+        <div layout="row" layout-align="center start">
+            <md-button class="md-icon-button sidenav-toggle" hide-gt-md ng-click="toggleSidenav('sidenav')"
+                       aria-label="Toggle sidenav" translate translate-attr-aria-label="CONTACTS.TOGGLE_SIDENAV">
+                <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+            </md-button>
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
+            </div>
+            
+        </div>  
+    </div>
+    <!-- / HEADER -->
+
+    
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row"  ms-scroll>
+
+        <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
+                    ms-sidenav-helper>
+            
+            
+
+            <div class="ng-scope layout-align-center-center layout-row sidehead">
+                <h3>Du</h3>
+            </div>
+            <md-content class="content">
+                <md-datepicker ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                
+            </md-content>
+            <div class="ng-scope layout-align-center-center layout-row sidehead">
+                <h3>Au</h3>
+            </div>
+            <md-content class="content">
+                <md-datepicker ng-model="filters.dateTo" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                
+            </md-content>
+            <!-- SIDENAV HEADER -->
+            <div class=" ng-scope layout-align-center-center layout-row sidehead">
+                <h3>Produits</h3>
+            </div>
+            <!-- / SIDENAV HEADER -->
+
+            <!-- SIDENAV CONTENT -->
+            <md-content class="content">
+
+                <md-chips ng-model="filters.selectedItems" md-autocomplete-snap 
+              md-require-match="filters.autocompleteDemoRequireMatch" md-on-add="refresh()"  md-on-remove="refresh()" >
+                <md-autocomplete
+                    md-selected-item="filters.selectedItem" 
+                    md-selected-item-change="filters.selectedItemChange(item)"
+                    md-search-text="filters.searchText"
+                    md-items="item in querySearch(filters.searchText)"
+                    md-item-text="item.lib"
+                    placeholder="Premiers charactères...">
+                    <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.type}}</span>
+                </md-autocomplete>
+                <md-chip-template tag-bg item="$chip">
+                    <span>
+                    <strong>{{$chip.lib}}</strong>
+                    </span>
+                </md-chip-template>
+                </md-chips>
+
+
+                <br/>
+            </md-content>
+            <!-- / SIDENAV CONTENT -->
+
+        </md-sidenav>
+
+
+        <div class="md-white-bg md-padding " style="width:100%;"  ms-scroll>
+        <div class="card" style="width:700px;">
+            <canvas id="bar" style="" class="chart chart-bar"  
+            colours="vm.barChart.colors" chart-data="vm.barChart.data" 
+            chart-labels="vm.barChart.labels" chart-series="vm.barChart.series"></canvas>
+        </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

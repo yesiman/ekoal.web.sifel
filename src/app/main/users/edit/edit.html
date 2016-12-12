@@ -1,0 +1,105 @@
+<div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
+            </div>
+        </div>  
+        <div class="right-side layout-row" layout="row" layout-align="start center">
+            <md-button class="md-fab" aria-label="Eat cake" style="float:right;" ng-click="add()">
+                <md-icon md-font-icon="icon-plus"
+                                 class="icon s32"></md-icon>
+
+            </md-button>
+            <md-button class="md-fab" aria-label="Eat cake" style="float:right;" ng-click="add()">
+                <md-icon md-font-icon="icon-plus"
+                                 class="icon s32"></md-icon>
+
+            </md-button>
+        </div>  
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <!-- SIDENAV -->
+        
+        <!-- / SIDENAV -->
+        <div class="main scrollable"  ms-scroll>
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <div style="width:100%;">
+      <form name="userForm">
+        <div layout="column"  ng-if="$root.user.type < 4" >
+            <md-input-container>
+          <label>Type</label>
+          <md-select required ng-model="item.type" style="min-width:200px;">
+            <md-option><em>None</em></md-option>
+            <md-option ng-value="1" ng-if="$root.user.type == 1">
+                Administrateur
+            </md-option>
+            <md-option ng-value="2" ng-if="$root.user.type < 2">
+                Administrateur OP
+            </md-option>
+            <md-option ng-value="3" ng-if="$root.user.type < 3">
+                Technicien
+            </md-option>
+            <md-option ng-value="4">
+                Producteur
+            </md-option>
+          </md-select>
+        </md-input-container>
+        </div>
+        <div layout="column"  ng-if="item.type == 2"  >
+          <md-input-container>
+          <label>Organisation de producteurs</label>
+          <md-select required ng-model="item.idorga" style="min-width:200px;">
+            <md-option ng-repeat="o in orgas" ng-value="o._id">
+                {{o.lib}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Nom</label>
+            <input required ng-model="item.name">
+          </md-input-container>
+
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Prénom</label>
+            <input required ng-model="item.surn">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Email</label>
+            <input type="email"  required ng-model="item.email">
+          </md-input-container>
+
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Mot de passe</label>
+            <input type="password" required ng-model="item.pass">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Decription</label>
+            <textarea ng-model="item.desc" rows="5"></textarea>
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row" style="float:right;">
+        <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
+        </div>
+      </form>
+    </div>
+  </md-content>
+
+  
+</div>
+        </div>
+    <!-- / CONTENT -->
+
+</div>

@@ -1,0 +1,50 @@
+<div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="center start">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
+            </div>
+            
+        </div>  
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <!-- SIDENAV -->
+        
+        <!-- / SIDENAV -->
+        <div class="main scrollable"  ms-scroll>
+        
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <div style="width:100%;">
+      <form name="userForm">
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Libellé</label>
+            <input required ng-model="item.lib">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Decription</label>
+            <textarea ng-model="item.desc" rows="5"></textarea>
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row" style="float:right;">
+        <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
+        </div>
+      </form>
+    </div>
+  </md-content>
+
+  
+</div>
+        </div>
+    <!-- / CONTENT -->
+
+</div>
