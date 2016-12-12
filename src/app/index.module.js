@@ -18,7 +18,6 @@
             'app.toolbar',
             // Quick Panel
             'app.quick-panel',
-            // Sample
             'app.sample',
             'app.pages',
             'app.users',

@@ -7,7 +7,7 @@
         .controller('ProduitsListController',ProduitsListController);
 
     /** @ngInject */
-    function ProduitsListController($scope,$state, api,$mdDialog,$rootScope)
+    function ProduitsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
     {
         var vm = this;
         // Data
@@ -18,10 +18,7 @@
             totalItems: 0,
             sort: null
         };
-        var actionsHtml = '';
-        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-icon md-font-icon="icon-table-edit"></md-icon></md-button>';
-        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-icon md-font-icon="icon-table-row-remove"></md-icon></md-button>';
-        actionsHtml += ''
+        var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = {
             useExternalPagination: true,
             useExternalSorting: true,

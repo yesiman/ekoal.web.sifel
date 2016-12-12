@@ -31,6 +31,18 @@
         </div>
         <div layout-gt-sm="row">
           <md-input-container class="md-inline" flex-gt-sm>
+            <md-checkbox
+              ng-model="item.public"
+              aria-label="Données publiques" 
+              ng-true-value="true"
+              ng-false-value="false"
+              class="md-warn md-align-top-left" flex>
+            Les données de ce produit sont publiques
+          </md-checkbox>
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
             <label>Decription</label>
             <textarea ng-model="item.desc" rows="5"></textarea>
           </md-input-container>

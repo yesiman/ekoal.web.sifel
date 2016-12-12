@@ -52,10 +52,10 @@
           </md-select>
         </md-input-container>
         </div>
-        <div layout="column"  ng-if="item.type == 2"  >
+        <div layout="column"  ng-if="item.type >= 2"  >
           <md-input-container>
           <label>Organisation de producteurs</label>
-          <md-select required ng-model="item.idorga" style="min-width:200px;">
+          <md-select ng-disabled="$root.user.type > 1" required ng-model="item.idorga" style="min-width:200px;">
             <md-option ng-repeat="o in orgas" ng-value="o._id">
                 {{o.lib}}
             </md-option>

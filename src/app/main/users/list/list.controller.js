@@ -7,7 +7,7 @@
         .controller('UsersListController',UsersListController);
 
     /** @ngInject */
-    function UsersListController($scope,$state, api,$rootScope,$mdDialog)
+    function UsersListController($scope,$state, api,$rootScope,$mdDialog,standardizer)
     {
         var vm = this;
         
@@ -39,17 +39,31 @@
         // Data
         $scope.getUserType = function(it)
         {
-            console.log(it);
             switch(it)
             {
-                case "1":
+                case 1:
                     return "Administrateur";
-                case "2":
+                case 2:
                     return "Administrateur OP";
-                case "3":
+                case 3:
                     return "Technicien";
-                case "4":
+                case 4:
                     return "Producteur";
+            }
+            
+        }
+        $scope.getUserBg = function(it)
+        {
+            switch(it)
+            {
+                case 1:
+                    return "md-red-400-bg";
+                case 2:
+                    return "md-green-400-bg";
+                case 3:
+                    return "md-lime-400-bg";
+                case 4:
+                    return "md-blue-400-bg";
             }
             
         }
@@ -60,10 +74,10 @@
             totalItems: 0,
             sort: null
         };
-        var actionsHtml = '';
-        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-icon md-font-icon="icon-table-edit"></md-icon></md-button>';
-        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-icon md-font-icon="icon-table-row-remove"></md-icon></md-button>';
-        actionsHtml += ''
+        var actionsHtml = standardizer.getHtmlActions();
+        var typeHtml = '<div class="ui-grid-cell-contents">';
+        typeHtml += '<span class="status {{grid.appScope.getUserBg(row.entity.type)}}">{{grid.appScope.getUserType(row.entity.type)}}</span>';
+        typeHtml += '</div>';
         $scope.gridOptions = {
             useExternalPagination: true,
             useExternalSorting: true,
@@ -79,7 +93,7 @@
                 { field: '_id', displayName: 'mongo ID' },
                 { field: 'name', displayName: 'Nom' },
                 { field: 'surn', displayName: 'Prénom' },
-                { field: 'type', displayName: 'Type' },
+                { field: 'type', displayName: 'Type', cellTemplate:typeHtml },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
         };
         $scope.loadPageAction = function(id)

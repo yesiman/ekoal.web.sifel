@@ -14,10 +14,10 @@
                            ng-pattern="/^.+@.+\..+$/" required>
                     <div ng-messages="loginForm.email.$error" role="alert" multiple>
                         <div ng-message="required">
-                            <span translate="LOGIN.ERRORS.EMAIL_REQUIRED">Email field is required</span>
+                            <span translate="LOGIN.ERRORS.EMAIL_REQUIRED">Email obligatoire</span>
                         </div>
                         <div ng-message="pattern">
-                            <span translate="LOGIN.ERRORS.EMAIL_MUST_VALID">Email must be a valid e-mail address</span>
+                            <span translate="LOGIN.ERRORS.EMAIL_MUST_VALID">Email invalide</span>
                         </div>
                     </div>
                 </md-input-container>
@@ -28,7 +28,7 @@
                            required>
                     <div ng-messages="loginForm.password.$error" role="alert">
                         <div ng-message="required">
-                            <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED">Password field is required</span>
+                            <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED">Mot de passe obligatoire</span>
                         </div>
                     </div>
                 </md-input-container>
