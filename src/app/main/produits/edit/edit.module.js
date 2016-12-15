@@ -24,7 +24,7 @@
             resolve  : {
                 prodResolv: function (apiResolver,$stateParams)
                 {
-                    if ($stateParams.id != -1)
+                    if ($stateParams.id && ($stateParams.id != -1))
                     {
                          return apiResolver.resolve('products.get@get', {'id': $stateParams.id });
                     }

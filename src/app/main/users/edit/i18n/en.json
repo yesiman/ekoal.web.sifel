@@ -1,5 +1,8 @@
 {
     "LIST": {
         "TITLE": "Liste des utilisateurs"
+    },
+    "USERS": {
+        "SEARCH": "Saisissez les premiers characteres..."
     }
 }

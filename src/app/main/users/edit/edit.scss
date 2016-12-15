@@ -74,7 +74,7 @@
 
     > .content {
         position: absolute;
-        top: 76px;
+        top: 124px;
         bottom: 0;
         right: 0;
         left: 0;
@@ -82,6 +82,11 @@
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;
             padding: 0;
+        }
+
+        .dataTables_wrapper .top{
+            padding-top: 2px;
+            padding-bottom: 2px;
         }
 
         .main {

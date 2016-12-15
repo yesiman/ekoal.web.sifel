@@ -13,7 +13,8 @@
         $stateProvider.state('app.stats_prevs', {
             url      : '/stats/prevs',
             params : {
-                id:null
+                id:null,
+                selectedItems:[],
             },
             views    : {
                 'content@app': {

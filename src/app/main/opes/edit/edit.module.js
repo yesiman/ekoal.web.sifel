@@ -24,7 +24,7 @@
             resolve  : {
                 orgaResolv: function (apiResolver,$stateParams)
                 {
-                    if ($stateParams.id != -1)
+                    if ($stateParams.id && ($stateParams.id != -1))
                     {
                          return apiResolver.resolve('orgas.get@get', {'id': $stateParams.id });
                     }

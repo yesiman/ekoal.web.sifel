@@ -4,7 +4,7 @@
 
     angular
         .module('app.planifs', [
-            'app.planifs.edit'
+            'app.planifs.edit','app.planifs.list'
         ])
         .config(config);
 
@@ -17,12 +17,18 @@
                 group : true,
                 weight: 1
             });
-            msNavigationServiceProvider.saveItem('planifs.edit', {
-                title : 'Nouvelle',
+            
+            msNavigationServiceProvider.saveItem('planifs.list', {
+                title : 'Liste',
                 icon  : 'icon-view-list',
+                state    : 'app.planifs_list',
+                weight: 1,
+            });
+            msNavigationServiceProvider.saveItem('planifs.edit', {
+                title : 'Nouveau',
+                icon  : 'icon-plus-circle-outline',
                 state    : 'app.planifs_edit',
                 weight: 1
             });
-     
     }
 })();

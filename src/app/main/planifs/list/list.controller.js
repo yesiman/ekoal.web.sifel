@@ -3,11 +3,11 @@
     'use strict';
 
     angular
-        .module('app.produits.list')
-        .controller('ProduitsListController',ProduitsListController);
+        .module('app.planifs.list')
+        .controller('PlanifsListController',PlanifsListController);
 
     /** @ngInject */
-    function ProduitsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
+    function PlanifsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
     {
         var vm = this;
         // Data
@@ -18,9 +18,7 @@
             totalItems: 0,
             sort: null
         };
-        var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
-                    
-        var actionsHtml = standardizer.getHtmlActions(customBts);
+        var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = {
             useExternalPagination: true,
             useExternalSorting: true,
@@ -34,7 +32,9 @@
             showGridFooter: false,
             columnDefs: [
                 { field: '_id', displayName: 'mongo ID' },
-                { field: 'lib', displayName: 'Lib' },
+                { field: 'datePlant', displayName: 'Date plantation' },
+                { field: 'produit', displayName: 'Produit' },
+                { field: 'producteur', displayName: 'Producteur' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
         };
         $scope.loadPageAction = function(id)
@@ -45,7 +45,7 @@
         }
         // Methods
         $scope.loadPage = function() {
-            api.products.getAll.get({ pid:paginationOptions.pageNumber,nbp:paginationOptions.pageSize },
+            api.planifs.getAll.get({ pid:paginationOptions.pageNumber,nbp:paginationOptions.pageSize },
                 // Success
                 function (response)
                 {
@@ -65,13 +65,10 @@
             );
         };
         $scope.add = function() {
-            $state.go("app.produits_edit", { id:-1 });
+            $state.go("app.planifs_edit", { id:-1 });
         };
         $scope.edit = function(id) {
-            $state.go("app.produits_edit", { id:id });
-        };
-        $scope.showStats = function(it) {
-            $state.go("app.stats_prevs", { selectedItems:[it] });
+            $state.go("app.planifs_edit", { id:id });
         };
         $scope.remove = function(id,ev) {
             // Appending dialog to document.body to cover sidenav in docs app
@@ -82,10 +79,9 @@
                 .targetEvent(ev)
                 .ok('Valider')
                 .cancel('Annuler');
-
             $mdDialog.show(confirm).then(function() {
                 $rootScope.loadingProgress = true;
-                api.products.delete.delete({ id:id } ,
+                api.planifs.delete.delete({ id:id } ,
                 // Success
                 function (response)
                 {

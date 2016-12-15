@@ -7,7 +7,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($translateProvider)
+    function config($translateProvider,$mdDateLocaleProvider)
     {
         // Put your common app configurations here
 
@@ -17,6 +17,11 @@
         });
         $translateProvider.preferredLanguage('en');
         $translateProvider.useSanitizeValueStrategy('sanitize');
+    
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return moment(date).format('DD/MM/YYYY');
+            };
+
     }
 
 })();

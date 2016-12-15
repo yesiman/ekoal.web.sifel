@@ -7,23 +7,40 @@
         .controller('StatsPrevsController',StatsPrevsController);
 
     /** @ngInject */
+    function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    return new Date(d.setDate(diff));
+    }
     function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$mdSidenav,$rootScope)
     {
         var vm = this;
+        var monday = new Date;
+        monday.setHours(0);
+        monday.setMinutes(0);
+        monday.setSeconds(0);
+        var sunday = new Date(monday);
+        sunday.setMonth(sunday.getMonth() + 1);
+        sunday.setHours(23);
+        sunday.setMinutes(59);
+        sunday.setSeconds(59);
+        sunday.setMilliseconds(59);
         $scope.filters = {
             tags: [],
             searchText: "",
             autocompleteDemoRequireMatch:true,
             selectedItem:null,
-            selectedItems:[],
-            dateFrom: new Date() ,
-            dateTo: new Date()
+            selectedItems:$stateParams.selectedItems,
+            dateFrom: new Date(),
+            dateTo: sunday
         }
         $scope.toggleSidenav = function(sidenavId)
         {
             $mdSidenav(sidenavId).toggle();
         }
         $scope.refresh = function() {
+            console.log("refresh", $scope.filters.selectedItems);
             $rootScope.loadingProgress = true;
             var prodsIds = [];
             for (var i = 0;i < $scope.filters.selectedItems.length;i++)

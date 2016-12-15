@@ -11,7 +11,8 @@
     {
         $scope.id = $stateParams.id;
         $scope.planif  = {
-            lines: []
+            lines: [],
+            datePlant: new Date()
         };
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
             $scope.item = item;
@@ -62,8 +63,12 @@
         }
         $scope.showPlanif = function(ev){
     
+            var item = {
+                dateRec:new Date(),
+                qte:0
+            }
             //$scope.dialogItems = response.items;
-            var locals = {item: null, onCancel: $scope.closeMe, onValid: $scope.validLine };
+            var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };
             $mdDialog.show({
                 templateUrl: 'app/main/planifs/edit/dialogs/addEdit.html',
                 parent: angular.element(document.body),
@@ -83,9 +88,8 @@
         //
         
         $scope.valid = function(){
-            console.log("a", $scope.planif.producteur);
             console.log("b",$scope.planif);
-
+            
             var toSave = {
                 produit: $scope.planif.produit._id,
                 producteur: $scope.planif.producteur._id,

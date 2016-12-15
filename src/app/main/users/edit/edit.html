@@ -21,84 +21,270 @@
 
             </md-button>
         </div>  
+        
     </div>
+    <!---->
+    <div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page" ng-if="item._id && (item.type == 3) && ($root.user.type <= 2)">
+    <div layout="row"  layout-align="space-between"><md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" >
+                <md-nav-item md-nav-click="gotoPg('infos')" name="infos">Informations principales</md-nav-item>
+                <md-nav-item md-nav-click="gotoPg('producteurs')" name="producteurs">Producteurs</md-nav-item>
+              </md-nav-bar></div>
+</div>
     <!-- / HEADER -->
     <!-- CONTENT -->
-    <div class="content" md-background-bg layout="row" layout-align="start start">
-        <!-- SIDENAV -->
+
+<div class="content fullpage-datatable" layout="column" flex  ng-if="currentNavItem == 'producteurs'">
+
+                <table class="dataTable row-border hover" datatable="ng" dt-instance="vm.dtInstance"
+                       dt-options="vm.dtOptions">
+                    <thead>
+                        <tr>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">ID</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Nom</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Prénom</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Actions</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="p in ::vm.producteurs">
+                            <td>{{p._id}}</td>
+                            <td>{{p.name}}</td>
+                            <td>{{p.surn}}</td>
+                            <td>
+                                <md-checkbox ng-checked="contactExists(p)"
+                                 ng-click="contactChecked(p)"
+                                 aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
+                    </md-checkbox>
+                            </md-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div> 
+
+         <div class="content" style="top: 124px;"  ng-if="currentNavItem == 'infos'" md-background-bg layout="row" layout-fill layout-align="start start" flex>
         
-        <!-- / SIDENAV -->
-        <div class="main scrollable"  ms-scroll>
-            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-  <div style="width:100%;">
-      <form name="userForm">
-        <div layout="column"  ng-if="$root.user.type < 4" >
-            <md-input-container>
-          <label>Type</label>
-          <md-select required ng-model="item.type" style="min-width:200px;">
-            <md-option><em>None</em></md-option>
-            <md-option ng-value="1" ng-if="$root.user.type == 1">
-                Administrateur
-            </md-option>
-            <md-option ng-value="2" ng-if="$root.user.type < 2">
-                Administrateur OP
-            </md-option>
-            <md-option ng-value="3" ng-if="$root.user.type < 3">
-                Technicien
-            </md-option>
-            <md-option ng-value="4">
-                Producteur
-            </md-option>
-          </md-select>
-        </md-input-container>
-        </div>
-        <div layout="column"  ng-if="item.type >= 2"  >
-          <md-input-container>
-          <label>Organisation de producteurs</label>
-          <md-select ng-disabled="$root.user.type > 1" required ng-model="item.idorga" style="min-width:200px;">
-            <md-option ng-repeat="o in orgas" ng-value="o._id">
-                {{o.lib}}
-            </md-option>
-          </md-select>
-        </md-input-container>
-        </div>
-        <div layout-gt-sm="row">
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Nom</label>
-            <input required ng-model="item.name">
-          </md-input-container>
 
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Prénom</label>
-            <input required ng-model="item.surn">
-          </md-input-container>
-        </div>
-        <div layout-gt-sm="row">
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Email</label>
-            <input type="email"  required ng-model="item.email">
-          </md-input-container>
 
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Mot de passe</label>
-            <input type="password" required ng-model="item.pass">
-          </md-input-container>
-        </div>
-        <div layout-gt-sm="row">
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Decription</label>
-            <textarea ng-model="item.desc" rows="5"></textarea>
-          </md-input-container>
-        </div>
-        <div layout-gt-sm="row" style="float:right;">
-        <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
-        </div>
-      </form>
-    </div>
-  </md-content>
 
-  
-</div>
+        <div class="main scrollable"   ms-scroll>
+
+
+             
+            
+            <md-content md-theme="docs-dark" class="layout-fill" layout-fill >
+              
+
+
+
+          <!--    <div style="width:100%;" ng-if="currentNavItem == 'producteurs'" class="layout-fill" layout-fill>
+                 CONTACT LIST -->
+      <!--      <md-list class="contacts-list" flex class="flex">
+
+                <md-subheader class="md-no-sticky md-white-bg">
+
+                    <div layout="row" layout-align="space-between center">
+                        <div class="search" flex layout="row" layout-align="start center">
+
+                <md-icon md-font-icon="icon-magnify" class="icon s18">
+                </md-icon>
+
+                <input flex ng-model="vm.chatSearch" type="text" placeholder="Search or start new chat" translate=""
+                       translate-attr-placeholder="USERS.SEARCH">
+
+            </div>
+            <md-menu>
+
+                            <md-button class="md-icon-button" aria-label="Sort" translate
+                                       translate-attr-aria-label="CONTACTS.SORT">
+                                <md-icon md-font-icon="icon-sort-alphabetical"
+                                         ng-click="$mdOpenMenu($event)"></md-icon>
+                            </md-button>
+
+                            <md-menu-content width="3">
+
+                                <md-menu-item>
+                                    <md-button ng-click="vm.listOrder = 'name';vm.listOrderAsc = false"
+                                               ng-style="vm.listOrder === 'name' && vm.listOrderAsc=== false && {'font-weight':'500'}">
+                                        <span translate="CONTACTS.FIRST_NAME">First Name</span>
+                                        <small translate="CONTACTS.A_TO_Z">(A to Z)</small>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="vm.listOrder = 'name'; vm.listOrderAsc = true"
+                                               ng-style="vm.listOrder === 'name' && vm.listOrderAsc=== true && {'font-weight':'500'}">
+                                        <span translate="CONTACTS.FIRST_NAME">First Name</span>
+                                        <small translate="CONTACTS.Z_TO_A">(Z to A)</small>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="vm.listOrder = 'lastName';vm.listOrderAsc = false"
+                                               ng-style="vm.listOrder === 'lastName' && vm.listOrderAsc=== false && {'font-weight':'500'}">
+                                        <span translate="CONTACTS.LAST_NAME">Last Name</span>
+                                        <small translate="CONTACTS.A_TO_Z">(A to Z)</small>
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="vm.listOrder = 'lastName'; vm.listOrderAsc = true"
+                                               ng-style="vm.listOrder === 'lastName' && vm.listOrderAsc=== true && {'font-weight':'500'}">
+                                        <span translate="CONTACTS.LAST_NAME">Last Name</span>
+                                        <small translate="CONTACTS.Z_TO_A">(Z to A)</small>
+                                    </md-button>
+                                </md-menu-item>
+
+                            </md-menu-content>
+
+                        </md-menu>
+
+                    </div>
+
+                </md-subheader>
+                <md-list-item class="contact-item md-white-bg" md-ink-ripple
+                              ng-repeat="contact in producteurs"
+                              ng-click="vm.openContactDialog($event, contact)"
+                              ng-style="{'transform': 'translate3d(0px, '+$index * 100+'%, 0px)', 'z-index': producteurs.length - $index}"
+                              ng-class="{'selected': vm.isSelected(contact)}">
+
+                    <md-checkbox ng-checked="contactExists(contact)"
+                                 ng-click="contactChecked(contact)"
+                                 aria-label="{{contactExists(contact) ? 'Deselect' : 'Select'}}">
+                    </md-checkbox>
+
+                    <p class="text-truncate font-weight-600">{{contact.name}} {{contact.surn}}</p>
+                    <div class="actions" layout="row" layout-align="start center">
+                        <md-button class="md-icon-button  hide show-gt-xs"
+                                   ng-click="$event.stopPropagation();vm.toggleInArray(contact.id, vm.user.starred)"
+                                   aria-label="Toggle starred" translate
+                                   translate-attr-aria-label="CONTACTS.TOGGLE_STARRED">
+                            <md-icon ng-if="vm.exists(contact.id,vm.user.starred)" md-font-icon="icon-star"
+                                     class="amber-fg"></md-icon>
+                            <md-icon ng-if="!vm.exists(contact.id,vm.user.starred)"
+                                     md-font-icon="icon-star-outline"></md-icon>
+                        </md-button>
+
+                        <md-menu>
+                            <md-button class="md-icon-button" aria-label="More" translate
+                                       translate-attr-aria-label="CONTACTS.MORE">
+                                <md-icon md-font-icon="icon-dots-vertical" ng-click="$mdOpenMenu($event)"></md-icon>
+                            </md-button>
+
+                            <md-menu-content width="3">
+                                <md-menu-item>
+                                    <md-button ng-click="vm.deleteContactConfirm(contact, ev)"
+                                               translate="CONTACTS.DELETE_CONTACT">
+                                        Delete Contact
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-divider ng-if="vm.user.groups"></md-divider>
+
+                                <md-subheader class="md-no-sticky" ng-if="vm.user.groups">Groups</md-subheader>
+
+                                <md-list-item ng-if="vm.user.groups" ng-repeat="group in vm.user.groups"
+                                              ng-click="vm.toggleInArray(contact.id,group.contactIds)">
+                                    <p class="pl-8"
+                                       ng-style="vm.exists(contact.id,group.contactIds) && {'font-weight':'500'}">
+                                        {{group.name}}
+                                    </p>
+                                </md-list-item>
+
+                            </md-menu-content>
+                        </md-menu>
+
+                    </div>
+
+                </md-list-item>
+            
+            </md-list>
+              </div>-->
+
+              <div style="width:100%;" ng-if="currentNavItem == 'infos'">
+                  <form name="userForm">
+                    <div layout="column"  ng-if="$root.user.type < 4" >
+                        <md-input-container>
+                      <label>Type</label>
+                      <md-select required ng-model="item.type" style="min-width:200px;">
+                        <md-option><em>None</em></md-option>
+                        <md-option ng-value="1" ng-if="$root.user.type == 1">
+                            Administrateur
+                        </md-option>
+                        <md-option ng-value="2" ng-if="$root.user.type < 2">
+                            Administrateur OP
+                        </md-option>
+                        <md-option ng-value="3" ng-if="$root.user.type < 3">
+                            Technicien
+                        </md-option>
+                        <md-option ng-value="4">
+                            Producteur
+                        </md-option>
+                      </md-select>
+                    </md-input-container>
+                    </div>
+                    <div layout="column"  ng-if="item.type >= 2"  >
+                      <md-input-container>
+                      <label>Organisation de producteurs</label>
+                      <md-select ng-disabled="$root.user.type > 1" required ng-model="item.orga" style="min-width:200px;">
+                        <md-option ng-repeat="o in orgas" ng-value="o._id">
+                            {{o.lib}}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Nom</label>
+                        <input required ng-model="item.name">
+                      </md-input-container>
+
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Prénom</label>
+                        <input required ng-model="item.surn">
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Email</label>
+                        <input type="email"  required ng-model="item.email">
+                      </md-input-container>
+
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Mot de passe</label>
+                        <input type="password" required ng-model="item.pass">
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Decription</label>
+                        <textarea ng-model="item.desc" rows="5"></textarea>
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row" style="float:right;">
+                    <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
+                    </div>
+                  </form>
+                </div>
+            </md-content>
+          </div>  
         </div>
     <!-- / CONTENT -->
 

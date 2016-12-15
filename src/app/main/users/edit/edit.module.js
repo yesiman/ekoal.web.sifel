@@ -28,7 +28,7 @@
                 },
                 userResolv: function (apiResolver,$stateParams)
                 {
-                    if ($stateParams.id != -1)
+                    if ($stateParams.id && ($stateParams.id != -1))
                     {
                         return apiResolver.resolve('users.get@get', {'id': $stateParams.id });
                     }

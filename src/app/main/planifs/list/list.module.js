@@ -3,30 +3,25 @@
     'use strict';
 
     angular
-        .module('app.planifs.edit', [])
+        .module('app.planifs.list', ['ui.grid.pagination','bw.paging'])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.planifs_edit', {
-            url      : '/planifs/edit',
-            params : {
-                id:null
-            },
+        $stateProvider.state('app.planifs_list', {
+            url      : '/planifs/list',
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/planifs/edit/edit.html',
-                    controller : 'PlanifsEditController as vm'
+                    templateUrl: 'app/main/planifs/list/list.html',
+                    controller : 'PlanifsListController as vm'
                 }
             }
         });
 
-         
-
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/planifs/edit');
+        $translatePartialLoaderProvider.addPart('app/main/planifs/list');
 
 /*msNavigationServiceProvider.saveItem('users', {
             title : 'UTILISATEURS',

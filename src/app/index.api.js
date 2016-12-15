@@ -186,7 +186,7 @@
                     method: 'POST'
                 }
             }),
-            add: $resource(api.baseUrl + 'users/add/:id', {id:'@id',product:'@user'} , {
+            add: $resource(api.baseUrl + 'users/add/:id', {id:'@id',user:'@user'} , {
                 post: {
                     method: 'POST'
                 }
@@ -207,6 +207,11 @@
                 }
             }),
             getAllByType: $resource(api.baseUrl + 'users/getAllByType/:pid/:nbp/:idt', {pid:'@pid',nbp:'@nbp',idt:'@idt'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            getAllByOrga: $resource(api.baseUrl + 'users/getAllByOrga/:pid/:nbp/:ido', {pid:'@pid',nbp:'@nbp',ido:'@ido'} , {
                 get: {
                     method: 'GET'
                 }
@@ -267,6 +272,16 @@
             add: $resource(api.baseUrl + 'planifs/add/:id', {id:'@id',planif:'@planif'} , {
                 post: {
                     method: 'POST'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'planifs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'planifs/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
                 }
             })
         }
