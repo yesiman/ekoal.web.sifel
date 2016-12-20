@@ -1,35 +1,18 @@
 <div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
-        <div layout="row" layout-align="start center">
-            <div class="logo" layout="row" layout-align="start center">
-                <span class="logo-icon">
-                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
-                </span>
-                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
-            </div>
-        </div>  
-        <div class="right-side layout-row" layout="row" layout-align="start center">
-            <md-button class="md-fab" aria-label="Eat cake" style="float:right;" ng-click="add()">
-                <md-icon md-font-icon="icon-plus"
-                                 class="icon s32"></md-icon>
-
-            </md-button>
-            <md-button class="md-fab" aria-label="Eat cake" style="float:right;" ng-click="add()">
-                <md-icon md-font-icon="icon-plus"
-                                 class="icon s32"></md-icon>
-
-            </md-button>
-        </div>  
-        
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
     </div>
     <!---->
     <div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page" ng-if="item._id && (item.type == 3) && ($root.user.type <= 2)">
-    <div layout="row"  layout-align="space-between"><md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" >
+        <div layout="row"  layout-align="space-between">
+            <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" >
                 <md-nav-item md-nav-click="gotoPg('infos')" name="infos">Informations principales</md-nav-item>
                 <md-nav-item md-nav-click="gotoPg('producteurs')" name="producteurs">Producteurs</md-nav-item>
-              </md-nav-bar></div>
-</div>
+            </md-nav-bar>
+        </div>
+    </div>
     <!-- / HEADER -->
     <!-- CONTENT -->
 
@@ -89,7 +72,7 @@
 
              
             
-            <md-content md-theme="docs-dark" class="layout-fill" layout-fill >
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
               
 
 
@@ -219,9 +202,9 @@
               </div>-->
 
               <div style="width:100%;" ng-if="currentNavItem == 'infos'">
-                  <form name="userForm">
+                  <form name="current.userForm"  ng-submit="valid()">
                     <div layout="column"  ng-if="$root.user.type < 4" >
-                        <md-input-container>
+                        <md-input-container  class="md-input-invalid">
                       <label>Type</label>
                       <md-select required ng-model="item.type" style="min-width:200px;">
                         <md-option><em>None</em></md-option>
@@ -277,9 +260,6 @@
                         <label>Decription</label>
                         <textarea ng-model="item.desc" rows="5"></textarea>
                       </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row" style="float:right;">
-                    <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
                     </div>
                   </form>
                 </div>

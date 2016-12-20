@@ -9,6 +9,11 @@
     /** @ngInject */
     function ProduitsEditController($scope,$state, api,$stateParams,prodResolv)
     {
+        $scope.current =  {userForm : {}};
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Mise à jour produit"
+        };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
             api.products.add.post({ id:$scope.id, product: $scope.item } ,

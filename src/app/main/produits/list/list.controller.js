@@ -11,7 +11,10 @@
     {
         var vm = this;
         // Data
-        
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Liste produits"
+        };
         var paginationOptions = {
             pageNumber: 1,
             pageSize: 10,

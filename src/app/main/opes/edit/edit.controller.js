@@ -9,6 +9,11 @@
     /** @ngInject */
     function OpesEditController($scope,$state, api,$stateParams,orgaResolv)
     {
+        $scope.current =  {userForm : {}};
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Mise à jour organisation de producteurs"
+        };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
             api.orgas.add.post({ id:$scope.id, orga: $scope.item } ,

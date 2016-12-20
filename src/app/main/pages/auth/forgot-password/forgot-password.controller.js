@@ -7,12 +7,27 @@
         .controller('ForgotPasswordController', ForgotPasswordController);
 
     /** @ngInject */
-    function ForgotPasswordController()
+    function ForgotPasswordController($scope,api)
     {
-        // Data
-
+        $scope.user = {email: ""};
         // Methods
-
-        //////////
+        $scope.recover = function() {
+            api.mailing.sendMailRecover.post({ email:$scope.user.email },
+                // Success
+                function (response)
+                {
+                    console.log(response);
+                    //if (response.success)
+                    //{
+                        
+                    //}
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                }
+            );
+        }
     }
 })();

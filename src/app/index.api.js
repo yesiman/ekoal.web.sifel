@@ -292,6 +292,13 @@
                 }
             })
         }
+        api.mailing = {
+            sendMailRecover: $resource(api.baseUrl + 'mailing/sendMailRecover/', { email:'@email' } , {
+                post: {
+                    method: 'POST'
+                }
+            })
+        }
         return api;
     }
 

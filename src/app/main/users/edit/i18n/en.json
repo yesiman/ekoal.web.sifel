@@ -1,6 +1,6 @@
 {
-    "LIST": {
-        "TITLE": "Liste des utilisateurs"
+    "HEAD": {
+        "TITLE": "Ajout / modification produit"
     },
     "USERS": {
         "SEARCH": "Saisissez les premiers characteres..."

@@ -24,8 +24,11 @@
             scrollY     : 'auto',
             responsive  : true
         };
-
-
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Mise à jour utilisateur"
+        };
+        $scope.current =  {userForm : {}};
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
         $scope.item = userResolv;
@@ -40,18 +43,22 @@
             $scope.currentNavItem = pg;
         }
         //
-        $scope.valid = function(){
-            $scope.item.type = parseInt($scope.item.type);
-            api.users.add.post({ id:$scope.id, user: $scope.item } ,
-                function (response)
-                {
-                    $state.go("app.users_list");
-                },
-                function (response)
-                {
-                    console.error(response);
-                }
-            );
+        $scope.valid = function(frm){
+            if($scope.current.userForm.$valid)
+            {
+                $scope.item.type = parseInt($scope.item.type);
+                api.users.add.post({ id:$scope.id, user: $scope.item } ,
+                    function (response)
+                    {
+                        $state.go("app.users_list");
+                    },
+                    function (response)
+                    {
+                        console.error(response);
+                    }
+                );
+            }
+            
         }
 
         $scope.loadPage = function() {

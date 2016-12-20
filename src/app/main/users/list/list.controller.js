@@ -10,7 +10,10 @@
     function UsersListController($scope,$state, api,$rootScope,$mdDialog,standardizer)
     {
         var vm = this;
-        
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Liste utilisateurs"
+        };
         
         vm.dtInstance = {};
         vm.dtOptions = {

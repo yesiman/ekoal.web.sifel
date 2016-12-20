@@ -9,6 +9,11 @@
     /** @ngInject */
     function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q)
     {
+        $scope.current =  {userForm : {}};
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Mise à jour planification"
+        };
         $scope.id = $stateParams.id;
         $scope.planif  = {
             lines: [],

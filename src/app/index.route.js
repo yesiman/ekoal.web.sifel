@@ -7,11 +7,12 @@
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider)
+    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider)
     {
         $locationProvider.html5Mode(true);
 
         $urlRouterProvider.otherwise('/pages/auth/login');
+        $httpProvider.interceptors.push('APIInterceptor');
 
         /**
          * Layout Style Switcher

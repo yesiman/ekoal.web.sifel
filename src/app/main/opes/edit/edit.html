@@ -1,15 +1,8 @@
-<div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page">
+<div id="opeedit" class="page-layout simple fullwidth  doc-page element-doc-page">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
-        <div layout="column" layout-align="center start">
-            <div class="logo" layout="row" layout-align="start center">
-                <span class="logo-icon">
-                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
-                </span>
-                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
-            </div>
-            
-        </div>  
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
     </div>
     <!-- / HEADER -->
     <!-- CONTENT -->
@@ -21,7 +14,7 @@
         
             <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
   <div style="width:100%;">
-      <form name="userForm">
+      <form name="current.userForm">
 
         <div layout-gt-sm="row">
           <md-input-container class="md-inline" flex-gt-sm>
@@ -35,9 +28,7 @@
             <textarea ng-model="item.desc" rows="5"></textarea>
           </md-input-container>
         </div>
-        <div layout-gt-sm="row" style="float:right;">
-        <md-button class="md-raised md-primary" ng-click="valid()">Valider</md-button>
-        </div>
+        
       </form>
     </div>
   </md-content>
