@@ -32,6 +32,8 @@
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
         $scope.item = userResolv;
+        console.log("userResolv",userResolv);
+        
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         $scope.currentNavItem = "infos";
@@ -63,9 +65,34 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
-            $scope.item.parcelles.push(item);
+            if (item.new)
+            {
+                $scope.item.parcelles.push(item);
+            }
+            else {
+                //Maj ARRAY OBJECT
+            }
             $mdDialog.hide();
         }
+        $scope.editParc = function(i,ev) {
+            var locals = {item: i, onCancel: $scope.closeMe, onValid: $scope.validLine };
+            $mdDialog.show({
+                templateUrl: 'app/main/users/edit/dialogs/addParc.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: locals,
+                controller: mdDialogCtrl,
+                controllerAs: 'ctrl',
+                clickOutsideToClose:true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+                }, function() {
+                $scope.status = 'You cancelled the dialog.';
+            });        
+        }
+        $scope.removeParc = function(i) {}
         $scope.addParcelle = function(ev){
             var item = {
                 new:true,

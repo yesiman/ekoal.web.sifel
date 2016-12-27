@@ -1,4 +1,4 @@
-<div id="editUser" class="page-layout simple fullwidth  doc-page element-doc-page">
+<div id="editUser" class="page-layout simple fullwidth  doc-page element-doc-page scrollable">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
         <div form-head-ico-title layout="row" layout-align="start center"></div>  
@@ -16,10 +16,10 @@
      / HEADER -->
     <!-- CONTENT -->
     <div class="content" md-background-bg layout="row" layout-align="start start">
-<form name="current.userForm"  ng-submit="valid()" layout-fill>
+<form name="current.userForm"  ng-submit="valid()" layout-fill  autocomplete="off">
 <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
-      <md-tab layout-fill label="Informations principales">
-            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+      <md-tab layout-fill label="Informations principales" >
+            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding  ms-scroll>
               <div style="width:100%;">
                   
                     <div layout="column"  ng-if="$root.user.type < 4" >
@@ -66,12 +66,11 @@
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Email</label>
-                        <input type="email"  required ng-model="item.email">
+                        <input type="email" required ng-model="item.email">
                       </md-input-container>
-
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Mot de passe</label>
-                        <input type="password" required ng-model="item.pass">
+                        <input type="text" required ng-model="item.pass">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
@@ -86,7 +85,7 @@
           
       </md-tab>
       <md-tab label="Parcelles" layout-fill  ng-if="item.type == 4" >
-          <md-tab-content  md-theme="docs-dark"   flex layout-fill>
+          <md-tab-content  md-theme="docs-dark"   flex layout-fill  ms-scroll>
               <md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
                         <md-icon md-font-icon="icon-plus"></md-icon>
                     </md-button>
@@ -112,13 +111,13 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody  ms-scroll>
                                 <tr ng-repeat="il in item.parcelles track by $index">
                                     <td>{{il.lib}}</td>
                                     <td>{{il.surface}}</td>
                                     <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="editParc(il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removeParc(il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -129,7 +128,7 @@
       <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
           <md-tab-content  md-theme="docs-dark"   flex layout-fill>
 
-                <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
+                <table class="dataTable row-border hover"  style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                        dt-options="vm.dtOptions">
                     <thead>
                         <tr>
@@ -155,7 +154,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody  ms-scroll>
                         <tr ng-repeat="p in ::vm.producteurs">
                             <td>{{p._id}}</td>
                             <td>{{p.name}}</td>

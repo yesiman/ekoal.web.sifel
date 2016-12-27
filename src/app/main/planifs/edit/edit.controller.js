@@ -59,6 +59,10 @@
                     methodBase = api.users.getAllByType;
                     methodArgs = { pid:1,nbp:1000, idt:4 };
                     break;
+                case 3:
+                    methodBase = api.users.getParcelles;
+                    methodArgs = { id:$scope.item.producteur._id };
+                    break;
             }
             methodBase.get(methodArgs,
                 function (response)
@@ -112,8 +116,6 @@
         //
         
         $scope.valid = function(){
-            console.log("b",$scope.item);
-            
             var toSave = {
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,

@@ -196,6 +196,11 @@
                     method: 'GET'
                 }
             }),
+            getParcelles: $resource(api.baseUrl + 'users/getParcelles/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             delete: $resource(api.baseUrl + 'users/delete/:id', {id:'@id'} , {
                 delete: {
                     method: 'DELETE'
@@ -299,6 +304,13 @@
         }
         api.mailing = {
             sendMailRecover: $resource(api.baseUrl + 'mailing/sendMailRecover/', { email:'@email' } , {
+                post: {
+                    method: 'POST'
+                }
+            })
+        }
+        api.twilio = {
+            testTwilio: $resource(api.baseUrl + 'messaging/testTwilio/', { } , {
                 post: {
                     method: 'POST'
                 }

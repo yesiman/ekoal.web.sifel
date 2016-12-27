@@ -7,13 +7,16 @@
         .controller('SampleController', SampleController);
 
     /** @ngInject */
-    function SampleController(SampleData)
+    function SampleController(SampleData,api)
     {
         var vm = this;
 
         // Data
         vm.helloText = SampleData.data.helloText;
-
+        vm.send = function()
+        {
+            api.twilio.testTwilio.post();
+        }
         // Methods
 
         //////////
