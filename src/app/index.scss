@@ -15,12 +15,14 @@ body {
     zoom:90%;
 }
 
+md-tab-content.inputs {background-color: #fff;}
+
 md-icon.edit{
-        color:#66BB6A!important;
-    }
-    md-icon.rem{
-        color:#EF5350!important;
-    }
-    md-icon.prevs{
-        color:#2196F3!important;
-    }
+    color:#66BB6A!important;
+}
+md-icon.rem{
+    color:#EF5350!important;
+}
+md-icon.prevs{
+    color:#2196F3!important;
+}

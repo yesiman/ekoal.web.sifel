@@ -2,7 +2,7 @@
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Mango (Fruit)</h2>
+        <h2>Ajout/modification parcelle</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -11,19 +11,24 @@
     </md-toolbar>
 
     <md-dialog-content>
-      <md-list ng-cloak>
-        <md-list-item class="md-2-line" ng-repeat="it in items" ng-click="onSelect(it)">
-            <div class="md-list-item-text">
-                <h3> {{ it.lib }} </h3>
-                <p> {{ it.desc }} </p>
-            </div>
-        </md-list-item>
-      </md-list>
+      <div layout-gt-sm="row">
+        <md-input-container class="md-inline" flex>
+          <h4>Libellé</h4>
+          <input type="text" ng-model="item.lib"></input>
+        </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <h4>Surface</h4>
+          <input type="number" ng-model="item.surface"></input>
+        </md-input-container>
+      </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <md-button ng-click="onCancel()">
         Annuler
+      </md-button>
+      <md-button ng-click="onValid(item)">
+        Valider
       </md-button>
     </md-dialog-actions>
   </form>

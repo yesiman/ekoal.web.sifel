@@ -40,4 +40,5 @@
             templateUrl: 'app/core/directives/fabio-ui/templates/form-head-ico-title/form-head-ico-title.html'
         };
     }
+    
 })();

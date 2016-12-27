@@ -1,10 +1,10 @@
-<div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page">
+<div id="editUser" class="page-layout simple fullwidth  doc-page element-doc-page">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
         <div form-head-ico-title layout="row" layout-align="start center"></div>  
         <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
     </div>
-    <!---->
+    <!--
     <div id="edit" class="page-layout simple fullwidth  doc-page element-doc-page" ng-if="item._id && (item.type == 3) && ($root.user.type <= 2)">
         <div layout="row"  layout-align="space-between">
             <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" >
@@ -13,196 +13,15 @@
             </md-nav-bar>
         </div>
     </div>
-    <!-- / HEADER -->
+     / HEADER -->
     <!-- CONTENT -->
-
-<div class="content fullpage-datatable" layout="column" flex  ng-if="currentNavItem == 'producteurs'">
-
-                <table class="dataTable row-border hover" datatable="ng" dt-instance="vm.dtInstance"
-                       dt-options="vm.dtOptions">
-                    <thead>
-                        <tr>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">ID</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Nom</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Prénom</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Actions</span>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="p in ::vm.producteurs">
-                            <td>{{p._id}}</td>
-                            <td>{{p.name}}</td>
-                            <td>{{p.surn}}</td>
-                            <td>
-                                <md-checkbox ng-checked="contactExists(p)"
-                                 ng-click="contactChecked(p)"
-                                 aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
-                    </md-checkbox>
-                            </md-checkbox>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div> 
-
-         <div class="content" style="top: 124px;"  ng-if="currentNavItem == 'infos'" md-background-bg layout="row" layout-fill layout-align="start start" flex>
-        
-
-
-
-        <div class="main scrollable"   ms-scroll>
-
-
-             
-            
-            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-              
-
-
-
-          <!--    <div style="width:100%;" ng-if="currentNavItem == 'producteurs'" class="layout-fill" layout-fill>
-                 CONTACT LIST -->
-      <!--      <md-list class="contacts-list" flex class="flex">
-
-                <md-subheader class="md-no-sticky md-white-bg">
-
-                    <div layout="row" layout-align="space-between center">
-                        <div class="search" flex layout="row" layout-align="start center">
-
-                <md-icon md-font-icon="icon-magnify" class="icon s18">
-                </md-icon>
-
-                <input flex ng-model="vm.chatSearch" type="text" placeholder="Search or start new chat" translate=""
-                       translate-attr-placeholder="USERS.SEARCH">
-
-            </div>
-            <md-menu>
-
-                            <md-button class="md-icon-button" aria-label="Sort" translate
-                                       translate-attr-aria-label="CONTACTS.SORT">
-                                <md-icon md-font-icon="icon-sort-alphabetical"
-                                         ng-click="$mdOpenMenu($event)"></md-icon>
-                            </md-button>
-
-                            <md-menu-content width="3">
-
-                                <md-menu-item>
-                                    <md-button ng-click="vm.listOrder = 'name';vm.listOrderAsc = false"
-                                               ng-style="vm.listOrder === 'name' && vm.listOrderAsc=== false && {'font-weight':'500'}">
-                                        <span translate="CONTACTS.FIRST_NAME">First Name</span>
-                                        <small translate="CONTACTS.A_TO_Z">(A to Z)</small>
-                                    </md-button>
-                                </md-menu-item>
-
-                                <md-menu-item>
-                                    <md-button ng-click="vm.listOrder = 'name'; vm.listOrderAsc = true"
-                                               ng-style="vm.listOrder === 'name' && vm.listOrderAsc=== true && {'font-weight':'500'}">
-                                        <span translate="CONTACTS.FIRST_NAME">First Name</span>
-                                        <small translate="CONTACTS.Z_TO_A">(Z to A)</small>
-                                    </md-button>
-                                </md-menu-item>
-
-                                <md-menu-item>
-                                    <md-button ng-click="vm.listOrder = 'lastName';vm.listOrderAsc = false"
-                                               ng-style="vm.listOrder === 'lastName' && vm.listOrderAsc=== false && {'font-weight':'500'}">
-                                        <span translate="CONTACTS.LAST_NAME">Last Name</span>
-                                        <small translate="CONTACTS.A_TO_Z">(A to Z)</small>
-                                    </md-button>
-                                </md-menu-item>
-
-                                <md-menu-item>
-                                    <md-button ng-click="vm.listOrder = 'lastName'; vm.listOrderAsc = true"
-                                               ng-style="vm.listOrder === 'lastName' && vm.listOrderAsc=== true && {'font-weight':'500'}">
-                                        <span translate="CONTACTS.LAST_NAME">Last Name</span>
-                                        <small translate="CONTACTS.Z_TO_A">(Z to A)</small>
-                                    </md-button>
-                                </md-menu-item>
-
-                            </md-menu-content>
-
-                        </md-menu>
-
-                    </div>
-
-                </md-subheader>
-                <md-list-item class="contact-item md-white-bg" md-ink-ripple
-                              ng-repeat="contact in producteurs"
-                              ng-click="vm.openContactDialog($event, contact)"
-                              ng-style="{'transform': 'translate3d(0px, '+$index * 100+'%, 0px)', 'z-index': producteurs.length - $index}"
-                              ng-class="{'selected': vm.isSelected(contact)}">
-
-                    <md-checkbox ng-checked="contactExists(contact)"
-                                 ng-click="contactChecked(contact)"
-                                 aria-label="{{contactExists(contact) ? 'Deselect' : 'Select'}}">
-                    </md-checkbox>
-
-                    <p class="text-truncate font-weight-600">{{contact.name}} {{contact.surn}}</p>
-                    <div class="actions" layout="row" layout-align="start center">
-                        <md-button class="md-icon-button  hide show-gt-xs"
-                                   ng-click="$event.stopPropagation();vm.toggleInArray(contact.id, vm.user.starred)"
-                                   aria-label="Toggle starred" translate
-                                   translate-attr-aria-label="CONTACTS.TOGGLE_STARRED">
-                            <md-icon ng-if="vm.exists(contact.id,vm.user.starred)" md-font-icon="icon-star"
-                                     class="amber-fg"></md-icon>
-                            <md-icon ng-if="!vm.exists(contact.id,vm.user.starred)"
-                                     md-font-icon="icon-star-outline"></md-icon>
-                        </md-button>
-
-                        <md-menu>
-                            <md-button class="md-icon-button" aria-label="More" translate
-                                       translate-attr-aria-label="CONTACTS.MORE">
-                                <md-icon md-font-icon="icon-dots-vertical" ng-click="$mdOpenMenu($event)"></md-icon>
-                            </md-button>
-
-                            <md-menu-content width="3">
-                                <md-menu-item>
-                                    <md-button ng-click="vm.deleteContactConfirm(contact, ev)"
-                                               translate="CONTACTS.DELETE_CONTACT">
-                                        Delete Contact
-                                    </md-button>
-                                </md-menu-item>
-
-                                <md-divider ng-if="vm.user.groups"></md-divider>
-
-                                <md-subheader class="md-no-sticky" ng-if="vm.user.groups">Groups</md-subheader>
-
-                                <md-list-item ng-if="vm.user.groups" ng-repeat="group in vm.user.groups"
-                                              ng-click="vm.toggleInArray(contact.id,group.contactIds)">
-                                    <p class="pl-8"
-                                       ng-style="vm.exists(contact.id,group.contactIds) && {'font-weight':'500'}">
-                                        {{group.name}}
-                                    </p>
-                                </md-list-item>
-
-                            </md-menu-content>
-                        </md-menu>
-
-                    </div>
-
-                </md-list-item>
-            
-            </md-list>
-              </div>-->
-
-              <div style="width:100%;" ng-if="currentNavItem == 'infos'">
-                  <form name="current.userForm"  ng-submit="valid()">
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+<form name="current.userForm"  ng-submit="valid()" layout-fill>
+<md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+      <md-tab layout-fill label="Informations principales">
+            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+              <div style="width:100%;">
+                  
                     <div layout="column"  ng-if="$root.user.type < 4" >
                         <md-input-container  class="md-input-invalid">
                       <label>Type</label>
@@ -261,11 +80,103 @@
                         <textarea ng-model="item.desc" rows="5"></textarea>
                       </md-input-container>
                     </div>
-                  </form>
+                  
                 </div>
             </md-content>
-          </div>  
-        </div>
+          
+      </md-tab>
+      <md-tab label="Parcelles" layout-fill  ng-if="item.type == 4" >
+          <md-tab-content  md-theme="docs-dark"   flex layout-fill>
+              <md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
+                        <md-icon md-font-icon="icon-plus"></md-icon>
+                    </md-button>
+                        <datatable-wrapper>
+                        <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
+                                dt-options="vm.dtOptions">
+                            <thead>
+                                <tr>
+                                    <th class="secondary-text">
+                                        <div class="table-header">
+                                            <span class="column-title">Libellé</span>
+                                        </div>
+                                    </th>
+                                    <th class="secondary-text">
+                                        <div class="table-header">
+                                            <span class="column-title">Surface</span>
+                                        </div>
+                                    </th>
+                                    <th class="secondary-text">
+                                        <div class="table-header">
+                                            <span class="column-title">Actions</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="il in item.parcelles track by $index">
+                                    <td>{{il.lib}}</td>
+                                    <td>{{il.surface}}</td>
+                                    <td>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </datatable-wrapper>
+          </md-tab-content>
+      </md-tab>
+      <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
+          <md-tab-content  md-theme="docs-dark"   flex layout-fill>
+
+                <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
+                       dt-options="vm.dtOptions">
+                    <thead>
+                        <tr>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">ID</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Nom</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Prénom</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Actions</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="p in ::vm.producteurs">
+                            <td>{{p._id}}</td>
+                            <td>{{p.name}}</td>
+                            <td>{{p.surn}}</td>
+                            <td>
+                                <md-checkbox ng-checked="contactExists(p)"
+                                 ng-click="contactChecked(p)"
+                                 aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
+                    </md-checkbox>
+                            </md-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </md-content> 
+      </md-tab>
+</md-tabs>
+</form></div>
+
+        
     <!-- / CONTENT -->
 
 </div>

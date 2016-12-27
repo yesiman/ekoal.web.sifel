@@ -1,5 +1,7 @@
-#edit {
+#editUser {
     position: relative;
+
+    .dataTables_wrapper{height: 100%;}
 
     > .header {
         height: 76px;
@@ -74,10 +76,11 @@
 
     > .content {
         position: absolute;
-        top: 124px;
+        top: 76px;
         bottom: 0;
         right: 0;
         left: 0;
+        padding-top: 0;
 
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;

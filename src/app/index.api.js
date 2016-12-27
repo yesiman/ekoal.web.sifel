@@ -269,6 +269,11 @@
             })
         }
         api.planifs = {
+            get: $resource(api.baseUrl + 'planifs/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             add: $resource(api.baseUrl + 'planifs/add/:id', {id:'@id',planif:'@planif'} , {
                 post: {
                     method: 'POST'

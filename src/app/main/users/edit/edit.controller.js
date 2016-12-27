@@ -7,7 +7,7 @@
         .controller('UsersEditController',UsersEditController);
 
     /** @ngInject */
-    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv)
+    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog)
     {
         
         var vm = this;
@@ -32,16 +32,9 @@
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
         $scope.item = userResolv;
-        if (!$scope.item.producteurs)
-        {$scope.item.producteurs= [];}
+        if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
+        if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         $scope.currentNavItem = "infos";
-        $scope.gotoPg = function(pg){
-            if (pg === "producteurs")
-            {
-                $scope.loadPage();
-            }
-            $scope.currentNavItem = pg;
-        }
         //
         $scope.valid = function(frm){
             if($scope.current.userForm.$valid)
@@ -60,8 +53,46 @@
             }
             
         }
+        var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
+            $scope.item = item;
+            $scope.onCancel = onCancel;
+            $scope.onValid = onValid;   
+        }
+        $scope.closeMe = function()
+        {
+            $mdDialog.hide();
+        }
+        $scope.validLine = function(item){
+            $scope.item.parcelles.push(item);
+            $mdDialog.hide();
+        }
+        $scope.addParcelle = function(ev){
+            var item = {
+                new:true,
+                lib:"",
+                surface:0
+            }
+            //$scope.dialogItems = response.items;
+            var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };
+            $mdDialog.show({
+                templateUrl: 'app/main/users/edit/dialogs/addParc.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: locals,
+                controller: mdDialogCtrl,
+                controllerAs: 'ctrl',
+                clickOutsideToClose:true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+                }, function() {
+                $scope.status = 'You cancelled the dialog.';
+            });            
+        }
 
-        $scope.loadPage = function() {
+        //TODO ID NEED
+        $scope.loadProducteurs = function() {
             api.users.getAllByOrga.get({ pid:1,nbp:100, ido:$scope.item.orga },
                 // Success
                 function (response)
@@ -81,8 +112,13 @@
                     $rootScope.loadingProgress = false;
                 }
             );
-            
         };
+
+        if ($scope.item.orga)
+        {
+            $scope.loadProducteurs();
+        }
+        
         $scope.contactChecked = function(contact) {
             if (!$scope.contactExists(contact))
             {

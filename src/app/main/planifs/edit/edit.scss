@@ -1,5 +1,7 @@
-#edit {
+#editPlanif {
     position: relative;
+
+    .dataTables_wrapper{height: 100%;}
 
     > .header {
         height: 76px;
@@ -78,6 +80,12 @@
         bottom: 0;
         right: 0;
         left: 0;
+        padding-top: 0;
+
+        .dataTables_wrapper .top{
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
 
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;
@@ -85,7 +93,7 @@
         }
 
         .main {
-            padding: 16px 16px 0 4px;
+            padding: 16px 0px 0 4px;
             position: absolute;
             top: 0;
             left: 24px;

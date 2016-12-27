@@ -20,6 +20,19 @@
                     templateUrl: 'app/main/planifs/edit/edit.html',
                     controller : 'PlanifsEditController as vm'
                 }
+            },
+            resolve  : {
+                planifResolv: function (apiResolver,$stateParams)
+                {
+                    if ($stateParams.id && ($stateParams.id != -1))
+                    {
+                        return apiResolver.resolve('planifs.get@get', {'id': $stateParams.id });
+                    }
+                    else {
+                        return {};
+                    }
+                    
+                }
             }
         });
 

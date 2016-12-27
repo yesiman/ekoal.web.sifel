@@ -4,21 +4,39 @@
 
     angular
         .module('app.planifs.edit')
-        .controller('PlanifsEditController',PlanifsEditController);
+        .controller('PlanifsEditController',PlanifsEditController)
+        .directive('datatableWrapper', datatableWrapperDirective)
+        .directive('datatableAddButton', datatableAddButtonDirective);
 
     /** @ngInject */
-    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q)
+    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv)
     {
         $scope.current =  {userForm : {}};
+        var vm = this;
+        vm.dtInstance = {};
+        vm.dtOptions = {
+            dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+            pagingType  : 'simple',
+            lengthMenu  : [10, 20, 30, 50, 100],
+            pageLength  : 20,
+            scrollY     : 'auto',
+            responsive  : true
+        };
+
         $scope.head = {
             ico:"icon-account-box",
             title:"Mise à jour planification"
         };
         $scope.id = $stateParams.id;
-        $scope.planif  = {
-            lines: [],
-            datePlant: new Date()
-        };
+
+        $scope.item  = planifResolv;
+        
+        if (!$scope.item.lines)
+        {
+            $scope.item.lines = [];
+            $scope.item.datePlant = new Date();
+        }
+        
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
             $scope.item = item;
             $scope.onCancel = onCancel;
@@ -35,7 +53,7 @@
             {
                 case 1:
                     methodBase = api.products.getAllByLib;
-                    methodArgs = { pid:1,nbp:20,req:$scope.planif.produitSearch };
+                    methodArgs = { pid:1,nbp:20,req:$scope.item.produitSearch };
                     break;
                 case 2:
                     methodBase = api.users.getAllByType;
@@ -63,8 +81,9 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
-            $scope.planif.lines.push(item);
+            $scope.item.lines.push(item);
             console.log(item);
+            $mdDialog.hide();
         }
         $scope.showPlanif = function(ev){
     
@@ -93,14 +112,14 @@
         //
         
         $scope.valid = function(){
-            console.log("b",$scope.planif);
+            console.log("b",$scope.item);
             
             var toSave = {
-                produit: $scope.planif.produit._id,
-                producteur: $scope.planif.producteur._id,
-                surface:$scope.planif.surface,
-                datePlant:$scope.planif.datePlant,
-                lines:$scope.planif.lines
+                produit: $scope.item.produit._id,
+                producteur: $scope.item.producteur._id,
+                surface:$scope.item.surface,
+                datePlant:$scope.item.datePlant,
+                lines:$scope.item.lines
             };
 
             /*$scope.item.type = parseInt($scope.item.type);
@@ -108,7 +127,7 @@
             api.planifs.add.post({ id:-1, planif: toSave } ,
                 function (response)
                 {
-                    //$state.go("app.planifs_list");
+                    $state.go("app.planifs_list");
                 },
                 function (response)
                 {
@@ -117,5 +136,31 @@
             );
         }
         
+    }
+
+    function datatableWrapperDirective($timeout, $compile) {
+        return {
+            restrict: 'E',
+            transclude: true,
+            template: '<ng-transclude></ng-transclude>',
+            link: link
+        };
+
+        function link(scope, element) {
+            // Using $timeout service as a "hack" to trigger the callback function once everything is rendered
+            $timeout(function () {
+                // Compiling so that angular knows the button has a directive
+                $compile(element.find('.datatable-add-button'))(scope);
+            }, 0, false);
+        }
+    }
+
+    /** @ngInject */
+    function datatableAddButtonDirective()
+    {
+        return {
+            restrict   : 'C',
+            template: '<h1>test</h1>'
+        };
     }
 })();
