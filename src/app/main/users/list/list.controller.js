@@ -70,10 +70,10 @@
             }
             
         }
-
-        var paginationOptions = {
+        $scope.paginationOptions = {
             pageNumber: 1,
             pageSize: 10,
+            pageCount: 0,
             totalItems: 0,
             sort: null
         };
@@ -102,12 +102,12 @@
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;
-            paginationOptions.pageNumber = id;
+            $scope.paginationOptions.pageNumber = id;
             $scope.loadPage();
         }
         // Methods
         $scope.loadPage = function() {
-            api.users.getAll.get({ pid:paginationOptions.pageNumber,nbp:paginationOptions.pageSize },
+            api.users.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
                 // Success
                 function (response)
                 {
@@ -115,6 +115,7 @@
                     $scope.totalItems = response.count;
                     $scope.gridOptions.totalItems = response.count;
                     $scope.gridOptions.data = response.items;
+                    $scope.paginationOptions.total = Math.ceil(response.count / $scope.paginationOptions.pageSize);
                     $scope.items = response.items;
                     $rootScope.loadingProgress = false;
                 },

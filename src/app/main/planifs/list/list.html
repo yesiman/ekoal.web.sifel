@@ -8,14 +8,14 @@
         <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
     </div>
     <!-- / HEADER -->
-    <div class="content scrollable" layout="column" flex>
+    <div class="content" layout="column" flex>
         <div id="grid1"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
         <div class="footer" layout="column" layout-align="space-between">
         <div paging class="pager" 
                 page="paginationOptions.pageNumber" 
-                page-size="paginationOptions.pageSize" 
-                total="5"
-                paging-action="loadPageAction(page)">
+            page-size="paginationOptions.pageSize" 
+            paging-action="loadPageAction(page)" 
+            total="gridOptions.totalItems">
             </div> 
     </div>
     </div>

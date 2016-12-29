@@ -42,10 +42,10 @@
             </md-tab>
             <md-tab label="Règles" layout-fill  ng-if="item._id" >
               <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-              <md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
-                        <md-icon md-font-icon="icon-plus"></md-icon>
-                    </md-button>
-                        <datatable-wrapper>
+                <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
+                    <md-icon md-font-icon="icon-plus"></md-icon>
+                </md-button>
+                    <datatable-wrapper>
                         <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                                 dt-options="vm.dtOptions">
                             <thead>
@@ -68,7 +68,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="il in item.parcelles track by $index">
+                                <tr ng-repeat="il in vm.rules track by $index">
                                     <td>{{il.lib}}</td>
                                     <td>{{il.surface}}</td>
                                     <td>

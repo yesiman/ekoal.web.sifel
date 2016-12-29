@@ -9,7 +9,7 @@
         .directive('datatableAddButton', datatableAddButtonDirective);
 
     /** @ngInject */
-    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv)
+    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope)
     {
         $scope.current =  {userForm : {}};
         var vm = this;
@@ -30,6 +30,10 @@
         $scope.id = $stateParams.id;
 
         $scope.item  = planifResolv;
+        if ($rootScope.user.type == 4)
+        {
+            $scope.item.producteur = $rootScope.user;
+        }
         
         if (!$scope.item.lines)
         {

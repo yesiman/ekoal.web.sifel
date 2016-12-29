@@ -19,7 +19,7 @@
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
-                                        <md-autocomplete flex required
+                                        <md-autocomplete flex required ng-disabled="$root.user.type == 4"
                                             md-input-name="autocompleteField"
                                             md-input-minlength="2"
                                             md-input-maxlength="18"

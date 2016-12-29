@@ -17,119 +17,117 @@
     <!-- CONTENT -->
     <div class="content" md-background-bg layout="row" layout-align="start start">
 <form name="current.userForm"  ng-submit="valid()" layout-fill  autocomplete="off">
-<md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
-      <md-tab layout-fill label="Informations principales" >
-            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding  ms-scroll>
-              <div style="width:100%;">
-                  
-                    <div layout="column"  ng-if="$root.user.type < 4" >
-                        <md-input-container  class="md-input-invalid">
-                      <label>Type</label>
-                      <md-select required ng-model="item.type" style="min-width:200px;">
-                        <md-option><em>None</em></md-option>
-                        <md-option ng-value="1" ng-if="$root.user.type == 1">
-                            Administrateur
-                        </md-option>
-                        <md-option ng-value="2" ng-if="$root.user.type < 2">
-                            Administrateur OP
-                        </md-option>
-                        <md-option ng-value="3" ng-if="$root.user.type < 3">
-                            Technicien
-                        </md-option>
-                        <md-option ng-value="4">
-                            Producteur
-                        </md-option>
-                      </md-select>
-                    </md-input-container>
-                    </div>
-                    <div layout="column"  ng-if="item.type >= 2"  >
-                      <md-input-container>
-                      <label>Organisation de producteurs</label>
-                      <md-select ng-disabled="$root.user.type > 1" required ng-model="item.orga" style="min-width:200px;">
-                        <md-option ng-repeat="o in orgas" ng-value="o._id">
-                            {{o.lib}}
-                        </md-option>
-                      </md-select>
-                    </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Nom</label>
-                        <input required ng-model="item.name">
-                      </md-input-container>
-
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Prénom</label>
-                        <input required ng-model="item.surn">
-                      </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Email</label>
-                        <input type="email" required ng-model="item.email">
-                      </md-input-container>
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Mot de passe</label>
-                        <input type="text" required ng-model="item.pass">
-                      </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Decription</label>
-                        <textarea ng-model="item.desc" rows="5"></textarea>
-                      </md-input-container>
-                    </div>
-                  
+    <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+        <md-tab layout-fill label="Informations principales" >
+        <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding  ms-scroll>
+            <div style="width:100%;">      
+                <div layout="column"  ng-if="$root.user.type < 4" >
+                    <md-input-container  class="md-input-invalid">
+                    <label>Type</label>
+                    <md-select required ng-model="item.type" style="min-width:200px;">
+                    <md-option><em>None</em></md-option>
+                    <md-option ng-value="1" ng-if="$root.user.type == 1">
+                        Administrateur
+                    </md-option>
+                    <md-option ng-value="2" ng-if="$root.user.type < 2">
+                        Administrateur OP
+                    </md-option>
+                    <md-option ng-value="3" ng-if="$root.user.type < 3">
+                        Technicien
+                    </md-option>
+                    <md-option ng-value="4">
+                        Producteur
+                    </md-option>
+                    </md-select>
+                </md-input-container>
                 </div>
-            </md-content>
-          
-      </md-tab>
-      <md-tab label="Parcelles" layout-fill  ng-if="item.type == 4" >
-          <md-tab-content  md-theme="docs-dark"   flex layout-fill  ms-scroll>
-              <md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
-                        <md-icon md-font-icon="icon-plus"></md-icon>
-                    </md-button>
-                        <datatable-wrapper>
-                        <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                                dt-options="vm.dtOptions">
-                            <thead>
-                                <tr>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Libellé</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Surface</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Actions</span>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody  ms-scroll>
-                                <tr ng-repeat="il in item.parcelles track by $index">
-                                    <td>{{il.lib}}</td>
-                                    <td>{{il.surface}}</td>
-                                    <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="editParc(il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removeParc(il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </datatable-wrapper>
-          </md-tab-content>
-      </md-tab>
-      <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
-          <md-tab-content  md-theme="docs-dark"   flex layout-fill>
+                <div layout="column"  ng-if="item.type >= 2"  >
+                    <md-input-container>
+                    <label>Organisation de producteurs</label>
+                    <md-select ng-disabled="$root.user.type > 1" required ng-model="item.orga" style="min-width:200px;">
+                    <md-option ng-repeat="o in orgas" ng-value="o._id">
+                        {{o.lib}}
+                    </md-option>
+                    </md-select>
+                </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Nom</label>
+                    <input required ng-model="item.name">
+                    </md-input-container>
+
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Prénom</label>
+                    <input required ng-model="item.surn">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Email</label>
+                    <input type="email" required ng-model="item.email">
+                    </md-input-container>
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Mot de passe</label>
+                    <input type="text" required ng-model="item.pass">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Decription</label>
+                    <textarea ng-model="item.desc" rows="5"></textarea>
+                    </md-input-container>
+                </div>
+                
+            </div>
+        </md-tab-content>
+        </md-tab>
+        <md-tab label="Parcelles" layout-fill  ng-if="item.type == 4" >
+        <md-tab-content  md-theme="docs-dark"   flex layout-fill  ms-scroll>
+            <md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
+                <md-icon md-font-icon="icon-plus"></md-icon>
+            </md-button>
+            <datatable-wrapper>
+                <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
+                        dt-options="vm.dtOptions">
+                    <thead>
+                        <tr>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Libellé</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Surface</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title">Actions</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody  <ms-scroll></ms-scroll>
+                        <tr ng-repeat="il in item.parcelles track by $index">
+                            <td>{{il.lib}}</td>
+                            <td>{{il.surface}}</td>
+                            <td>
+                                <md-button class="md-icon-button" aria-label="Settings" ng-click="editParc(il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
+                                <md-button class="md-icon-button" aria-label="Settings" ng-click="removeParc(il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </datatable-wrapper>
+            </md-tab-content>
+        </md-tab>
+        <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
+            <md-tab-content  md-theme="docs-dark"   flex layout-fill>
 
                 <table class="dataTable row-border hover"  style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                       dt-options="vm.dtOptions">
+                        dt-options="vm.dtOptions">
                     <thead>
                         <tr>
                             <th class="secondary-text">
@@ -161,18 +159,17 @@
                             <td>{{p.surn}}</td>
                             <td>
                                 <md-checkbox ng-checked="contactExists(p)"
-                                 ng-click="contactChecked(p)"
-                                 aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
+                                    ng-click="contactChecked(p)"
+                                    aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
                     </md-checkbox>
                             </md-checkbox>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
-            </md-content> 
-      </md-tab>
-</md-tabs>
+            </md-tab-content> 
+        </md-tab>
+    </md-tabs>
 </form></div>
 
         
