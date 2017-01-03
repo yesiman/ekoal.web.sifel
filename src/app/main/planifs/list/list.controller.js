@@ -37,8 +37,8 @@
             columnDefs: [
                 { field: '_id', displayName: 'mongo ID' },
                 { field: 'datePlant', displayName: 'Date plantation' },
-                { field: 'produit', displayName: 'Produit' },
-                { field: 'producteur', displayName: 'Producteur' },
+                { field: 'produitLib', displayName: 'Produit' },
+                { field: 'producteurLib', displayName: 'Producteur' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
         };
         $scope.loadPageAction = function(id)

@@ -40,6 +40,9 @@
             $scope.item.lines = [];
             $scope.item.datePlant = new Date();
         }
+        else {
+            $scope.item.datePlant = new Date($scope.item.datePlant);
+        }
         
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
             $scope.item = item;
@@ -90,14 +93,20 @@
         }
         $scope.validLine = function(item){
             $scope.item.lines.push(item);
-            console.log(item);
             $mdDialog.hide();
         }
-        $scope.showPlanif = function(ev){
+        $scope.showPlanif = function(ev,il){
     
-            var item = {
-                dateRec:new Date(),
-                qte:0
+            var item;
+            if (il)
+            {
+                item = il;
+                il.dateRec = new Date(il.dateRec);
+            } 
+            else 
+            {
+                item = {dateRec:new Date(),
+                qte:0};
             }
             //$scope.dialogItems = response.items;
             var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };

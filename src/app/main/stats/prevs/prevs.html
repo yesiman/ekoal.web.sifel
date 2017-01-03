@@ -80,17 +80,12 @@
 
         </md-sidenav>
 
-
-        <div class="md-white-bg md-padding " style="width:100%;"  ms-scroll>
-        <div class="card">
-           
-            <canvas id="bar" style="height:200px;" class="chart chart-bar"  
-            colours="vm.barChart.colors" chart-data="vm.barChart.data" 
-            chart-labels="vm.barChart.labels" chart-series="vm.barChart.series"></canvas>
-
-            
-        </div>
-        </div>
+        <md-content class="content" style="width:100%;" ms-scroll>
+            <!--<canvas id="bar" style="height:200px;" class="chart chart-bar"  
+                colours="vm.barChart.colors" chart-data="vm.barChart.data" 
+                chart-labels="vm.barChart.labels" chart-series="vm.barChart.series"></canvas>-->
+                <nvd3 options="vm.options" data="vm.data"></nvd3>
+        </md-content>
     </div>
     <!-- / CONTENT -->
 </div>

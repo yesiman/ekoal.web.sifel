@@ -36,9 +36,7 @@
             showGridFooter: false,
             columnDefs: [
                 { field: '_id', displayName: 'mongo ID' },
-                { field: 'lib', displayName: 'Lib' },
-                { field: 'surn', displayName: 'Prénom' },
-                { field: 'type', displayName: 'Type' },
+                { field: 'lib', displayName: 'Libellé' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
         };
         $scope.loadPageAction = function(id)
