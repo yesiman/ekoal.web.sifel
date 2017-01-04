@@ -28,6 +28,31 @@
                     actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
                     if (cust) {actionsHtml += cust + '</div>';}
                     return actionsHtml;
+                },
+                getDatatableLanguages: function getDatatableLanguages() {
+                    return {
+                        "sEmptyTable":     "Aucunes données",
+                        "sInfo":           "Affichage _START_ à _END_ de _TOTAL_ lignes",
+                        "sInfoEmpty":      "Affichage 0 à 0 de 0 lignes",
+                        "sInfoFiltered":   "(Filtré de _MAX_ lignes au total)",
+                        "sInfoPostFix":    "",
+                        "sInfoThousands":  ",",
+                        "sLengthMenu":     "Affichage _MENU_ lignes",
+                        "sLoadingRecords": "Chargement...",
+                        "sProcessing":     "En cours...",
+                        "sSearch":         "Rechercher:",
+                        "sZeroRecords":    "Aucun enregistrement",
+                        "oPaginate": {
+                            "sFirst":    "Premier",
+                            "sLast":     "Dernier",
+                            "sNext":     "Suivant",
+                            "sPrevious": "Précédent"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": activer pour trier du plus petit au plus grand",
+                            "sSortDescending": ": activer pour trier du plus grand au plus petit"
+                        }
+                    };
                 }
             };
             return service;

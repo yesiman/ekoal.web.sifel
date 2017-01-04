@@ -10,7 +10,7 @@
         <form name="current.userForm"  layout-fill>
             <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
                 <md-tab label="Informations principales"  layout-fill>
-                    <md-tab-content class="inputs"  md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+                    <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
                             <div style="width:100%;">
                                     <div layout-gt-sm="row">
                                         <md-input-container class="md-inline" flex>
@@ -73,7 +73,8 @@
                                             md-items="item in querySearch(item.produitSearch,3)"
                                             md-item-text="item.lib"
                                             md-require-match
-                                            md-floating-label="Sélection parcelle">
+                                            md-floating-label="Sélection parcelle" 
+                                            md-selected-item-change="parcelleChange()">
                                         <md-item-template>
                                             <span md-highlight-text="item.parcelleSearch">{{item.lib}}</span>
                                         </md-item-template>
@@ -86,7 +87,7 @@
                                         </md-autocomplete>
                                         <md-input-container flex>
                                             <label>Surface</label>
-                                            <input type="text" required ng-model="item.parcelle.surface"/>
+                                            <input type="text" required ng-model="item.surface"/>
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
@@ -127,11 +128,11 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="il in item.lines track by $index">
-                                    <td>{{il.dateRec}}</td>
+                                    <td>{{il.dateRec | date : 'dd-MM-yyyy'}}</td>
                                     <td>{{il.qte}}</td>
                                     <td>
                                         <md-button class="md-icon-button" aria-label="Settings" ng-click="showPlanif($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.remove(row.entity._id,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removePlanifLine($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
                                     </td>
                                 </tr>
                             </tbody>

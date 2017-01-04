@@ -36,7 +36,7 @@
             showGridFooter: false,
             columnDefs: [
                 { field: '_id', displayName: 'mongo ID' },
-                { field: 'datePlant', displayName: 'Date plantation' },
+                { field: 'datePlant', displayName: 'Date plantation', cellFilter: 'date:\'dd-MM-yyyy\'' },
                 { field: 'produitLib', displayName: 'Produit' },
                 { field: 'producteurLib', displayName: 'Producteur' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]

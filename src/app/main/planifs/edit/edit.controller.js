@@ -9,7 +9,7 @@
         .directive('datatableAddButton', datatableAddButtonDirective);
 
     /** @ngInject */
-    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope)
+    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope,standardizer)
     {
         $scope.current =  {userForm : {}};
         var vm = this;
@@ -20,7 +20,8 @@
             lengthMenu  : [10, 20, 30, 50, 100],
             pageLength  : 20,
             scrollY     : 'auto',
-            responsive  : true
+            responsive  : true,
+            language: standardizer.getDatatableLanguages()
         };
 
         $scope.head = {
@@ -92,6 +93,10 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
+            if (!item._id)
+            {
+                item.id = "tmp" + ($scope.item.lines.length + 1);
+            }
             $scope.item.lines.push(item);
             $mdDialog.hide();
         }
@@ -127,11 +132,17 @@
             });            
         }
         //
-        
+        $scope.parcelleChange = function() {
+            if ($scope.item.parcelle)
+            {
+                $scope.item.surface = $scope.item.parcelle.surface;
+            }   
+        }
         $scope.valid = function(){
             var toSave = {
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
+                parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 lines:$scope.item.lines
@@ -150,7 +161,46 @@
                 }
             );
         }
-        
+        $scope.removePlanifLine = function(ev,il) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Êtes vous sur de vouloir supprimer cette ligne?')
+                .textContent('(Cette action sera prise en compte après sauvegarde)')
+                .ariaLabel('Supprimer')
+                .targetEvent(ev)
+                .ok('Valider')
+                .cancel('Annuler');
+            $mdDialog.show(confirm).then(function() {
+                //loop on array and remove
+                var increm = 0;
+                angular.forEach($scope.item.lines, function(value, key) {
+                    if (value._id) {
+                        if (value._id === il._id)
+                        {
+                            $scope.item.lines.splice(increm);
+                        }
+                    }
+                    else {
+                        if (value.id === il.id)
+                        {
+                            $scope.item.lines.splice(increm);
+                        }
+                    }
+                    increm++;
+                });
+
+                for (var i = 0;i < $scope.item.lines.length;i++)
+                {
+
+                    var o = $scope.item.lines[i];
+
+                    console.log(o[key]);
+                    
+                }
+            }, function() {
+                
+            });
+        };
     }
 
     function datatableWrapperDirective($timeout, $compile) {

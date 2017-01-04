@@ -37,7 +37,8 @@
             lengthMenu  : [10, 20, 30, 50, 100],
             pageLength  : 10,
             scrollY     : 'auto',
-            responsive  : true
+            responsive  : true,
+            language: standardizer.getDatatableLanguages()
         };
         // Data
         $scope.getUserType = function(it)

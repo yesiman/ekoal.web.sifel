@@ -7,7 +7,7 @@
         .controller('UsersEditController',UsersEditController);
 
     /** @ngInject */
-    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog)
+    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer)
     {
         
         var vm = this;
@@ -22,7 +22,8 @@
             lengthMenu  : [10, 20, 30, 50, 100],
             pageLength  : 20,
             scrollY     : 'auto',
-            responsive  : true
+            responsive  : true,
+            language: standardizer.getDatatableLanguages()
         };
         $scope.head = {
             ico:"icon-account-box",

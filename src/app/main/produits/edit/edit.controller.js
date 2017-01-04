@@ -7,7 +7,7 @@
         .controller('ProduitsEditController',ProduitsEditController);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv)
+    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer)
     {
         var vm = this;
         vm.dtInstance = {};
@@ -17,7 +17,8 @@
             lengthMenu  : [10, 20, 30, 50, 100],
             pageLength  : 20,
             scrollY     : 'auto',
-            responsive  : true
+            responsive  : true,
+            language: standardizer.getDatatableLanguages()
         };
         vm.rules = [];
         $scope.current =  {userForm : {}};
