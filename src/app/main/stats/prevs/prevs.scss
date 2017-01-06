@@ -13,6 +13,38 @@ md-sidenav {
     }
     
 }
+.md-chips{
+    padding-bottom: 0px;
+}
+
+.md-datepicker-input,
+md-chip-template span {
+    font-size: 13px;
+}
+.md-chips input,
+md-chip-template span {
+    font-size: 13px;
+}
+
+.md-chips md-chip .md-chip-content
+{
+    line-height: 24px;
+}
+.md-chips md-chip .md-chip-remove,
+.md-chips md-chip {
+    height:24px;
+}
+.text-boxed, .text-boxed-light {
+    border-radius: 2px;
+    padding: 4px 8px;
+    margin: 0 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(0,0,0,.54);
+    background-color: rgba(0,0,0,.12);
+    white-space: nowrap;
+}
+
 #edit {
     position: relative;
 

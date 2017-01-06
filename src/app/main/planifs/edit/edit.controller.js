@@ -96,8 +96,17 @@
             if (!item._id)
             {
                 item.id = "tmp" + ($scope.item.lines.length + 1);
+                $scope.item.lines.push(item);
+            }else {
+                var increm = 0;
+                angular.forEach($scope.item.lines, function(value) {
+                    if (value._id == item._id) {
+                        $scope.item.lines[increm] = item;
+                    }
+                    increm++;
+                });
             }
-            $scope.item.lines.push(item);
+            
             $mdDialog.hide();
         }
         $scope.showPlanif = function(ev,il){
@@ -145,12 +154,13 @@
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
-                lines:$scope.item.lines
+                lines:$scope.item.lines,
+                linesToRem:$scope.item.linesToRem
             };
 
             /*$scope.item.type = parseInt($scope.item.type);
             */
-            api.planifs.add.post({ id:-1, planif: toSave } ,
+            api.planifs.add.post({ id:($scope.item._id?$scope.item._id:-1), planif: toSave } ,
                 function (response)
                 {
                     $state.go("app.planifs_list");
@@ -161,6 +171,7 @@
                 }
             );
         }
+        
         $scope.removePlanifLine = function(ev,il) {
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
@@ -173,30 +184,27 @@
             $mdDialog.show(confirm).then(function() {
                 //loop on array and remove
                 var increm = 0;
-                angular.forEach($scope.item.lines, function(value, key) {
+                if (!$scope.item.linesToRem)
+                {
+                    $scope.item.linesToRem = [];
+                }
+                angular.forEach($scope.item.lines, function(value) {
                     if (value._id) {
                         if (value._id === il._id)
                         {
-                            $scope.item.lines.splice(increm);
+                            $scope.item.linesToRem.push(il._id);
+                            $scope.item.lines.splice(increm,1);
                         }
                     }
                     else {
                         if (value.id === il.id)
                         {
-                            $scope.item.lines.splice(increm);
+                            $scope.item.lines.splice(increm,1);
                         }
                     }
                     increm++;
                 });
-
-                for (var i = 0;i < $scope.item.lines.length;i++)
-                {
-
-                    var o = $scope.item.lines[i];
-
-                    console.log(o[key]);
-                    
-                }
+                console.log($scope.item.linesToRem);
             }, function() {
                 
             });

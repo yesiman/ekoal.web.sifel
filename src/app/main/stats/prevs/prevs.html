@@ -68,7 +68,7 @@
                 </md-autocomplete>
                 <md-chip-template tag-bg item="$chip">
                     <span>
-                    <strong>{{$chip.lib}}</strong>
+                    {{$chip.lib}}
                     </span>
                 </md-chip-template>
                 </md-chips>
@@ -81,10 +81,121 @@
         </md-sidenav>
 
         <md-content class="content" style="width:100%;" ms-scroll>
+            <div class="widget-group" layout="row" style="width:100%;" >
+                <ms-widget layout="row"  style="width:100%;">
+                    <ms-widget-front class="white-bg">
+                        <div class="h3 p-16 widget-head">
+                            Prévisions récoltes
+                        </div>
+                        <md-divider></md-divider>
+                        <div class="p-16">
+                            <canvas id="bar"  height="300" 
+                        width="400" class="chart chart-bar" 
+                                chart-data="cLines.data" chart-labels="cLines.labels"  chart-options="cLines.options" 
+                                chart-series="cLines.series" chart-colors="cLines.colors" ></canvas>
+                        </div>
+                    </ms-widget-front>
+                </ms-widget>
+            </div>
+            <!-- WIDGET GROUP -->
+                    <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+                        <!-- WIDGET 6 -->
+                        <ms-widget layout="column" flex="50"  flex-xs="100">
+
+                            <!-- Front -->
+                            <ms-widget-front class="white-bg">
+                                
+                                <div class="h3 p-16 widget-head">
+                            Cumuls produits
+                        </div>
+                        <md-divider></md-divider>
+                                <div class="p-16">
+                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonut.options"  chart-series="cDonut.series"  chart-legend="true"  
+                                chart-data="cDonut.data" chart-labels="cDonut.labels" chart-colors="cDonut.colors"></canvas>
+                                </div>
+
+
+                            </ms-widget-front>
+                            <!-- / Front -->
+
+                        </ms-widget>
+                        <!-- / WIDGET 6 -->
+
+                        <!-- WIDGET 7 -->
+                        <ms-widget layout="column" flex="50"  flex-xs="100">
+
+                            <!-- Front -->
+                            <ms-widget-front class="white-bg">
+
+                                    <div class="h3 p-16 widget-head">Prochaines récoltes</div>
+                                    <md-divider></md-divider>
+                                    
+                                    <!--<md-list class="p-16" ms-scroll style="overflow:hidden;">
+
+                                        <md-list-item class="md-3-line" ng-repeat="sp in sortedPlanifs" ng-click="null">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{sp.produitLib}}</h3>
+                                            <h4>{{sp._id.day + "-" + sp._id.month + "-" + sp._id.year}}</h4>
+                                            <p>{{sp.count}} kg(s)</p>
+                                        </div>
+                                        </md-list-item>
+                                    </md-list>-->
+                                    
+<md-content ms-scroll>
+                                <div class="simple-table-container scrollable" ms-responsive-table  >
+                                    <table class="simple">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Date
+                                                </th>
+                                                <th>
+                                                    Produit
+                                                </th>
+                                                <th>
+                                                    Quantité
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="sp in sortedPlanifs">
+                                                <td>
+                                                    <span>
+                                                        {{sp._id.day + "-" + sp._id.month + "-" + sp._id.year}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-boxed" style="background-color:{{sp.bgColor}};">
+                                                        {{sp.produitLib}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        {{sp.count}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+</md-content>
+
+
+                            </ms-widget-front>
+                            <!-- / Front -->
+
+                        </ms-widget>
+                        <!-- / WIDGET 7 -->
+
+                    </div>
+                    <!-- / WIDGET GROUP -->
             <!--<canvas id="bar" style="height:200px;" class="chart chart-bar"  
                 colours="vm.barChart.colors" chart-data="vm.barChart.data" 
-                chart-labels="vm.barChart.labels" chart-series="vm.barChart.series"></canvas>-->
-                <nvd3 options="vm.options" data="vm.data"></nvd3>
+                chart-labels="vm.barChart.labels" chart-series="vm.barChart.series"></canvas>
+                <nvd3 options="vm.options"  data="vm.data">
+                </nvd3>-->
         </md-content>
     </div>
     <!-- / CONTENT -->
