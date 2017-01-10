@@ -295,6 +295,28 @@
                 }
             })
         }
+        api.rules = {
+            get: $resource(api.baseUrl + 'rules/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            add: $resource(api.baseUrl + 'rules/add/:id', {id:'@id',rule:'@rule'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getAllByProduit: $resource(api.baseUrl + 'rules/getAllByProduit/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'rules/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            })
+        }
         api.stats = {
             prevsByDay: $resource(api.baseUrl + 'stats/prevsByDay/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
                 post: {

@@ -3,8 +3,8 @@
     'use strict';
 
     angular
-        .module('app.stats', [
-            'app.stats.prevs'
+        .module('app.rules', [
+            'app.rules.edit'
         ])
         .config(config);
 
@@ -12,7 +12,5 @@
     function config(msNavigationServiceProvider)
     {
         
-            
-     
     }
 })();

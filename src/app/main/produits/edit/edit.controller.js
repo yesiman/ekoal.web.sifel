@@ -7,7 +7,7 @@
         .controller('ProduitsEditController',ProduitsEditController);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer)
+    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv)
     {
         var vm = this;
         vm.dtInstance = {};
@@ -20,7 +20,8 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
-        vm.rules = [];
+        console.log(rulesResolv.items);
+        vm.rules = rulesResolv.items;
         $scope.current =  {userForm : {}};
         $scope.head = {
             ico:"icon-account-box",
@@ -41,6 +42,9 @@
                     console.error(response);
                 }
             );
+        }
+        $scope.addRule = function() {
+            $state.go("app.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
         $scope.item = prodResolv;
     }

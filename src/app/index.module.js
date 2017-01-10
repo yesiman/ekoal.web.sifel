@@ -7,23 +7,23 @@
      */
     angular
         .module('fuse', [
-
             // Core
             'app.core',
-
             // Navigation
             'app.navigation',
-
             // Toolbar
             'app.toolbar',
             // Quick Panel
             'app.quick-panel',
-            'app.sample',
-            'app.pages',
+            //CUSTOMS
+            
+            'app.pages', //To Remove
             'app.users',
             'app.opes',
             'app.planifs',
             'app.stats',
-            'app.produits'
+            'app.produits',
+            'app.rules',
+            'app.dashboards.server'
         ]);
 })();

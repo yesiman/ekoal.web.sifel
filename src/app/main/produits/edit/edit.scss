@@ -1,6 +1,8 @@
 #prodedit {
     position: relative;
 
+    .dataTables_wrapper{height: 100%;}
+
     > .header {
         height: 76px;
         min-height: 76px;
@@ -83,6 +85,11 @@
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;
             padding: 0;
+        }
+
+         .dataTables_wrapper .top{
+            padding-top: 2px;
+            padding-bottom: 2px;
         }
 
         .main {

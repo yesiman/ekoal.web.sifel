@@ -27,7 +27,7 @@
                         dynamicMenu.init();
                         $cookies.putObject("appAuth",response);
                         $http.defaults.headers.common['x-access-token'] = response.token;
-                        $state.go("app.sample");
+                        $state.go("app.dashboards_server");
                     }
                 },
                 // Error

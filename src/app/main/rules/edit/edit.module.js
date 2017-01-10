@@ -3,51 +3,43 @@
     'use strict';
 
     angular
-        .module('app.produits.edit', [])
+        .module('app.rules.edit', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.produits_edit', {
-            url      : '/produits/edit',
+        $stateProvider.state('app.rules_edit', {
+            url      : '/rules/edit',
             params : {
-                id:null
+                id:null,
+                prod:null
             },
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/produits/edit/edit.html',
-                    controller : 'ProduitsEditController as vm'
+                    templateUrl: 'app/main/rules/edit/edit.html',
+                    controller : 'RulesEditController as vm'
                 }
             },
             resolve  : {
-                prodResolv: function (apiResolver,$stateParams)
+                ruleResolv: function (apiResolver,$stateParams)
                 {
                     if ($stateParams.id && ($stateParams.id != -1))
                     {
-                         return apiResolver.resolve('products.get@get', {'id': $stateParams.id });
+                        return apiResolver.resolve('rules.get@get', {'id': $stateParams.id });
                     }
                     else {
                         return {};
-                    }  
-                },
-                rulesResolv: function (apiResolver,$stateParams)
-                {
-                    if ($stateParams.id && ($stateParams.id != -1))
-                    {
-                        return apiResolver.resolve('rules.getAllByProduit@get', {'id': $stateParams.id });
                     }
-                    else {
-                        return [];
-                    }
-                    
                 }
             }
         });
 
+         
+
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/produits/edit');
+        $translatePartialLoaderProvider.addPart('app/main/rules/edit');
 
 /*msNavigationServiceProvider.saveItem('users', {
             title : 'UTILISATEURS',

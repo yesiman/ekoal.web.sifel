@@ -84,8 +84,14 @@
             <div class="widget-group" layout="row" style="width:100%;" >
                 <ms-widget layout="row"  style="width:100%;">
                     <ms-widget-front class="white-bg">
-                        <div class="h3 p-16 widget-head">
-                            Prévisions récoltes
+                        <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                            <div class="h3 widget-head">Prévisions récoltes</div>
+                            <div>
+                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                    <md-tooltip>Exporter vers excel</md-tooltip>
+                                    <md-icon md-font-icon="icon-export"></md-icon>
+                                </md-button>
+                            </div>
                         </div>
                         <md-divider></md-divider>
                         <div class="p-16">
@@ -106,8 +112,14 @@
                             <!-- Front -->
                             <ms-widget-front class="white-bg">
                                 
-                                <div class="h3 p-16 widget-head">
-                            Cumuls produits
+                                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                            <div class="h3 widget-head">Cumuls par produit</div>
+                            <div>
+                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                    <md-tooltip>Exporter vers excel</md-tooltip>
+                                    <md-icon md-font-icon="icon-export"></md-icon>
+                                </md-button>
+                            </div>
                         </div>
                         <md-divider></md-divider>
                                 <div class="p-16">
@@ -127,8 +139,16 @@
 
                             <!-- Front -->
                             <ms-widget-front class="white-bg">
-
-                                    <div class="h3 p-16 widget-head">Prochaines récoltes</div>
+<div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                            <div class="h3 widget-head">Prochaines récoltes</div>
+                            <div>
+                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                    <md-tooltip>Exporter vers excel</md-tooltip>
+                                    <md-icon md-font-icon="icon-export"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                                    
                                     <md-divider></md-divider>
                                     
                                     <!--<md-list class="p-16" ms-scroll style="overflow:hidden;">

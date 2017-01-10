@@ -3,11 +3,11 @@
     'use strict';
 
     angular
-        .module('app.planifs.edit')
-        .controller('PlanifsEditController',PlanifsEditController);
+        .module('app.rules.edit')
+        .controller('RulesEditController',RulesEditController);
 
     /** @ngInject */
-    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope,standardizer)
+    function RulesEditController($scope,$state, api,$stateParams,$mdDialog,$q,ruleResolv,$rootScope,standardizer)
     {
         $scope.current =  {userForm : {}};
         var vm = this;
@@ -21,40 +21,17 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
-        vm.rules = [];
-        vm.selectedRule = {};
-        //
-        vm.ruleChanged = function() {
-            console.log(vm.selectedRule);
-            //MESSAGE VALIDATION
-            //CLEAR LINES
-            //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-            angular.forEach($scope.item.lines, function(value) {
-                if (value._id) {
-                    $scope.item.linesToRem.push(value._id);
-                }
-            });
-            $scope.item.lines = [];
-            //ACTION
-            var surfacePercent = ((100/1000)*$scope.item.surface) / 100;
-            angular.forEach(vm.selectedRule.lines, function(value) {
-                var myDate = new Date($scope.item.datePlant);
-                myDate.setDate(myDate.getDate() + value.nbJours);
-                var oIt = { 
-                    dateRec:myDate,
-                    qte:value.qte*surfacePercent
-                }
-                $scope.validLine(oIt);
-            });
-        }
 
         $scope.head = {
             ico:"icon-account-box",
-            title:"Mise à jour planification"
+            title:"Mise à jour règle produit"
         };
+        //
         $scope.id = $stateParams.id;
-
-        $scope.item  = planifResolv;
+        $scope.item  = ruleResolv;
+        $scope.item.surface = 1000;
+        $scope.item.produit = $stateParams.prod;
+        //
         if ($rootScope.user.type == 4)
         {
             $scope.item.producteur = $rootScope.user;
@@ -63,20 +40,18 @@
         if (!$scope.item.lines)
         {
             $scope.item.lines = [];
-            $scope.item.linesToRem = [];
             $scope.item.datePlant = new Date();
         }
         else {
             $scope.item.datePlant = new Date($scope.item.datePlant);
         }
+        
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
             $scope.item = item;
             $scope.onCancel = onCancel;
             $scope.onValid = onValid;   
         }
         $scope.searchText = "";
-
-
 
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
@@ -135,8 +110,9 @@
             
             $mdDialog.hide();
         }
-        $scope.showPlanif = function(ev,il){
+        $scope.showRule = function(ev,il){
     
+    console.log("kml");
             var item;
             if (il)
             {
@@ -151,7 +127,7 @@
             //$scope.dialogItems = response.items;
             var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };
             $mdDialog.show({
-                templateUrl: 'app/main/planifs/edit/dialogs/addEdit.html',
+                templateUrl: 'app/main/rules/edit/dialogs/addEdit.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: locals,
@@ -167,48 +143,21 @@
             });            
         }
         //
-        $scope.parcelleChange = function() {
-            if ($scope.item.parcelle)
-            {
-                $scope.item.surface = $scope.item.parcelle.surface;
-            }   
-        }
-        //
-        $scope.productChange = function() {
-            if ($scope.item.produit)
-            {
-                //LOAD PRODUCTS RULES
-                api.rules.getAllByProduit.get({ id:$scope.item.produit._id},
-                    function (response)
-                    {
-                        vm.rules = response.items;
-                    },
-                    // Error
-                    function (response)
-                    {
-                        console.error(response);
-                        //return null;
-                    }
-                );
-            }   
-        }
         $scope.valid = function(){
             var toSave = {
+                lib:$scope.item.lib,
                 produit: $scope.item.produit._id,
-                producteur: $scope.item.producteur._id,
-                parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
                 surface:$scope.item.surface,
-                datePlant:$scope.item.datePlant,
                 lines:$scope.item.lines,
                 linesToRem:$scope.item.linesToRem
             };
 
             /*$scope.item.type = parseInt($scope.item.type);
             */
-            api.planifs.add.post({ id:($scope.item._id?$scope.item._id:-1), planif: toSave } ,
+            api.rules.add.post({ id:($scope.item._id?$scope.item._id:-1), rule: toSave } ,
                 function (response)
                 {
-                    $state.go("app.planifs_list");
+                    $state.go("app.produits_edit", {id:$scope.item._id});
                 },
                 function (response)
                 {
@@ -217,7 +166,7 @@
             );
         }
         
-        $scope.removePlanifLine = function(ev,il) {
+        $scope.removeRuleLine = function(ev,il) {
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
                 .title('Êtes vous sur de vouloir supprimer cette ligne?')
@@ -229,7 +178,10 @@
             $mdDialog.show(confirm).then(function() {
                 //loop on array and remove
                 var increm = 0;
-                
+                if (!$scope.item.linesToRem)
+                {
+                    $scope.item.linesToRem = [];
+                }
                 angular.forEach($scope.item.lines, function(value) {
                     if (value._id) {
                         if (value._id === il._id)

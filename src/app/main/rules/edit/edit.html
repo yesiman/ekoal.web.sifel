@@ -1,4 +1,4 @@
-<div id="editPlanif" class="page-layout simple fullwidth  doc-page element-doc-page">
+<div id="editRule" class="page-layout simple fullwidth  doc-page element-doc-page">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
         <div form-head-ico-title layout="row" layout-align="start center"></div>  
@@ -12,34 +12,13 @@
                 <md-tab label="Informations principales"  layout-fill>
                     <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
                             <div style="width:100%;">
-                                    <div layout-gt-sm="row">
-                                        <md-input-container class="md-inline" flex>
-                                            <h4>Date de plantation</h4>
-                                            <md-datepicker ng-model="item.datePlant"></md-datepicker>
-                                        </md-input-container>
+                                <div layout-gt-sm="row">
+                                        <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Libellé</label>
+                    <input required ng-model="item.lib">
+                    </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
-                                        <md-autocomplete flex required ng-disabled="$root.user.type == 4"
-                                            md-input-name="autocompleteField"
-                                            md-input-minlength="2"
-                                            md-input-maxlength="18"
-                                            md-no-cache="ctrl.noCache"
-                                            md-selected-item="item.producteur"
-                                            md-search-text="item.producteurSearch"
-                                            md-items="item in querySearch(item.producteurSearch,2)"
-                                            md-item-text="item.name"
-                                            md-require-match
-                                            md-floating-label="Sélection producteur">
-                                        <md-item-template>
-                                            <span md-highlight-text="item.producteurSearch">{{item.name}}</span>
-                                        </md-item-template>
-                                        <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
-                                            <div ng-message="required">You <b>must</b> have a favorite state.</div>
-                                            <div ng-message="md-require-match">Please select an existing state.</div>
-                                            <div ng-message="minlength">Your entry is not long enough.</div>
-                                            <div ng-message="maxlength">Your entry is too long.</div>
-                                        </div>
-                                        </md-autocomplete>
                                         <md-autocomplete flex required
                                             md-input-name="autocompleteField"
                                             md-input-minlength="2"
@@ -50,8 +29,7 @@
                                             md-items="item in querySearch(item.produitSearch,1)"
                                             md-item-text="item.lib"
                                             md-require-match
-                                            md-floating-label="Sélection produit"
-                                            md-selected-item-change="productChange()">
+                                            md-floating-label="Sélection produit">
                                         <md-item-template>
                                             <span md-highlight-text="item.produitSearch">{{item.lib}}</span>
                                         </md-item-template>
@@ -62,33 +40,9 @@
                                             <div ng-message="maxlength">Your entry is too long.</div>
                                         </div>
                                         </md-autocomplete>
-                                    </div>
-                                    <div layout-gt-sm="row">
-                                        <md-autocomplete flex 
-                                            md-input-name="autocompleteField"
-                                            md-input-minlength="2"
-                                            md-input-maxlength="18"
-                                            md-no-cache="ctrl.noCache"
-                                            md-selected-item="item.parcelle"
-                                            md-search-text="item.parcelleSearch"
-                                            md-items="item in querySearch(item.produitSearch,3)"
-                                            md-item-text="item.lib"
-                                            md-require-match
-                                            md-floating-label="Sélection parcelle" 
-                                            md-selected-item-change="parcelleChange()">
-                                        <md-item-template>
-                                            <span md-highlight-text="item.parcelleSearch">{{item.lib}}</span>
-                                        </md-item-template>
-                                        <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
-                                            <div ng-message="required">You <b>must</b> have a favorite state.</div>
-                                            <div ng-message="md-require-match">Please select an existing state.</div>
-                                            <div ng-message="minlength">Your entry is not long enough.</div>
-                                            <div ng-message="maxlength">Your entry is too long.</div>
-                                        </div>
-                                        </md-autocomplete>
                                         <md-input-container flex>
                                             <label>Surface</label>
-                                            <input type="text" required ng-model="item.surface"/>
+                                            <input type="text" disabled required ng-model="item.surface"/>
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
@@ -102,18 +56,10 @@
                 </md-tab>
                 <md-tab label="Récoltes" layout-fill>
                     <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-                        <md-button class="md-icon-button md-primary" style="position:absolute;z-index:9;" aria-label="Settings"  ng-click="showPlanif()">
-                            <md-tooltip>Nouvelle ligne</md-tooltip>
-                            <md-icon md-font-icon="icon-plus"></md-icon>
-                        </md-button>
-                        <div style="position:absolute;z-index:8;" >
-                            <md-tooltip>Vous devez sélectionner un produit et une parcelle, ou saisir une surface</md-tooltip>
-                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel" style="min-width:200px;">
-                                <md-option ng-repeat="r in vm.rules" ng-value="r">
-                                    {{r.lib}}
-                                </md-option>
-                            </md-select>
-                        </div>
+                        <md-button class="md-icon-button md-primary" style="position:absolute;z-index:8;" aria-label="Settings"  ng-click="showRule()">
+                        <md-tooltip>Nouvelle ligne</md-tooltip>
+                        <md-icon md-font-icon="icon-plus"></md-icon>
+                    </md-button>
                         <datatable-wrapper>
                         <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                                 dt-options="vm.dtOptions">
@@ -141,8 +87,8 @@
                                     <td>{{il.dateRec | date : 'dd-MM-yyyy'}}</td>
                                     <td>{{il.qte}}</td>
                                     <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="showPlanif($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removePlanifLine($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="showRule($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removeRuleLine($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
                                     </td>
                                 </tr>
                             </tbody>

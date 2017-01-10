@@ -94,7 +94,6 @@
             enableGridMenu: false,
             showGridFooter: false,
             columnDefs: [
-                { field: '_id', displayName: 'mongo ID' },
                 { field: 'name', displayName: 'Nom' },
                 { field: 'surn', displayName: 'Prénom' },
                 { field: 'type', displayName: 'Type', cellTemplate:typeHtml },

@@ -23,6 +23,43 @@
             var service = {
                 init: function init()
                 {
+
+                    msNavigationService.saveItem('planifs', {
+                        title : 'PLANIFICATIONS',
+                        group : true,
+                        weight: 2
+                    });
+                    
+                    msNavigationService.saveItem('planifs.list', {
+                        title : 'Liste',
+                        icon  : 'icon-view-list',
+                        state    : 'app.planifs_list',
+                        weight: 2,
+                    });
+                    msNavigationService.saveItem('planifs.edit', {
+                        title : 'Nouveau',
+                        icon  : 'icon-plus-circle-outline',
+                        state    : 'app.planifs_edit',
+                        weight: 2
+                    });
+                    msNavigationService.saveItem('stats', {
+                        title : 'STATISTIQUES',
+                        group : true,
+                        weight: 2
+                    });
+                    msNavigationService.saveItem('stats.prevs', {
+                        title : 'Prévisions',
+                        icon  : 'icon-view-list',
+                        state    : 'app.stats_prevs',
+                        weight: 2
+                    });
+
+                    msNavigationService.saveItem('dash', {
+                        title : 'TABLEAU DE BOARD',
+                        group : true,
+                        state    : 'app.dashboards_server',
+                        weight: 1
+                    });
                     if ($rootScope.user.type == 1)
                     {
                         // Navigation
@@ -64,6 +101,14 @@
                             weight: 1
                         });
                     }
+                    else {
+                        msNavigationService.deleteItem('opes');
+                        msNavigationService.deleteItem('opes.list'); 
+                        msNavigationService.deleteItem('opes.new'); 
+                        msNavigationService.deleteItem('produits');
+                        msNavigationService.deleteItem('produits.list'); 
+                        msNavigationService.deleteItem('produits.new'); 
+                    }
                     if ($rootScope.user.type < 4)
                     {
                         msNavigationService.saveItem('users', {
@@ -96,7 +141,9 @@
                     else {
                         msNavigationService.deleteItem('users');
                         msNavigationService.deleteItem('users.list'); 
+                        msNavigationService.deleteItem('users.new'); 
                     }
+                    
                 }
             };
             return service;

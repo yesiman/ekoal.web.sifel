@@ -37,3 +37,19 @@ md-input-container .md-errors-spacer {
     font-size: 1.6rem;
     font-weight: 400;
 }
+.badge.mbadge {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 7px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 20px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-transition: opacity .2s ease-in-out .1s;
+    transition: opacity .2s ease-in-out .1s;
+}
