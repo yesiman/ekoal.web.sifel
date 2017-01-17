@@ -186,6 +186,11 @@
                     method: 'POST'
                 }
             }),
+            refreshToken: $resource(api.baseUrl + 'users/refreshToken', {} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             add: $resource(api.baseUrl + 'users/add/:id', {id:'@id',user:'@user'} , {
                 post: {
                     method: 'POST'

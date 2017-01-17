@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.produits.edit', [])
+        .module('app.produits.edit', ['color.picker'])
         .config(config);
 
     /** @ngInject */

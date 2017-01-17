@@ -17,6 +17,11 @@
     {
         var vm = this;
         //
+        $scope.head = {
+            ico:"icon-account-box",
+            title:"Statistiques"
+        };
+        //
         var monday = new Date;
         monday.setHours(0);
         monday.setMinutes(0);
@@ -39,6 +44,18 @@
         $scope.toggleSidenav = function(sidenavId)
         {
             $mdSidenav(sidenavId).toggle();
+        }
+        $scope.export = function(chartId) {
+            
+           // alasql("CREATE TABLE cities (city string, population number)");
+            //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
+            var exp = [];
+            for (var ilab = 0;ilab < $scope.cLines.labels.length;ilab++)
+            {
+                exp.push({ label:$scope.cLines.labels[ilab], tomates:$scope.cLines.data[0][ilab] });
+            }
+            console.log(exp);
+            alasql('SELECT * INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
         }
         $scope.refresh = function() {
             $rootScope.loadingProgress = true;
@@ -85,7 +102,6 @@
                     {
                         for (var ip = 0;ip < $scope.filters.selectedItems.length;ip++)
                         {  
-                            console.log($scope.filters.selectedItems[ip]._id + "/" + $scope.sortedPlanifs[i]._id.produit);
                             if ($scope.filters.selectedItems[ip]._id === $scope.sortedPlanifs[i]._id.produit)
                             {
                                 $scope.sortedPlanifs[i].produitLib = $scope.filters.selectedItems[ip].lib;

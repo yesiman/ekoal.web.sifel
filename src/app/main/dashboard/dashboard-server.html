@@ -41,10 +41,8 @@
 
         <!-- WIDGET GROUP -->
         <div class="widget-group" layout="row" flex="100" layout-wrap>
-
             <!-- WIDGET 2 -->
             <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25">
-
                 <!-- Front -->
                 <ms-widget-front class="p-16 pink-400-bg white-fg">
                     <div class="pb-24" layout="row" layout-align="space-between center">
@@ -60,7 +58,7 @@
                             </md-button>
                             <md-menu-content width="2">
                                 <md-menu-item>
-                                    <md-button ng-click="flipWidget()" aria-label="Flip widget">
+                                    <md-button aria-label="Flip widget" ng-click="vm.checkToken()">
                                         Details
                                     </md-button>
                                 </md-menu-item>
@@ -283,10 +281,9 @@
         <!-- WIDGET GROUP -->
         <div class="widget-group" layout="row" flex="100" layout-wrap>
 
-            <!-- WIDGET 6 -->
+            <!-- WIDGET 6
             <ms-widget flippable="false" layout="row" flex="100">
 
-                <!-- Front -->
                 <ms-widget-front class="p-16 white-bg">
                     <div class="pb-24" layout="row" layout-align="space-between center">
                         <div class="h3">{{vm.widget6.title}}</div>
@@ -314,22 +311,15 @@
                     </div>
 
                 </ms-widget-front>
-                <!-- / Front -->
 
             </ms-widget>
-            <!-- / WIDGET 6 -->
 
         </div>
-        <!-- / WIDGET GROUP -->
 
-
-        <!-- WIDGET GROUP -->
         <div class="widget-group" layout="row" flex="100" layout-wrap>
 
-            <!-- WIDGET 7 -->
             <ms-widget flippable="false" layout="row" flex="100" flex-gt-md="60">
 
-                <!-- Front -->
                 <ms-widget-front class="white-bg">
 
                     <div class="ph-16 pv-24 border-bottom" layout="row" layout-align="space-between center">
@@ -377,15 +367,10 @@
                     </table>
 
                 </ms-widget-front>
-                <!-- / Front -->
-
+                
             </ms-widget>
-            <!-- / WIDGET 7 -->
-
-            <!-- WIDGET 8 -->
             <ms-widget flippable="false" layout="row" flex="100" flex-gt-md="40">
 
-                <!-- Front -->
                 <ms-widget-front class="white-bg">
 
                     <div class="ph-16 pv-24 border-bottom" layout="row" layout-align="space-between center">
@@ -419,13 +404,11 @@
                     </div>
 
                 </ms-widget-front>
-                <!-- / Front -->
-
+               
             </ms-widget>
-            <!-- / WIDGET 8 -->
-
+            
         </div>
-        <!-- / WIDGET GROUP -->
+         / WIDGET GROUP -->
 
     </div>
 

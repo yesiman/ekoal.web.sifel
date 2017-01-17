@@ -53,3 +53,10 @@ md-input-container .md-errors-spacer {
     -webkit-transition: opacity .2s ease-in-out .1s;
     transition: opacity .2s ease-in-out .1s;
 }
+.ui-grid-row, .ui-grid-cell, .ui-grid-cell .ui-grid-vertical-bar
+{
+    height: 30px !important;
+}
+.ui-grid-cell-contents button {
+    margin-top: -10px !important;
+}

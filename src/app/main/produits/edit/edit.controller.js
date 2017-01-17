@@ -20,8 +20,11 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
-        console.log(rulesResolv.items);
         vm.rules = rulesResolv.items;
+        vm.cpOptions = {
+            format: 'hex',
+            swatchOnly:true
+        }
         $scope.current =  {userForm : {}};
         $scope.head = {
             ico:"icon-account-box",

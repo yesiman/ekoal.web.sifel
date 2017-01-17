@@ -1,25 +1,12 @@
 <div id="edit" class="page-layout simple left-sidenav inner-sidenav">
     <!-- HEADER -->
 
-
+<div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
         
-
-    <div class="header md-accent-bg" layout="row" layout-align="space-between">
-        
-        <div layout="row" layout-align="center start">
-            <md-button class="md-icon-button sidenav-toggle" hide-gt-md ng-click="toggleSidenav('sidenav')"
-                       aria-label="Toggle sidenav" translate translate-attr-aria-label="CONTACTS.TOGGLE_SIDENAV">
-                <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
-            </md-button>
-            <div class="logo" layout="row" layout-align="start center">
-                <span class="logo-icon">
-                    <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
-                </span>
-                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
-            </div>
-            
-        </div>  
     </div>
+        
+
     <!-- / HEADER -->
 
     
@@ -115,7 +102,7 @@
                                 <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
                             <div class="h3 widget-head">Cumuls par produit</div>
                             <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
                                     <md-tooltip>Exporter vers excel</md-tooltip>
                                     <md-icon md-font-icon="icon-export"></md-icon>
                                 </md-button>
@@ -142,7 +129,7 @@
 <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
                             <div class="h3 widget-head">Prochaines récoltes</div>
                             <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                <md-button class="md-icon-button md-primary" ng-click="export(3)" aria-label="Export">
                                     <md-tooltip>Exporter vers excel</md-tooltip>
                                     <md-icon md-font-icon="icon-export"></md-icon>
                                 </md-button>

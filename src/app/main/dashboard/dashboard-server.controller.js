@@ -7,7 +7,7 @@
         .controller('DashboardServerController', DashboardServerController);
 
     /** @ngInject */
-    function DashboardServerController($scope, $interval, DashboardData)
+    function DashboardServerController($scope, $interval, DashboardData, api)
     {
         var vm = this;
 
@@ -80,6 +80,22 @@
 
         // Widget 3
         vm.widget3 = "Titre";
+
+        vm.checkToken = function()
+        {
+            api.users.refreshToken.get({ },
+                // Success
+                function (response)
+                {
+                    console.log(response.tk);
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                }
+            );
+        }
 
         // Widget 5
         //vm.widget5 = vm.dashboardData.widget5;

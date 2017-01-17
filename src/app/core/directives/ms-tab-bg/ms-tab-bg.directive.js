@@ -57,6 +57,10 @@
             restrict: 'A',
             scope: { item:'=' },
             link: function (scope, el, attrs) {
+                console.log(scope.item);
+                if (scope.item.color){
+                    scope.item.bgColor = scope.item.color;
+                }
                 if (!(scope.item.bgColor)){
                     scope.item.bgColor = colors[Math.floor(Math.random()*colors.length)];
                 }

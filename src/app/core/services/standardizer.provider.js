@@ -29,6 +29,22 @@
                     if (cust) {actionsHtml += cust + '</div>';}
                     return actionsHtml;
                 },
+                getGridOptionsStd: function getGridOptionsStd()
+                {
+                    return {
+                        useExternalPagination: true,
+                        useExternalSorting: true,
+                        enableRowSelection: true,
+                        enableSelectAll: true,
+                        enableColumnMenus: false,
+                        enableSorting: false,
+                        saveSelection: false,
+                        rowHeight: 35,
+                        height:"100%",
+                        enableGridMenu: false,
+                        showGridFooter: false
+                    };
+                },
                 getDatatableLanguages: function getDatatableLanguages() {
                     return {
                         "sEmptyTable":     "Aucunes données",

@@ -78,27 +78,17 @@
             totalItems: 0,
             sort: null
         };
-        var actionsHtml = standardizer.getHtmlActions();
         var typeHtml = '<div class="ui-grid-cell-contents">';
         typeHtml += '<span class="status {{grid.appScope.getUserBg(row.entity.type)}}">{{grid.appScope.getUserType(row.entity.type)}}</span>';
         typeHtml += '</div>';
-        $scope.gridOptions = {
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableRowSelection: true,
-            enableSelectAll: true,
-            enableSorting: false,
-            saveSelection: false,
-            rowHeight: 35,
-            height:"100%",
-            enableGridMenu: false,
-            showGridFooter: false,
-            columnDefs: [
+        
+        var actionsHtml = standardizer.getHtmlActions();
+        $scope.gridOptions = standardizer.getGridOptionsStd();
+        $scope.gridOptions.columnDefs = [
                 { field: 'name', displayName: 'Nom' },
                 { field: 'surn', displayName: 'Prénom' },
                 { field: 'type', displayName: 'Type', cellTemplate:typeHtml },
-                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
-        };
+                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;

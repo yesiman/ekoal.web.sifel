@@ -22,6 +22,7 @@
         {
             var service = {
                 response: function(response) {
+                    $rootScope.lastValidCall = new Date();
                     return response;
                 },
                 request: function(config) {

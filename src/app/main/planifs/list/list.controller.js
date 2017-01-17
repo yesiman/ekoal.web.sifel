@@ -22,24 +22,14 @@
             totalItems: 0,
             sort: null
         };
+        
         var actionsHtml = standardizer.getHtmlActions();
-        $scope.gridOptions = {
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableRowSelection: true,
-            enableSelectAll: true,
-            enableSorting: false,
-            saveSelection: false,
-            rowHeight: 35,
-            height:"100%",
-            enableGridMenu: false,
-            showGridFooter: false,
-            columnDefs: [
+        $scope.gridOptions = standardizer.getGridOptionsStd();
+        $scope.gridOptions.columnDefs = [
                 { field: 'datePlant', displayName: 'Date plantation', cellFilter: 'date:\'dd-MM-yyyy\'' },
                 { field: 'produitLib', displayName: 'Produit' },
                 { field: 'producteurLib', displayName: 'Producteur' },
-                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
-        };
+                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;

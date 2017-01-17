@@ -17,10 +17,14 @@
                         <label>Libellé</label>
                         <input required ng-model="item.lib">
                       </md-input-container>
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <color-picker style="display:inline;" options="vm.cpOptions" ng-model="item.color"></color-picker>
+                      </md-input-container>
                     </div>
                     
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
+                          
                         <label>Decription</label>
                         <textarea ng-model="item.desc" rows="5"></textarea>
                       </md-input-container>

@@ -25,21 +25,11 @@
         var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
                     
         var actionsHtml = standardizer.getHtmlActions(customBts);
-        $scope.gridOptions = {
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableRowSelection: true,
-            enableSelectAll: true,
-            enableSorting: false,
-            saveSelection: false,
-            rowHeight: 35,
-            height:"100%",
-            enableGridMenu: false,
-            showGridFooter: false,
-            columnDefs: [
+        $scope.gridOptions = standardizer.getGridOptionsStd();
+        $scope.gridOptions.columnDefs = [
                 { field: 'lib', displayName: 'Libellé' },
-                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }]
-        };
+                { field: 'public', displayName: 'Public',width:"70",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-model="row.entity.public" class="md-warn" disabled></md-checkbox></div>' },
+                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;
