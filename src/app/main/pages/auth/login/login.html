@@ -5,7 +5,7 @@
                 <image src="assets/images/arifel-logo.png"></image>
             </div>
 
-            <div class="title" translate="LOGIN.TITLE">Log in to your account</div>
+            <div class="title" translate="LOGIN.TITLE"></div>
 
             <form name="loginForm" novalidate>
                 <md-input-container class="md-block" md-no-float>
@@ -35,9 +35,7 @@
 
                 <div class="remember-forgot-password" layout="row" layout-xs="column"
                      layout-align="space-between center">
-                    <md-checkbox class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
-                        <span translate="LOGIN.REMEMBER_ME">Remember Me</span>
-                    </md-checkbox>
+                    
 
                     <a ui-sref="app.pages_auth_forgot-password" class="forgot-password md-accent-color"
                        translate="LOGIN.FORGOT_PASSWORD">Forgot Password?</a>

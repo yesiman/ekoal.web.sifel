@@ -16,6 +16,7 @@
     function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$mdSidenav,$rootScope,$filter)
     {
         var vm = this;
+        vm.groupMode = "w";
         //
         $scope.head = {
             ico:"icon-account-box",
@@ -57,6 +58,9 @@
             console.log(exp);
             alasql('SELECT * INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
         }
+
+        
+
         $scope.refresh = function() {
             $rootScope.loadingProgress = true;
 
@@ -90,7 +94,7 @@
             {
                 prodsIds.push($scope.filters.selectedItems[i]._id);
             }
-            var args = { prodsIds:prodsIds,dateFrom:$scope.filters.dateFrom,dateTo:$scope.filters.dateTo }
+            var args = { prodsIds:prodsIds,dateFrom:$scope.filters.dateFrom,dateTo:$scope.filters.dateTo, dateFormat:vm.groupMode }
             api.stats.prevsByDay.post( args ,
                 // Success
                 function (response)
@@ -110,6 +114,34 @@
                             }
                         }
                     }
+                    switch(vm.groupMode)
+                        {
+                            case "d":
+                                
+                                break;
+                            case "m":
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                                {
+                                    var found = false;
+                                    for (var reliLab = 0;reliLab < $scope.cLines.labels.length;reliLab++ )
+                                    {
+                                        if ($scope.cLines.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found)
+                                    {
+                                        $scope.cLines.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
+                                    }
+                                }
+                                break;
+                            case "w":
+                                
+                                break;
+                        }
+
                     for (var i = 0;i < $scope.filters.selectedItems.length;i++)
                     {   
                         sumP = 0;
@@ -119,26 +151,74 @@
                         $scope.cDonut.series.push($scope.filters.selectedItems[i].lib);
                         $scope.cDonut.labels.push($scope.filters.selectedItems[i].lib);
                         $scope.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
-                        for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                        switch(vm.groupMode)
                         {
-                            var found = false;
-                            for (var i2 = 0;i2<response.items.length;i2++)
-                            {
-                                var o = response.items[i2];
-                                if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                            case "d":
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
                                 {
-                                    if (o._id.day == d.getDate() && 
-                                    (o._id.month == (d.getMonth() + 1)) && 
-                                    (o._id.year == d.getFullYear()))
+                                    var found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
                                     {
-                                        sumP+= o.count;
-                                        dataTmp.push(o.count);
-                                        found = true;
+                                        var o = response.items[i2];
+                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                                        {
+                                            if (o._id.day == d.getDate() && 
+                                            (o._id.month == (d.getMonth() + 1)) && 
+                                            (o._id.year == d.getFullYear()))
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
                                     }
+                                    if (!found) { dataTmp.push(0); }
+                                    if (!oneLabelPass) {$scope.cLines.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
                                 }
-                            }
-                            if (!found) { dataTmp.push(0); }
-                            if (!oneLabelPass) {$scope.cLines.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
+                                break;
+                            case "m":
+                                
+                                for (var i3 = 0;i3<$scope.cLines.labels.length;i3++)
+                                {
+                                    found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                                        {
+                                            if ((o._id.month + "/" + o._id.year) === $scope.cLines.labels[i3]) 
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                }
+                                
+                                break;  
+                            case "w":
+                                for (var w = new Date($scope.filters.dateFrom).getWeek();w <= new Date($scope.filters.dateTo).getWeek();w++)
+                                {
+                                    var found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                                        {
+                                            if (o._id.week == w)
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                    if (!oneLabelPass) {$scope.cLines.labels.push(w);}
+                                }
+                                break;
                         }
                         $scope.cLines.data.push(dataTmp);
                         $scope.cDonut.data.push(sumP);
@@ -186,3 +266,31 @@
         
     }
 })();
+
+Date.prototype.getWeek = function() {
+        var onejan = new Date(this.getFullYear(), 0, 1);
+        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+    }
+Date.isLeapYear = function (year) { 
+    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+};
+
+Date.getDaysInMonth = function (year, month) {
+    return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+};
+
+Date.prototype.isLeapYear = function () { 
+    return Date.isLeapYear(this.getFullYear()); 
+};
+
+Date.prototype.getDaysInMonth = function () { 
+    return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+};
+
+Date.prototype.addMonths = function (value) {
+    var n = this.getDate();
+    this.setDate(1);
+    this.setMonth(this.getMonth() + value);
+    this.setDate(Math.min(n, this.getDaysInMonth()));
+    return this;
+};

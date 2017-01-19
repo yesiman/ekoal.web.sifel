@@ -74,7 +74,13 @@
                         <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
                             <div class="h3 widget-head">Prévisions récoltes</div>
                             <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                <span class="cLines-groupMode">Grouper par </span>
+                                <md-select class="cLines-groupMode" ng-model="vm.groupMode" ng-change="refresh()">
+                                    <md-option value="d">jour</md-option>
+                                    <md-option value="w" ng-selected="true">semaine</md-option>
+                                    <md-option value="m">mois</md-option>
+                                </md-select>
+                                 <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
                                     <md-tooltip>Exporter vers excel</md-tooltip>
                                     <md-icon md-font-icon="icon-export"></md-icon>
                                 </md-button>

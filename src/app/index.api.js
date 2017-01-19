@@ -323,7 +323,7 @@
             })
         }
         api.stats = {
-            prevsByDay: $resource(api.baseUrl + 'stats/prevsByDay/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+            prevsByDay: $resource(api.baseUrl + 'stats/prevsByDay/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat' } , {
                 post: {
                     method: 'POST'
                 }
