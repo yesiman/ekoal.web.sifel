@@ -80,10 +80,10 @@
                                     <md-option value="w" ng-selected="true">semaine</md-option>
                                     <md-option value="m">mois</md-option>
                                 </md-select>
-                                 <md-button class="md-icon-button md-primary" ng-click="export(1)" aria-label="Export">
+                                 <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
                                     <md-tooltip>Exporter vers excel</md-tooltip>
                                     <md-icon md-font-icon="icon-export"></md-icon>
-                                </md-button>
+                                </button>
                             </div>
                         </div>
                         <md-divider></md-divider>

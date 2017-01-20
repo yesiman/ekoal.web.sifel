@@ -44,6 +44,38 @@
                 </div>
               </md-tab-content>
             </md-tab>
+             <md-tab layout-fill label="Informations spécifiques" ng-if="item._id">
+              <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+                <div style="width:100%;">
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Code produit</label>
+                        <input ng-model="">
+                      </md-input-container>
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Rendement à l'hectare</label>
+                        <input type="number" ng-model="">
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Produit parent</label>
+                        <input ng-model="">
+                      </md-input-container>
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                          
+                        <label>Notes</label>
+                        <textarea ng-model="item.desc" rows="5"></textarea>
+                      </md-input-container>
+                    </div>
+                </div>
+              </md-tab-content>
+            </md-tab>
             <md-tab label="Règles" layout-fill  ng-if="item._id" >
               <md-tab-content  md-theme="docs-dark"   flex layout-fill>
                 <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
@@ -83,6 +115,15 @@
                             </tbody>
                         </table>
                       </datatable-wrapper>
+              </md-tab-content>
+            </md-tab>
+           
+            <md-tab layout-fill label="Objectif" ng-if="item._id">
+              <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+                <div style="width:100%;">
+                    <objectif-line  ng-repeat="m in vm.mois" >
+                    </objectif-line>
+                </div>
               </md-tab-content>
             </md-tab>
           </md-tabs>

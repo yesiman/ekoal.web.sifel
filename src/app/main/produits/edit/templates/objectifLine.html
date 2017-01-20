@@ -1,0 +1,25 @@
+<div layout-gt-sm="row">
+  <md-input-container class="md-inline" style="width:100px;">
+    <label>{{it.lib}}</label>
+  </md-input-container>
+  <md-input-container class="md-inline" flex-gt-sm style="width:100px;">
+    <label>Rendement attendu</label>
+    <input type="number" ng-model="it.rendement" ng-change="recalc('m',it)"/>
+  </md-input-container>
+  <md-input-container class="md-inline">
+    <md-button class="md-icon-button md-primary" ng-click="expandClick()" aria-label="Detail par semaine">
+      <md-tooltip>Detail par semaine</md-tooltip>
+      <md-icon md-font-icon="{{expandStateIco}}"></md-icon>
+    </md-button>
+  </md-input-container>
+</div>
+
+<div layout-gt-sm="row" ng-if="expanded"  class="animate-if objWeekDetail" ng-repeat="s in it.weeks" style="">
+  <md-input-container class="md-inline" style="width:100px;">
+    <label>Semaine {{s}}</label>
+  </md-input-container>
+  <md-input-container class="md-inline" flex-gt-sm style="width:100px;">
+    <label>Rendement attendu</label>
+    <input type="number" ng-model="it.rendements[s]" ng-change="recalc('w',s)"/>
+  </md-input-container>
+</div>

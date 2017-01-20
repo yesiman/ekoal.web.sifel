@@ -25,6 +25,8 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
+        console.log($stateParams.profil);
+        vm.profil = $stateParams.profil;
         $scope.head = {
             ico:"icon-account-box",
             title:"Mise à jour utilisateur"

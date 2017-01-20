@@ -81,6 +81,14 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                    }
+                    else {
+                        msNavigationService.deleteItem('opes');
+                        msNavigationService.deleteItem('opes.list'); 
+                        msNavigationService.deleteItem('opes.new');
+                    }
+                    if ($rootScope.user.type < 3)
+                    {
                         // Navigation
                         msNavigationService.saveItem('produits', {
                             title : 'PRODUITS',
@@ -102,9 +110,6 @@
                         });
                     }
                     else {
-                        msNavigationService.deleteItem('opes');
-                        msNavigationService.deleteItem('opes.list'); 
-                        msNavigationService.deleteItem('opes.new'); 
                         msNavigationService.deleteItem('produits');
                         msNavigationService.deleteItem('produits.list'); 
                         msNavigationService.deleteItem('produits.new'); 
@@ -134,7 +139,7 @@
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
                             state    : 'app.users_edit',
-                            stateParams: {id:-1},
+                            stateParams: {id:-1,profil:false},
                             weight: 1
                         });
                     }

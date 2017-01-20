@@ -4,10 +4,11 @@
 
     angular
         .module('app.produits.edit')
-        .controller('ProduitsEditController',ProduitsEditController);
+        .controller('ProduitsEditController',ProduitsEditController)
+        .directive('objectifLine', objectifLine);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv)
+    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv)
     {
         var vm = this;
         vm.dtInstance = {};
@@ -20,11 +21,15 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
+        vm.mois = monthsResolv;
         vm.rules = rulesResolv.items;
         vm.cpOptions = {
             format: 'hex',
             swatchOnly:true
         }
+
+        console.log(vm.mois);
+
         $scope.current =  {userForm : {}};
         $scope.head = {
             ico:"icon-account-box",
@@ -50,5 +55,54 @@
             $state.go("app.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
         $scope.item = prodResolv;
+    }
+
+    /** @ngInject */
+    function objectifLine()
+    {
+        return {
+            restrict   : 'E',
+            transclude : true,
+            templateUrl: 'app/main/produits/edit/templates/objectifLine.html',
+            link: function(scope) {
+                scope.it = scope.m;
+                if (!scope.it.rendements)
+                {scope.it.rendements = {};}
+                scope.expandStateIco = "icon-plus";
+                scope.expanded = false;
+                scope.expandClick = function()
+                {
+                    if (scope.expanded)
+                    {
+                        scope.expandStateIco = "icon-plus";
+                        scope.expanded = false;
+                    }
+                    else {
+                        scope.expandStateIco = "icon-minus";
+                        scope.expanded = true;
+                    }
+                }
+                scope.recalc = function(t,o)
+                {
+                    if (t === "m")
+                    {
+                        angular.forEach(scope.it.weeks, function(value) {
+                            scope.it.rendements[value] = scope.it.rendement / scope.it.weeks.length;
+                        });
+                    }
+                    else {
+                        scope.it.rendement = 0;
+                        angular.forEach(scope.it.weeks, function(value) {
+                            scope.it.rendement += scope.it.rendements[value];
+                        });
+                        console.log(scope.it.rendement);
+                    }
+                    
+                    console.log("t",t);
+                    console.log("o",o);
+                    console.log(scope.it);
+                }
+            }
+        };
     }
 })();

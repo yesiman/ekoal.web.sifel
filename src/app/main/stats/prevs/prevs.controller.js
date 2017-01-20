@@ -48,15 +48,37 @@
         }
         $scope.export = function(chartId) {
             
+            var exp = [];
+            var o;
+            switch (chartId)
+            {
+                case 1:
+                    o = {};
+                    o["label"] = "Periode";
+                    for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                    {
+                        o[$scope.filters.selectedItems[i].lib] = $scope.filters.selectedItems[i].lib;
+                    }
+                    exp.push(o);
+                    for (var ilab = 0;ilab < $scope.cLines.labels.length;ilab++)
+                    {
+                        o = {};
+                        o["label"] = $scope.cLines.labels[ilab];
+                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                        {
+                            o[$scope.filters.selectedItems[i].lib] = $scope.cLines.data[i][ilab];
+                        }
+                        exp.push(o);
+                        //exp.push({ label:$scope.cLines.labels[ilab], "tomates":$scope.cLines.data[0][ilab] });
+                    }
+                    break;
+            }
            // alasql("CREATE TABLE cities (city string, population number)");
             //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
-            var exp = [];
-            for (var ilab = 0;ilab < $scope.cLines.labels.length;ilab++)
-            {
-                exp.push({ label:$scope.cLines.labels[ilab], tomates:$scope.cLines.data[0][ilab] });
-            }
-            console.log(exp);
-            alasql('SELECT * INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
+            
+            return exp;
+            //console.log(exp);
+            //alasql('SELECT label,tomates INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
         }
 
         
@@ -138,7 +160,22 @@
                                 }
                                 break;
                             case "w":
-                                
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                                {
+                                    var found = false;
+                                    for (var reliLab = 0;reliLab < $scope.cLines.labels.length;reliLab++ )
+                                    {
+                                        if ($scope.cLines.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found)
+                                    {
+                                        $scope.cLines.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
+                                    }
+                                }
                                 break;
                         }
 
@@ -199,7 +236,28 @@
                                 
                                 break;  
                             case "w":
-                                for (var w = new Date($scope.filters.dateFrom).getWeek();w <= new Date($scope.filters.dateTo).getWeek();w++)
+
+                                for (var i3 = 0;i3<$scope.cLines.labels.length;i3++)
+                                {
+                                    found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                                        {
+                                            console.log("S" + o._id.week + "/" + o._id.year);
+                                            if (("S" + o._id.week + "/" + o._id.year) === $scope.cLines.labels[i3]) 
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                }
+
+                                /*for (var w = new Date($scope.filters.dateFrom).getWeek();w <= new Date($scope.filters.dateTo).getWeek();w++)
                                 {
                                     var found = false;
                                     for (var i2 = 0;i2<response.items.length;i2++)
@@ -217,7 +275,7 @@
                                     }
                                     if (!found) { dataTmp.push(0); }
                                     if (!oneLabelPass) {$scope.cLines.labels.push(w);}
-                                }
+                                }*/
                                 break;
                         }
                         $scope.cLines.data.push(dataTmp);
