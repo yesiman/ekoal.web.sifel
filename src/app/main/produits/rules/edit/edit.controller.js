@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.rules.edit')
+        .module('app.produits.edit.rule')
         .controller('RulesEditController',RulesEditController);
 
     /** @ngInject */
@@ -112,7 +112,6 @@
         }
         $scope.showRule = function(ev,il){
     
-    console.log("kml");
             var item;
             if (il)
             {
@@ -127,7 +126,7 @@
             //$scope.dialogItems = response.items;
             var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };
             $mdDialog.show({
-                templateUrl: 'app/main/rules/edit/dialogs/addEdit.html',
+                templateUrl: 'app/main/produits/rules/edit/dialogs/addEdit.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: locals,

@@ -8,7 +8,7 @@
         .directive('objectifLine', objectifLine);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv)
+    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv,$mdDialog,$document)
     {
         var vm = this;
         vm.dtInstance = {};
@@ -51,8 +51,23 @@
                 }
             );
         }
-        $scope.addRule = function() {
-            $state.go("app.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
+        $scope.addRule = function(ev) {
+            $mdDialog.show({
+                controller         : 'RulesEditController',
+                controllerAs       : 'vm',
+                templateUrl        : 'app/main/produits/edit/dialogs/rule/rule-dialog.html',
+                parent             : angular.element($document.body),
+                targetEvent        : ev,
+                clickOutsideToClose: true,
+                locals             : {
+                    Task : null,
+                    Tasks: null,
+                    event: ev
+                }
+            });
+
+
+            //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
         $scope.item = prodResolv;
     }

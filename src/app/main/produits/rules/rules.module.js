@@ -1,16 +1,16 @@
-(function ()
+/*(function ()
 {
     'use strict';
 
     angular
         .module('app.rules', [
-            'app.rules.edit'
+            'app.produits.edit.rule'
         ])
         .config(config);
 
-    /** @ngInject */
+    
     function config(msNavigationServiceProvider)
     {
         
     }
-})();
+})();*/

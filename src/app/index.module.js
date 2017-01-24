@@ -23,7 +23,6 @@
             'app.planifs',
             'app.stats',
             'app.produits',
-            'app.rules',
             'app.dashboards.server'
         ]);
 })();

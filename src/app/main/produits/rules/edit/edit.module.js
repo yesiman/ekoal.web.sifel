@@ -3,22 +3,22 @@
     'use strict';
 
     angular
-        .module('app.rules.edit', [])
+        .module('app.produits.edit.rule', [])
         .config(config);
 
     /** @ngInject */
     function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
     {
         // State
-        $stateProvider.state('app.rules_edit', {
-            url      : '/rules/edit',
+        $stateProvider.state('app.produits_edit.rules_edit', {
+            url      : '/produits/rules/edit',
             params : {
                 id:null,
                 prod:null
             },
             views    : {
                 'content@app': {
-                    templateUrl: 'app/main/rules/edit/edit.html',
+                    templateUrl: 'app/main/produits/rules/edit/edit.html',
                     controller : 'RulesEditController as vm'
                 }
             },
