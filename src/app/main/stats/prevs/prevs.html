@@ -2,7 +2,7 @@
     <!-- HEADER -->
 
 
-    <!--<div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
         
         <div layout="row" layout-align="center start">
             <md-button class="md-icon-button sidenav-toggle" hide-gt-md ng-click="toggleSidenav('sidenav')"
@@ -13,16 +13,12 @@
                 <span class="logo-icon">
                     <md-icon md-font-icon="icon-account-box" class="s24"></md-icon>
                 </span>
-                <span class="logo-text" translate="LIST.TITLE">Contacts</span>
+                <span class="logo-text" >Statistiques</span>
             </div>
             
         </div>  
-    </div>-->
-
-<div class="header md-accent-bg" layout="row" layout-align="space-between">
-        <div form-head-ico-title layout="row" layout-align="start center"></div>  
-        
     </div>
+
         
 
     <!-- / HEADER -->
@@ -81,6 +77,10 @@
 
                 <br/>
             </md-content>
+            <md-content class="content">
+                <md-checkbox ng-model="filters.showObjectifs" ng-change="refresh()">Afficher objectifs</md-datepicker>
+                
+            </md-content>
             <!-- / SIDENAV CONTENT -->
 
         </md-sidenav>
@@ -106,10 +106,10 @@
                         </div>
                         <md-divider></md-divider>
                         <div class="p-16">
-                            <canvas id="bar"  height="300" 
-                        width="400" class="chart chart-bar" 
+                            <canvas id="bar"  height="400" 
+                                width="400" class="chart chart-bar" 
                                 chart-data="cLines.data" chart-labels="cLines.labels"  chart-options="cLines.options" 
-                                chart-series="cLines.series" chart-colors="cLines.colors" ></canvas>
+                                chart-series="cLines.series" chart-colors="cLines.colors" chart-dataset-override="cLines.datasetOverride" ></canvas>
                         </div>
                     </ms-widget-front>
                 </ms-widget>

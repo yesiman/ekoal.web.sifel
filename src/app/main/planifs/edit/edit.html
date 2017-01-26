@@ -121,7 +121,7 @@
                                 <tr>
                                     <th class="secondary-text">
                                         <div class="table-header">
-                                            <span class="column-title">Date récolte</span>
+                                            <span class="column-title">Semaine récolte</span>
                                         </div>
                                     </th>
                                     <th class="secondary-text">
@@ -138,7 +138,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="il in item.lines track by $index">
-                                    <td>{{il.dateRec | date : 'dd-MM-yyyy'}}</td>
+                                    <td>Semaine {{il.semaine}}</td>
                                     <td>{{il.qte}}</td>
                                     <td>
                                         <md-button class="md-icon-button" aria-label="Settings" ng-click="showPlanif($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>

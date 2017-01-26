@@ -21,14 +21,21 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
-        vm.mois = monthsResolv;
+        
         vm.rules = rulesResolv.items;
+        $scope.item = prodResolv;
+        if ($scope.item.custom)
+        {
+            vm.mois = $scope.item.custom.objectif;
+        }
+        else {
+            vm.mois = monthsResolv;
+        }
         vm.cpOptions = {
             format: 'hex',
-            swatchOnly:true
+            swatchOnly:true 
         }
 
-        console.log(vm.mois);
 
         $scope.current =  {userForm : {}};
         $scope.head = {
@@ -37,6 +44,10 @@
         };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
+            if ($scope.item.custom)
+            {
+                $scope.item.custom.objectif = vm.mois;
+            }
             api.products.add.post({ id:$scope.id, product: $scope.item } ,
                 // Success
                 function (response)
@@ -51,7 +62,7 @@
                 }
             );
         }
-        $scope.addRule = function(ev) {
+        $scope.addRule = function(ev,r) {
             $mdDialog.show({
                 controller         : 'RulesEditController',
                 controllerAs       : 'vm',
@@ -60,8 +71,8 @@
                 targetEvent        : ev,
                 clickOutsideToClose: true,
                 locals             : {
-                    Task : null,
-                    Tasks: null,
+                    Rule : (r?r:{produit:$scope.id,weeks:[],_id:-1}),
+                    Rules: vm.rules,
                     event: ev
                 }
             });
@@ -69,7 +80,7 @@
 
             //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
-        $scope.item = prodResolv;
+        
     }
 
     /** @ngInject */

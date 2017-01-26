@@ -50,17 +50,17 @@
                     <div layout-gt-sm="row">
                         <md-input-container class="md-inline" flex-gt-sm>
                         <label>Code produit</label>
-                        <input ng-model="">
+                        <input ng-model="item.custom.codeProd">
                       </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Rendement à l'hectare</label>
-                        <input type="number" ng-model="">
+                        <input type="number" ng-model="item.custom.rendement">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                         <md-input-container class="md-inline" flex-gt-sm>
                         <label>Produit parent</label>
-                        <input ng-model="">
+                        <input ng-model="item.custom.parent">
                       </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
                         
@@ -70,13 +70,13 @@
                       <md-input-container class="md-inline" flex-gt-sm>
                           
                         <label>Notes</label>
-                        <textarea ng-model="item.desc" rows="5"></textarea>
+                        <textarea ng-model="item.custom.notes" rows="5"></textarea>
                       </md-input-container>
                     </div>
                 </div>
               </md-tab-content>
             </md-tab>
-            <md-tab label="Règles" layout-fill  ng-if="item._id" >
+            <md-tab label="Règles" layout-fill  ng-if="item._id && item.custom.rendement" >
               <md-tab-content  md-theme="docs-dark"   flex layout-fill>
                 <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
                     <md-icon md-font-icon="icon-plus"></md-icon>
@@ -93,9 +93,15 @@
                                     </th>
                                     <th class="secondary-text">
                                         <div class="table-header">
-                                            <span class="column-title">Surface</span>
+                                            <span class="column-title">Délai avant récolte</span>
                                         </div>
                                     </th>
+                                    <th class="secondary-text">
+                                        <div class="table-header">
+                                            <span class="column-title">Semaines de récolte</span>
+                                        </div>
+                                    </th>
+                                    
                                     <th class="secondary-text">
                                         <div class="table-header">
                                             <span class="column-title">Actions</span>
@@ -106,9 +112,10 @@
                             <tbody>
                                 <tr ng-repeat="il in vm.rules track by $index">
                                     <td>{{il.lib}}</td>
-                                    <td>{{il.surface}}</td>
+                                    <td>{{il.delai}}</td>
+                                    <td>{{il.nbWeek}}</td>
                                     <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="addRule(il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
+                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="addRule($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
                                         <md-button class="md-icon-button" aria-label="Settings" ng-click="removeRule(il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
                                     </td>
                                 </tr>

@@ -25,17 +25,27 @@
         vm.selectedRule = {};
         //
         vm.ruleChanged = function() {
-            console.log(vm.selectedRule);
-            //MESSAGE VALIDATION
-            //CLEAR LINES
+            var startDate = $scope.item.datePlant;
+            startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
+            var wStart = startDate.getWeek();
+            var surfacePercent = ((100/1)*$scope.item.surface) / 100;
             //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-            angular.forEach($scope.item.lines, function(value) {
+            for (var i = 0;i < vm.selectedRule.nbWeek;i++)
+            { 
+                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement; //PRODUCT DEFAULT RENDEMENT
+                var oIt = { 
+                    semaine:wStart + i,
+                    qte:valueQte*surfacePercent
+                }
+                $scope.validLine(oIt);
+            }
+            
+            /*angular.forEach($scope.item.lines, function(value) {
                 if (value._id) {
                     $scope.item.linesToRem.push(value._id);
                 }
             });
             $scope.item.lines = [];
-            //ACTION
             var surfacePercent = ((100/1000)*$scope.item.surface) / 100;
             angular.forEach(vm.selectedRule.lines, function(value) {
                 var myDate = new Date($scope.item.datePlant);
@@ -45,7 +55,7 @@
                     qte:value.qte*surfacePercent
                 }
                 $scope.validLine(oIt);
-            });
+            });*/
         }
 
         $scope.head = {
@@ -216,9 +226,8 @@
                 }
             );
         }
-        
+        //SUPPRESSION LIGNE PLANIFICATION
         $scope.removePlanifLine = function(ev,il) {
-            // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
                 .title('Êtes vous sur de vouloir supprimer cette ligne?')
                 .textContent('(Cette action sera prise en compte après sauvegarde)')

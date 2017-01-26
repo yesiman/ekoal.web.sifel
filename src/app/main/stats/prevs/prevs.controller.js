@@ -17,6 +17,7 @@
     {
         var vm = this;
         vm.groupMode = "w";
+        vm.objectifs = [];
         //
         $scope.head = {
             ico:"icon-account-box",
@@ -38,9 +39,87 @@
             searchText: "",
             autocompleteDemoRequireMatch:true,
             selectedItem:null,
-            selectedItems:$stateParams.selectedItems,
+            selectedItems:[],
             dateFrom: new Date(),
-            dateTo: sunday
+            dateTo: sunday,
+            showObjectifs:true
+        }
+        vm.getObjectif = function(lab, pId)
+        {
+            //console.log(lab  + "/" + vm.groupMode);
+            var itemsProcessed = 0;
+            switch(vm.groupMode)
+            {
+                case "d":
+                    var a = lab.split('-');
+                    var w = new Date(a[2],a[1]-1,a[0]).getWeek();
+                    for (var ei = 0;ei < vm.objectifs.length;ei++)
+                    {
+                        var element = vm.objectifs[ei];
+                        if(element.produit === pId)
+                        {
+                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            {
+                                var element2 = element.objectif[eo];
+                                var sid = w;
+                                if (element2.rendements)
+                                {
+                                    if (element2.rendements[sid])
+                                    {
+                                        return element2.rendements[sid];
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                    break;
+                case "m":
+                    console.log(vm.objectifs);
+                    for (var ei = 0;ei < vm.objectifs.length;ei++)
+                    {
+                        var element = vm.objectifs[ei];
+                        if(element.produit === pId)
+                        {
+                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            {
+                                var element2 = element.objectif[eo];
+                                var sid = lab.substring(0,lab.indexOf("/"));
+                                if (element2.id == sid)
+                                {
+                                    if (element2.rendement)
+                                    {
+                                        return element2.rendement;
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                    break;
+                case "w":
+                    for (var ei = 0;ei < vm.objectifs.length;ei++)
+                    {
+                        var element = vm.objectifs[ei];
+                        if(element.produit === pId)
+                        {
+                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            {
+                                var element2 = element.objectif[eo];
+                                var sid = lab.substring(0,lab.indexOf("/"));
+                                sid = sid.replace("S","");
+                                if (element2.rendements)
+                                {
+                                    if (element2.rendements[sid])
+                                    {
+                                        return element2.rendements[sid];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+            return 0;
         }
         $scope.toggleSidenav = function(sidenavId)
         {
@@ -98,7 +177,8 @@
                         height: 300,
                         width: 400
                     }
-                }
+                },
+                datasetOverride:[]
             };
             $scope.cDonut = {
                 labels:[],
@@ -245,7 +325,6 @@
                                         var o = response.items[i2];
                                         if (o._id.produit == $scope.filters.selectedItems[i]._id)
                                         {
-                                            console.log("S" + o._id.week + "/" + o._id.year);
                                             if (("S" + o._id.week + "/" + o._id.year) === $scope.cLines.labels[i3]) 
                                             {
                                                 sumP+= o.count;
@@ -279,9 +358,34 @@
                                 break;
                         }
                         $scope.cLines.data.push(dataTmp);
+                        $scope.cLines.datasetOverride.push({type: 'bar'})
                         $scope.cDonut.data.push(sumP);
                         oneLabelPass = true;
+
+
+                        //Objectif
+                        /*var objs = [];
+                        */
                     }
+
+                    if ($scope.filters.showObjectifs)
+                    {
+                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                        {   
+                            var objs = [];
+                            $scope.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
+                            for (var i2 = 0;i2 < $scope.cLines.labels.length;i2++)
+                            {
+                                objs.push(vm.getObjectif($scope.cLines.labels[i2],$scope.filters.selectedItems[i]._id));
+                            }
+                            $scope.cLines.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
+                            $scope.cLines.data.push(objs);
+
+                        }
+                    }
+                    
+                    //$scope.cLines.datasetOverride.push({label: "Objectif",type: 'line'})
+                    
                    //"console.log(vm.data);
                     //console.log(prodDatasTmp2);
                      $rootScope.loadingProgress = false;
@@ -304,6 +408,24 @@
             methodBase.get(methodArgs,
                 function (response)
                 {
+                    for (var eo = 0;eo < response.items.length;eo++)
+                    {
+                        var found = false;
+                        //console.log("vm.objectifs",response.objectifs[eo]);
+                        for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
+                        {
+                            if (response.items[eo].customs.produit === vm.objectifs[eo]._id)
+                            {
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            vm.objectifs.push(response.items[eo].customs);
+                        }
+                    }
+                    //vm.objectifs = response.objectifs;
+                    
                     deferred.resolve( response.items );
                 },
                 // Error
@@ -328,7 +450,7 @@
 Date.prototype.getWeek = function() {
         var onejan = new Date(this.getFullYear(), 0, 1);
         return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-    }
+    };
 Date.isLeapYear = function (year) { 
     return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
 };
