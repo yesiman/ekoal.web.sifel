@@ -96,6 +96,21 @@
                 }
             );
         }
+        vm.clearDb = function()
+        {
+            api.users.clearAll.get({ },
+                // Success
+                function (response)
+                {
+                    //console.log(response.tk);
+                },
+                // Error
+                function (response)
+                {
+                    //console.error(response);
+                }
+            );
+        }
 
         // Widget 5
         //vm.widget5 = vm.dashboardData.widget5;

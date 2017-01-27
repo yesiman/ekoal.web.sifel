@@ -25,7 +25,8 @@
         vm.selectedRule = {};
         //
         vm.ruleChanged = function() {
-            var startDate = $scope.item.datePlant;
+            console.log($scope.item.datePlant);
+            var startDate = new Date($scope.item.datePlant);
             startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
             var wStart = startDate.getWeek();
             var surfacePercent = ((100/1)*$scope.item.surface) / 100;
@@ -39,23 +40,37 @@
                 }
                 $scope.validLine(oIt);
             }
-            
-            /*angular.forEach($scope.item.lines, function(value) {
-                if (value._id) {
-                    $scope.item.linesToRem.push(value._id);
-                }
-            });
+        }
+        vm.doPlanifDaysLine = function() {
+            var startDate = $scope.item.datePlant;
+            console.log("startDate",$scope.item.datePlant);
+            startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
+            console.log("startDateDelayed",startDate);
+            var surfacePercent = ((100/1)*$scope.item.surface) / 100;
             $scope.item.lines = [];
-            var surfacePercent = ((100/1000)*$scope.item.surface) / 100;
-            angular.forEach(vm.selectedRule.lines, function(value) {
-                var myDate = new Date($scope.item.datePlant);
-                myDate.setDate(myDate.getDate() + value.nbJours);
-                var oIt = { 
-                    dateRec:myDate,
-                    qte:value.qte*surfacePercent
-                }
-                $scope.validLine(oIt);
-            });*/
+            //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+            for (var i = 0;i < vm.selectedRule.nbWeek;i++)
+            { 
+                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement; //PRODUCT DEFAULT RENDEMENT
+                valueQte = valueQte / 7;
+                for (var ir = 1;ir <= 7;ir++)
+                {
+                    var d = new Date(startDate);
+                    var oIt = { 
+                        dateRec:d,
+                        qte:valueQte*surfacePercent
+                    }
+                    $scope.item.lines.push(oIt);
+                    startDate.setDate(d.getDate() + 1);
+                } 
+            }
+
+
+
+
+
+
+
         }
 
         $scope.head = {
@@ -70,9 +85,9 @@
             $scope.item.producteur = $rootScope.user;
         }
         
-        if (!$scope.item.lines)
+        if (!$scope.item.linesWeeks)
         {
-            $scope.item.lines = [];
+            $scope.item.linesWeeks = [];
             $scope.item.linesToRem = [];
             $scope.item.datePlant = new Date();
         }
@@ -131,20 +146,20 @@
         $scope.validLine = function(item){
             if (!item._id)
             {
-                item.id = "tmp" + ($scope.item.lines.length + 1);
-                $scope.item.lines.push(item);
+                item.id = "tmp" + ($scope.item.linesWeeks.length + 1);
+                $scope.item.linesWeeks.push(item);
             }else {
                 var increm = 0;
-                angular.forEach($scope.item.lines, function(value) {
+                angular.forEach($scope.item.linesWeeks, function(value) {
                     if (value._id == item._id) {
-                        $scope.item.lines[increm] = item;
+                        $scope.item.linesWeeks[increm] = item;
                     }
                     increm++;
                 });
             }
-            
             $mdDialog.hide();
         }
+        
         $scope.showPlanif = function(ev,il){
     
             var item;
@@ -203,6 +218,7 @@
             }   
         }
         $scope.valid = function(){
+            vm.doPlanifDaysLine();
             var toSave = {
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
@@ -210,6 +226,7 @@
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 lines:$scope.item.lines,
+                linesWeeks:$scope.item.linesWeeks,
                 linesToRem:$scope.item.linesToRem
             };
 
@@ -239,18 +256,18 @@
                 //loop on array and remove
                 var increm = 0;
                 
-                angular.forEach($scope.item.lines, function(value) {
+                angular.forEach($scope.item.linesWeeks, function(value) {
                     if (value._id) {
                         if (value._id === il._id)
                         {
                             $scope.item.linesToRem.push(il._id);
-                            $scope.item.lines.splice(increm,1);
+                            $scope.item.linesWeeks.splice(increm,1);
                         }
                     }
                     else {
                         if (value.id === il.id)
                         {
-                            $scope.item.lines.splice(increm,1);
+                            $scope.item.linesWeeks.splice(increm,1);
                         }
                     }
                     increm++;

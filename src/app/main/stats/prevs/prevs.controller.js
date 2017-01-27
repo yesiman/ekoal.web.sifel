@@ -411,21 +411,22 @@
                     for (var eo = 0;eo < response.items.length;eo++)
                     {
                         var found = false;
-                        //console.log("vm.objectifs",response.objectifs[eo]);
-                        for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
+                        if (response.items[eo].customs)
                         {
-                            if (response.items[eo].customs.produit === vm.objectifs[eo]._id)
+                            //console.log("vm.objectifs",response.objectifs[eo]);
+                            for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
                             {
-                                found = true;
+                                if (response.items[eo].customs.produit === vm.objectifs[eo]._id)
+                                {
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                            {
+                                vm.objectifs.push(response.items[eo].customs);
                             }
                         }
-                        if (!found)
-                        {
-                            vm.objectifs.push(response.items[eo].customs);
-                        }
                     }
-                    //vm.objectifs = response.objectifs;
-                    
                     deferred.resolve( response.items );
                 },
                 // Error

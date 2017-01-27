@@ -186,6 +186,11 @@
                     method: 'POST'
                 }
             }),
+            clearAll: $resource(api.baseUrl + 'users/clearAll', {} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             refreshToken: $resource(api.baseUrl + 'users/refreshToken', {} , {
                 get: {
                     method: 'GET'
