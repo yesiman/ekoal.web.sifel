@@ -7,7 +7,9 @@
         .directive('editFormHeadsButtons', editFormButtonsDirective)
         .directive('formHeadIcoTitle', formHeadIcoTitleDirective)
         .directive('listHeadButtons', listHeadButtonsDirective)
-        .directive('datatableWrapper', datatableWrapperDirective);
+        .directive('datatableWrapper', datatableWrapperDirective)
+        .directive('qteInput', qteInputDirective)
+        .directive('surfInput', surfInputDirective);
 
     /** @ngInject */
     function editFormButtonsDirective()
@@ -58,5 +60,89 @@
             }, 0, false);
         }
     }
+
+    function qteInputDirective()
+    {
+        return {
+            restrict   : 'A',
+            templateUrl: 'app/core/directives/fabio-ui/templates/qte-input/qte-input.html',
+            require: 'ngModel',
+            scope: {
+                changeFn: '&',
+                required: '='
+            },
+            link: function(scope, iElement, iAttrs, ngModel) {
+                scope.units = [
+                    { id: 1, name: 'Kilos' },
+                    { id: 2, name: 'Tonnes' }
+                ];
+                //TODO SET DEFAULT USER CONFIG
+                scope.value = {
+                    value:0,
+                    unit:1
+                };
+                ngModel.$render = function() {
+                    if (ngModel.$modelValue)
+                    {
+                        scope.value = {
+                            value:ngModel.$modelValue.val,
+                            unit:ngModel.$modelValue.unit
+                        };
+                    }
+                    else {
+                        ngModel.$setViewValue({val:0, unit:1});
+                    }
+                }
+                scope.dataChange = function() {
+                    var val = 0;
+                    switch (scope.value.unit)
+                    {
+                        case 1:
+                            val = scope.value.value;
+                            break;
+                        case 2:
+                            val = scope.value.value * 1000;
+                            break;
+                    }   
+                    ngModel.$setViewValue({val:scope.value.value, unit:scope.value.unit});
+                    scope.changeFn();
+                }
+            }
+        };
+    }    
+
+    function surfInputDirective()
+    {
+        return {
+            restrict   : 'A',
+            templateUrl: 'app/core/directives/fabio-ui/templates/surf-input/surf-input.html',
+            require: 'ngModel',
+            link: function(scope, iElement, iAttrs, ngModel) {
+                scope.units = [
+                    { id: 1, name: 'M²' },
+                    { id: 2, name: 'Hectares' }
+                ];
+                ngModel.$render = function() {
+                    scope.value = {
+                        value:ngModel.$modelValue.val,
+                        unit:ngModel.$modelValue.unit
+                    };
+                }
+                scope.dataChange = function() {
+                    var val = 0;
+                    switch (scope.value.unit)
+                    {
+                        case 1:
+                            val = scope.value.value;
+                            break;
+                        case 2:
+                            val = scope.value.value * 10000;
+                            break;
+                    }   
+                    ngModel.$setViewValue({val:scope.value.value, unit:scope.value.unit});
+                }
+            }
+        };
+    }   
 
 })();

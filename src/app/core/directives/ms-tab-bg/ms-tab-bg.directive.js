@@ -64,7 +64,7 @@
                 if (!(scope.item.bgColor)){
                     scope.item.bgColor = colors[Math.floor(Math.random()*colors.length)];
                 }
-                el.parent().parent().css('background-color',scope.item.bgColor);
+                el.css('color',scope.item.bgColor);
             }
         };
     }

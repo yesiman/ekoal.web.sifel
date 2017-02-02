@@ -24,6 +24,8 @@
         
         vm.rules = rulesResolv.items;
         $scope.item = prodResolv;
+        
+
         if ($scope.item.custom)
         {
             vm.mois = $scope.item.custom.objectif;
@@ -48,6 +50,7 @@
             {
                 $scope.item.custom.objectif = vm.mois;
             }
+            console.log($scope.item);
             api.products.add.post({ id:$scope.id, product: $scope.item } ,
                 // Success
                 function (response)
@@ -113,20 +116,26 @@
                     if (t === "m")
                     {
                         angular.forEach(scope.it.weeks, function(value) {
-                            scope.it.rendements[value] = scope.it.rendement / scope.it.weeks.length;
+                            //console.log(scope.it.rendements[value]);
+                           
+                            scope.it.rendements[value] = {
+                                val:scope.it.rendement.val / scope.it.weeks.length,
+                                unit:scope.it.rendement.unit
+                            }; 
                         });
                     }
                     else {
-                        scope.it.rendement = 0;
+                        scope.it.rendement = {
+                            val:0,
+                            unit:scope.it.rendement.unit
+                        };
                         angular.forEach(scope.it.weeks, function(value) {
-                            scope.it.rendement += scope.it.rendements[value];
+                            scope.it.rendement = {
+                                val:scope.it.rendement.val + scope.it.rendements[value].val,
+                                unit:scope.it.rendement.unit
+                            };
                         });
-                        console.log(scope.it.rendement);
                     }
-                    
-                    console.log("t",t);
-                    console.log("o",o);
-                    console.log(scope.it);
                 }
             }
         };

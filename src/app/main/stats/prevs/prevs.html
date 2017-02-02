@@ -30,63 +30,70 @@
 
         <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
                     ms-sidenav-helper>
+            <md-content class="content" ms-scroll>
+                <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">Du</md-subheader>
+                    <md-list-item>
+                        <md-datepicker ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                    </md-list-item>
+                    <md-subheader class="md-no-sticky">Au</md-subheader>
+                    <md-list-item>
+                        <md-datepicker ng-model="filters.dateTo" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Produits</md-subheader>
+                    <md-list-item>
+                        <md-autocomplete ckass="autoc-filter"
+                            md-selected-item="filters.selectedItem" 
+                            md-search-text="filters.searchText"
+                            md-items="item in querySearch(filters.searchText)"
+                            md-item-text="item.lib"
+                            placeholder="Premiers charactères..."
+                            md-selected-item-change="filters.produitChange(item)">
+                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
+                        </md-autocomplete>
+                    </md-list-item>
+                    <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
+                        <p> {{ p.lib }} </p>
+                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-checkbox  ng-model="filters.showObjectifs" ng-change="refresh()"></md-checkbox>
+                        <p>Afficher objectifs</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Producteurs</md-subheader>
+                    <!--<md-list-item>
+                        <md-autocomplete ckass="autoc-filter"
+                            md-selected-item="filters.selectedItem" 
+                            md-search-text="filters.searchText"
+                            md-items="item in querySearch(filters.searchText)"
+                            md-item-text="item.lib"
+                            placeholder="Premiers charactères..."
+                            md-selected-item-change="filters.produitChange(item)">
+                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
+                        </md-autocomplete>
+                    </md-list-item>-->
+                    <md-list-item class="min-line" ng-repeat="p in producteurs" tag-bg item="p">
+                        <p> {{ p.name }} </p>
+                        <md-checkbox class="md-secondary" ng-model="p.selected"></md-checkbox>
+                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+
             
-            
-
-            <div class="ng-scope layout-align-center-center layout-row sidehead">
-                <h3>Du</h3>
-            </div>
-            <md-content class="content">
-                <md-datepicker ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
-                
-            </md-content>
-            <div class="ng-scope layout-align-center-center layout-row sidehead">
-                <h3>Au</h3>
-            </div>
-            <md-content class="content">
-                <md-datepicker ng-model="filters.dateTo" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
-                
-            </md-content>
-            <!-- SIDENAV HEADER -->
-            <div class=" ng-scope layout-align-center-center layout-row sidehead">
-                <h3>Produits</h3>
-            </div>
-            <!-- / SIDENAV HEADER -->
-
-            <!-- SIDENAV CONTENT -->
-            <md-content class="content">
-
-                <md-chips ng-model="filters.selectedItems" md-autocomplete-snap 
-              md-require-match="filters.autocompleteDemoRequireMatch" md-on-add="refresh()"  md-on-remove="refresh()" >
-                <md-autocomplete
-                    md-selected-item="filters.selectedItem" 
-                    md-selected-item-change="filters.selectedItemChange(item)"
-                    md-search-text="filters.searchText"
-                    md-items="item in querySearch(filters.searchText)"
-                    md-item-text="item.lib"
-                    placeholder="Premiers charactères...">
-                    <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.type}}</span>
-                </md-autocomplete>
-                <md-chip-template tag-bg item="$chip">
-                    <span>
-                    {{$chip.lib}}
-                    </span>
-                </md-chip-template>
-                </md-chips>
-
-
-                <br/>
-            </md-content>
-            <md-content class="content">
-                <md-checkbox ng-model="filters.showObjectifs" ng-change="refresh()">Afficher objectifs</md-datepicker>
-                
-            </md-content>
-            <!-- / SIDENAV CONTENT -->
 
         </md-sidenav>
 
         <md-content class="content" style="width:100%;" ms-scroll>
-            <div class="widget-group" layout="row" style="width:100%;" >
+            <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+                
+                <md-tab layout-fill label="Produits" >
+                <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill layout-padding  ms-scroll>
+                    
+                        <div class="widget-group" layout="row" style="width:100%;" >
                 <ms-widget layout="row"  style="width:100%;">
                     <ms-widget-front class="white-bg">
                         <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
@@ -124,7 +131,7 @@
                             <ms-widget-front class="white-bg">
                                 
                                 <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                            <div class="h3 widget-head">Cumuls par point de vente</div>
+                            <div class="h3 widget-head">Cumuls par produit</div>
                             <div>
                                 <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
                                     <md-tooltip>Exporter vers excel</md-tooltip>
@@ -145,6 +152,33 @@
                         </ms-widget>
                         <!-- / WIDGET 6 -->
 
+                        <ms-widget layout="column" flex="50"  flex-xs="100">
+
+                            <!-- Front -->
+                            <ms-widget-front class="white-bg">
+                                
+                                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                            <div class="h3 widget-head">Cumuls par producteur</div>
+                            <div>
+                                <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
+                                    <md-tooltip>Exporter vers excel</md-tooltip>
+                                    <md-icon md-font-icon="icon-export"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                                <div class="p-16">
+                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutProducteurs.options"  chart-series="cDonutProducteurs.series"  chart-legend="true"  
+                                chart-data="cDonutProducteurs.data" chart-labels="cDonutProducteurs.labels" chart-colors="cDonutProducteurs.colors"></canvas>
+                                </div>
+
+
+                            </ms-widget-front>
+                            <!-- / Front -->
+
+                        </ms-widget>
+                        <!-- END WIDGET CUMUL PRODUCTEURS -->
+                        
                         <!-- WIDGET 7 -->
                         <ms-widget layout="column" flex="50"  flex-xs="100">
 
@@ -211,7 +245,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-</md-content>
+                            </md-content>
 
 
                             </ms-widget-front>
@@ -220,7 +254,17 @@
                         </ms-widget>
                         <!-- / WIDGET 7 -->
 
+                      
                     </div>
+                </md-tab-content>
+                </md-tab>
+                <md-tab layout-fill label="Producteurs" >
+                </md-tab>
+            </md-tabs>
+
+
+
+            
                     <!-- / WIDGET GROUP -->
             <!--<canvas id="bar" style="height:200px;" class="chart chart-bar"  
                 colours="vm.barChart.colors" chart-data="vm.barChart.data" 

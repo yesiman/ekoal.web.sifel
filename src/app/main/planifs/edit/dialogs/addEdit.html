@@ -1,10 +1,10 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog class="rule-dialog" aria-label="Mango (Fruit)">
   <form ng-cloak>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <h2>Ajout/maj ligne récolte</h2>
         <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
+        <md-button class="md-icon-button" ng-click="onCancel()">
           <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
         </md-button>
       </div>
@@ -13,12 +13,11 @@
     <md-dialog-content>
       <div layout-gt-sm="row">
         <md-input-container class="md-inline" flex>
-          <h4>Date de récolte</h4>
-          <md-datepicker ng-model="item.dateRec"></md-datepicker>
+          <h4>Semaine</h4>
+          <input type="number" ng-model="item.semaine" required>
         </md-input-container>
         <md-input-container class="md-inline" flex>
-          <h4>Quantité</h4>
-          <input type="number" ng-model="item.qte"></md-datepicker>
+        <div class="md-inline" flex-gt-sm qte-input  change-fn="recalc('m',it)" required="true"  ng-model="item.qte"></div>
         </md-input-container>
       </div>
     </md-dialog-content>

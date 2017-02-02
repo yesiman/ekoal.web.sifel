@@ -44,6 +44,19 @@
             dateTo: sunday,
             showObjectifs:true
         }
+        $scope.filters.produitChange = function(it) {
+            var found = false;
+            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
+            {
+                if ($scope.filters.selectedItems[i]._id == it._id)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) { $scope.filters.selectedItems.push(it);$scope.refresh(); }
+            $scope.filters.searchText = "";
+        }
         vm.getObjectif = function(lab, pId)
         {
             //console.log(lab  + "/" + vm.groupMode);
@@ -181,6 +194,15 @@
                 datasetOverride:[]
             };
             $scope.cDonut = {
+                labels:[],
+                series: [],
+                colors: [],
+                data:[],
+                options:{
+                    legend: {display: true}
+                }
+            };
+            $scope.cDonutProducteurs = {
                 labels:[],
                 series: [],
                 colors: [],
@@ -384,6 +406,25 @@
                         }
                     }
                     
+                    //DOCUNT PRODUCTEURS
+                    $scope.producteurs = response.producteurs;
+                    console.log($scope.producteurs);
+                    for(var i = 0;i < $scope.producteurs.length;i++)
+                    {
+                        $scope.cDonutProducteurs.series.push($scope.producteurs[i].surn + " " + $scope.producteurs[i].name);
+                        $scope.cDonutProducteurs.labels.push($scope.producteurs[i].surn + " " + $scope.producteurs[i].name);
+                        var sumP = 0;
+                        for (var i2 = 0;i2<response.items.length;i2++)
+                        {
+                            var o = response.items[i2];
+                            if (o.producteur == $scope.producteurs[i]._id)
+                            {
+                                sumP+= o.count;
+                            }
+                        }
+                        $scope.cDonutProducteurs.data.push(sumP);
+                    }
+
                     //$scope.cLines.datasetOverride.push({label: "Objectif",type: 'line'})
                     
                    //"console.log(vm.data);
@@ -448,10 +489,33 @@
     }
 })();
 
-Date.prototype.getWeek = function() {
-        var onejan = new Date(this.getFullYear(), 0, 1);
-        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-    };
+Date.prototype.getWeek = function() { 
+
+  // Create a copy of this date object  
+  var target  = new Date(this.valueOf());  
+
+  // ISO week date weeks start on monday, so correct the day number  
+  var dayNr   = (this.getDay() + 6) % 7;  
+
+  // Set the target to the thursday of this week so the  
+  // target date is in the right year  
+  target.setDate(target.getDate() - dayNr + 3);  
+
+  // ISO 8601 states that week 1 is the week with january 4th in it  
+  var jan4    = new Date(target.getFullYear(), 0, 4);  
+
+  // Number of days between target date and january 4th  
+  var dayDiff = (target - jan4) / 86400000;    
+
+  if(new Date(target.getFullYear(), 0, 1).getDay() < 5) {
+    // Calculate week number: Week 1 (january 4th) plus the    
+    // number of weeks between target date and january 4th    
+    return Math.ceil(dayDiff / 7);    
+  }
+  else {  // jan 4th is on the next week (so next week is week 1)
+    return Math.ceil(dayDiff / 7); 
+  }
+};
 Date.isLeapYear = function (year) { 
     return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
 };

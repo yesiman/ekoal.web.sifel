@@ -25,7 +25,7 @@
         vm.selectedRule = {};
         //
         vm.ruleChanged = function() {
-            console.log($scope.item.datePlant);
+            $scope.item.linesWeeks = [];
             var startDate = new Date($scope.item.datePlant);
             startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
             var wStart = startDate.getWeek();
@@ -33,44 +33,35 @@
             //PASSAGE TOUTES LIGNES EN A SUPPRIMER
             for (var i = 0;i < vm.selectedRule.nbWeek;i++)
             { 
-                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement; //PRODUCT DEFAULT RENDEMENT
+                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement.val; //PRODUCT DEFAULT RENDEMENT
                 var oIt = { 
-                    semaine:wStart + i,
+                    semaine:startDate.getWeek(),
+                    mois:startDate.getMonth() + 1,
+                    startAt:new Date(startDate),
+                    percent:vm.selectedRule.weeks[i].percent,
                     qte:valueQte*surfacePercent
                 }
                 $scope.validLine(oIt);
+                startDate.setDate(startDate.getDate() + 7);
             }
         }
-        vm.doPlanifDaysLine = function() {
-            var startDate = $scope.item.datePlant;
-            console.log("startDate",$scope.item.datePlant);
-            startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
-            console.log("startDateDelayed",startDate);
-            var surfacePercent = ((100/1)*$scope.item.surface) / 100;
-            $scope.item.lines = [];
-            //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-            for (var i = 0;i < vm.selectedRule.nbWeek;i++)
-            { 
-                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement; //PRODUCT DEFAULT RENDEMENT
-                valueQte = valueQte / 7;
-                for (var ir = 1;ir <= 7;ir++)
-                {
-                    var d = new Date(startDate);
-                    var oIt = { 
-                        dateRec:d,
-                        qte:valueQte*surfacePercent
+        vm.productChange = function() {
+            if ($scope.item.produit)
+            {
+                //LOAD PRODUCTS RULES
+                api.rules.getAllByProduit.get({ id:$scope.item.produit._id},
+                    function (response)
+                    {
+                        vm.rules = response.items;
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        //return null;
                     }
-                    $scope.item.lines.push(oIt);
-                    startDate.setDate(d.getDate() + 1);
-                } 
-            }
-
-
-
-
-
-
-
+                );
+            }   
         }
 
         $scope.head = {
@@ -78,8 +69,8 @@
             title:"Mise à jour planification"
         };
         $scope.id = $stateParams.id;
-
         $scope.item  = planifResolv;
+        vm.productChange();
         if ($rootScope.user.type == 4)
         {
             $scope.item.producteur = $rootScope.user;
@@ -144,6 +135,23 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
+            
+            var firstMonday = "";
+            var d = new Date(new Date().getFullYear(),0,1,1,1,1);
+            while(d.getDay() != 1)
+            {
+                d.setDate(d.getDate()+1);
+            }
+            var year = new Date().getFullYear();
+            var week = item.semaine;
+            var d = new Date( new Date().getFullYear(),1,d.getDate(),1,1,1);
+            var w = d.getTime() + 604800000 * (week-1);
+            var n1 = new Date(w);
+            var n2 = new Date(w + 518400000)
+            //semaine:startDate.getWeek(),
+            item.mois = d.getMonth() + 1;
+            item.startAt = new Date(d);
+            //
             if (!item._id)
             {
                 item.id = "tmp" + ($scope.item.linesWeeks.length + 1);
@@ -199,39 +207,27 @@
             }   
         }
         //
-        $scope.productChange = function() {
-            if ($scope.item.produit)
-            {
-                //LOAD PRODUCTS RULES
-                api.rules.getAllByProduit.get({ id:$scope.item.produit._id},
-                    function (response)
-                    {
-                        vm.rules = response.items;
-                    },
-                    // Error
-                    function (response)
-                    {
-                        console.error(response);
-                        //return null;
-                    }
-                );
-            }   
-        }
+        
         $scope.valid = function(){
-            vm.doPlanifDaysLine();
+            //vm.doPlanifDaysLine();
+            var startDate = new Date($scope.item.datePlant);
+            startDate.setDate(startDate.getDate() + vm.selectedRule.delai)
             var toSave = {
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
+                rendement:$scope.item.produit.customs.rendement,
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
-                lines:$scope.item.lines,
+                dateRecStart:startDate,
                 linesWeeks:$scope.item.linesWeeks,
                 linesToRem:$scope.item.linesToRem
             };
 
             /*$scope.item.type = parseInt($scope.item.type);
             */
+
+            console.log($scope.item._id);
             api.planifs.add.post({ id:($scope.item._id?$scope.item._id:-1), planif: toSave } ,
                 function (response)
                 {

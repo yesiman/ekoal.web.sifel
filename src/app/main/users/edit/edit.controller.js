@@ -7,7 +7,7 @@
         .controller('UsersEditController',UsersEditController);
 
     /** @ngInject */
-    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer)
+    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer,$rootScope)
     {
         
         var vm = this;
@@ -144,8 +144,14 @@
             );
         };
 
+        if ($rootScope.user.type > 1)
+        {
+            $scope.item.orga = $rootScope.user.orga;
+        }
+
         if ($scope.item.orga)
         {
+
             $scope.loadProducteurs();
         }
         

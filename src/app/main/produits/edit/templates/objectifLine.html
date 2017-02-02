@@ -2,10 +2,11 @@
   <md-input-container class="md-inline" style="width:100px;">
     <label>{{it.lib}}</label>
   </md-input-container>
-  <md-input-container class="md-inline" flex-gt-sm style="width:100px;">
-    <label>Rendement attendu</label>
+  <div class="md-inline" flex-gt-sm qte-input  change-fn="recalc('m',it)" required="true"  ng-model="it.rendement"></div>
+  <!--<md-input-container class="md-inline" flex-gt-sm style="width:100px;">
+    <label>Rendement attendu (tonnes)</label>
     <input type="number" ng-model="it.rendement" ng-change="recalc('m',it)"/>
-  </md-input-container>
+  </md-input-container>-->
   <md-input-container class="md-inline">
     <md-button class="md-icon-button md-primary" ng-click="expandClick()" aria-label="Detail par semaine">
       <md-tooltip>Detail par semaine</md-tooltip>
@@ -18,8 +19,9 @@
   <md-input-container class="md-inline" style="width:100px;">
     <label>Semaine {{s}}</label>
   </md-input-container>
-  <md-input-container class="md-inline" flex-gt-sm style="width:100px;">
+  <div class="md-inline" flex-gt-sm qte-input change-fn="recalc('w',s)" required="false" ng-model="it.rendements[s]"></div>
+  <!--<md-input-container class="md-inline" flex-gt-sm style="width:100px;">
     <label>Rendement attendu</label>
     <input type="number" ng-model="it.rendements[s]" ng-change="recalc('w',s)"/>
-  </md-input-container>
+  </md-input-container>-->
 </div>

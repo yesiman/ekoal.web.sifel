@@ -3,12 +3,24 @@
 
     .dataTables_wrapper{height: 100%;}
 
+
+input.rule-sel
+    {
+        margin: 0;
+    margin-left: 250px;
+    padding-top: 5px;
+    margin-top: 10px;
+    }
+
     md-select.rule-sel
     {
         margin: 0;
     margin-left: 40px;
     padding-top: 5px;
+    width:200px;
     }
+
+    
 
     > .header {
         height: 76px;

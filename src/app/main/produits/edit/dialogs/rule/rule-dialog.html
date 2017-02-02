@@ -34,23 +34,19 @@
             </div>
         </md-dialog-content>
 
-        <md-dialog-actions layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
-                <md-button type="submit" ng-if="!vm.newTask" ng-click="vm.save()"
+        <md-dialog-actions layout="row">
+      <md-button ng-click="vm.close()">
+        Annuler
+      </md-button>
+      <md-button type="submit" ng-click="vm.save()"
                            class="send-button md-accent md-raised"
                            ng-disabled="taskForm.$invalid || taskForm.$pristine"
-                           aria-label="SAVE" translate="TODO.SAVE" translate-attr-aria-label="TODO.SAVE">
-                    SAVE
+                           aria-label="Valider">
+                    Valider
                 </md-button>
-            </div>
+    </md-dialog-actions>
 
-            <div layout="row">
-                <md-button class="md-icon-button" ng-click="vm.deleteTask($event)" aria-label="Delete" translate
-                           translate-attr-aria-label="TODO.DELETE">
-                    <md-icon md-font-icon="icon-delete"></md-icon>
-                    <md-tooltip><span translate="TODO.DELETE">DELETE</span></md-tooltip>
-                </md-button>
-            </div>
-        </md-dialog-actions>
+
+       
     </form>
 </md-dialog>

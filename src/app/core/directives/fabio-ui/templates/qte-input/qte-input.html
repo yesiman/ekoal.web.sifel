@@ -1,0 +1,12 @@
+<md-input-container flex="50" >
+    <label>Rendement à l'hectare</label>
+    <input type="number" ng-required="required" ng-model="value.value" ng-change="dataChange()">
+    </md-input-container>
+    <md-input-container >
+        <label>Unité</label>
+    <md-select ng-model="value.unit" ng-change="dataChange()">
+        <md-option ng-value="u.id" ng-repeat="u in units">
+            {{u.name}}    
+        </md-option>
+    </md-select>
+    </md-input-container>

@@ -142,6 +142,33 @@ md-chip-template span {
             padding: 0;
         }
 
+        .md-subheader .md-subheader-inner{
+            padding: 5px;
+        }
+
+        .md-whiteframe-1dp, .md-whiteframe-z1 {box-shadow: none;}
+
+        md-autocomplete-wrap > input[type="search"],
+        md-autocomplete input:not(.md-input) {
+            height: 35px;
+        }
+
+        md-list-item, md-list-item .md-list-item-inner,md-autocomplete,md-autocomplete-wrap {
+            min-height: 35px;
+            height: 35px;
+            .md-button{
+                min-height: 35px;
+                height: 35px;
+                min-width: 35px;
+                width: 35px;
+            }
+            .md-button.md-icon-button{
+                padding: 0px;
+            }
+        }
+
+        
+
         .main {
             padding: 16px 16px 0 4px;
             position: absolute;

@@ -17,6 +17,7 @@
         };
         // Methods
         $scope.login = function() {
+            $scope.badCredentials = false;
             api.users.login.post({ user:$scope.user },
                 // Success
                 function (response)
@@ -29,10 +30,14 @@
                         $http.defaults.headers.common['x-access-token'] = response.token;
                         $state.go("app.dashboards_server");
                     }
+                    else {
+                        $scope.badCredentials = true;
+                    }
                 },
                 // Error
                 function (response)
                 {
+                    $scope.badCredentials = true;
                     console.error(response);
                 }
             );

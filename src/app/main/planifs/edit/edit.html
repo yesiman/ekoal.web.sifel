@@ -51,7 +51,7 @@
                                             md-item-text="item.lib"
                                             md-require-match
                                             md-floating-label="Sélection produit"
-                                            md-selected-item-change="productChange()">
+                                            md-selected-item-change="vm.productChange()">
                                         <md-item-template>
                                             <span md-highlight-text="item.produitSearch">{{item.lib}}</span>
                                         </md-item-template>
@@ -87,7 +87,7 @@
                                         </div>
                                         </md-autocomplete>
                                         <md-input-container flex>
-                                            <label>Surface</label>
+                                            <label>Surface (hectares)</label>
                                             <input type="text" required ng-model="item.surface"/>
                                         </md-input-container>
                                     </div>
@@ -108,12 +108,23 @@
                         </md-button>
                         <div style="position:absolute;z-index:8;" >
                             <md-tooltip>Vous devez sélectionner un produit et une parcelle, ou saisir une surface</md-tooltip>
-                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel" style="min-width:200px;">
+                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
+                                <md-option ng-repeat="r in vm.rules" ng-value="r">
+                                    {{r.lib}}
+                                </md-option>
+                            </md-select>
+                            </div>
+                        <div style="position:absolute;z-index:7;" >
+                            <input type="number"   ng-change="vm.ruleChanged()" ng-if="vm.selectedRule" class="rule-sel" ng-model="item.produit.customs.rendement.val">
+                                <md-tooltip>Rendement par defaut</md-tooltip>
+                            </input>
+                             <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
                                 <md-option ng-repeat="r in vm.rules" ng-value="r">
                                     {{r.lib}}
                                 </md-option>
                             </md-select>
                         </div>
+                        
                         <datatable-wrapper>
                         <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                                 dt-options="vm.dtOptions">
@@ -138,8 +149,9 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="il in item.linesWeeks track by $index">
-                                    <td>Semaine {{il.semaine}}</td>
-                                    <td>{{il.qte}}</td>
+                                    <td><h3>{{il.semaine}}</h3> 
+                                    <p>{{il.mois}} {{il.startAt}}</p></td>
+                                    <td>{{il.qte.val}}</td>
                                     <td>
                                         <md-button class="md-icon-button" aria-label="Settings" ng-click="showPlanif($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
                                         <md-button class="md-icon-button" aria-label="Settings" ng-click="removePlanifLine($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
