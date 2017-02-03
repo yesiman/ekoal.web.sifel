@@ -13,7 +13,7 @@
         diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
         return new Date(d.setDate(diff));
     }
-    function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$mdSidenav,$rootScope,$filter)
+    function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$mdSidenav,$rootScope,$filter,standardizer)
     {
         var vm = this;
         vm.groupMode = "w";
@@ -44,6 +44,13 @@
             dateTo: sunday,
             showObjectifs:true
         }
+
+        vm.gridPlanifOptions = standardizer.getGridOptionsStd();
+        vm.gridPlanifOptions.columnDefs = [
+                { field: 'name', displayName: 'Nom' },
+                { field: 'surn', displayName: 'Prénom' }];
+        vm.gridPlanifOptions.data  = [];
+
         $scope.filters.produitChange = function(it) {
             var found = false;
             for (var i = 0;i< $scope.filters.selectedItems.length;i++)
@@ -223,6 +230,8 @@
                 // Success
                 function (response)
                 {
+                    console.log("response.items",response.items);
+
                     var sumP = 0;
                     var oneLabelPass = false;
                     $scope.sortedPlanifs = response.items;
@@ -357,37 +366,12 @@
                                     }
                                     if (!found) { dataTmp.push(0); }
                                 }
-
-                                /*for (var w = new Date($scope.filters.dateFrom).getWeek();w <= new Date($scope.filters.dateTo).getWeek();w++)
-                                {
-                                    var found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
-                                        {
-                                            if (o._id.week == w)
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                    if (!oneLabelPass) {$scope.cLines.labels.push(w);}
-                                }*/
                                 break;
                         }
                         $scope.cLines.data.push(dataTmp);
                         $scope.cLines.datasetOverride.push({type: 'bar'})
                         $scope.cDonut.data.push(sumP);
                         oneLabelPass = true;
-
-
-                        //Objectif
-                        /*var objs = [];
-                        */
                     }
 
                     if ($scope.filters.showObjectifs)
@@ -408,7 +392,6 @@
                     
                     //DOCUNT PRODUCTEURS
                     $scope.producteurs = response.producteurs;
-                    console.log($scope.producteurs);
                     for(var i = 0;i < $scope.producteurs.length;i++)
                     {
                         $scope.cDonutProducteurs.series.push($scope.producteurs[i].surn + " " + $scope.producteurs[i].name);
@@ -424,19 +407,12 @@
                         }
                         $scope.cDonutProducteurs.data.push(sumP);
                     }
-
-                    //$scope.cLines.datasetOverride.push({label: "Objectif",type: 'line'})
-                    
-                   //"console.log(vm.data);
-                    //console.log(prodDatasTmp2);
                      $rootScope.loadingProgress = false;
-                     //console.log("nvdata",$scope.nvdata[0].values[4]);
                 },
                 // Error
                 function (response)
                 {
                     $rootScope.loadingProgress = false;
-                    console.error(response);
                 }
             );
         }

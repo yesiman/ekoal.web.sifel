@@ -6,7 +6,22 @@ span.status  {
         }
     
 
-#list {
+md-sidenav {
+    .sidehead
+    {
+        background-color:rgb(245,245,245);
+        h3 {
+            margin:0;
+            padding-top:5px;
+            padding-bottom:5px;
+            font-weight: 500;
+            margin-top:5px;
+        }
+    }
+    
+}
+
+#listUsers {
     position: relative;
 
 
@@ -93,6 +108,24 @@ span.status  {
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;
             padding: 0;
+        }
+
+        .md-subheader .md-subheader-inner{
+            padding: 5px;
+        }
+
+        md-list-item, md-list-item .md-list-item-inner,md-autocomplete,md-autocomplete-wrap {
+            min-height: 35px;
+            height: 35px;
+            .md-button{
+                min-height: 35px;
+                height: 35px;
+                min-width: 35px;
+                width: 35px;
+            }
+            .md-button.md-icon-button{
+                padding: 0px;
+            }
         }
 
         #grid1{
