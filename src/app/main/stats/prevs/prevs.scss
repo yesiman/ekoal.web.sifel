@@ -138,6 +138,8 @@ md-chip-template span {
         md-autocomplete-wrap > input[type="search"],
         md-autocomplete input:not(.md-input) {
             height: 35px;
+            font-size: 12px;
+            padding: 0 !important;
         }
 
         md-list-item, md-list-item .md-list-item-inner,md-autocomplete,md-autocomplete-wrap {

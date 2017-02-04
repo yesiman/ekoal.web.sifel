@@ -20,13 +20,13 @@
                 <md-list ng-cloak>
                     <md-subheader class="md-no-sticky">Filtre texte</md-subheader>
                     <md-list-item>
-                        <md-datepicker ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                        <input type="text" ng-model="filters.text" placeholder="Premiers charactères..."/>
                     </md-list-item>
                     <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Niveau de droits</md-subheader>
-                    <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    <md-subheader class="md-no-sticky">Niveaux de droits</md-subheader>
+                    <md-list-item ng-repeat="l in vm.filters.levels" tag-bg item="p">
+                        <span class="status {{getUserBg($index+1)}}">{{l}}</span>
+                        <md-checkbox class="md-secondary" ng-model="l.selected"></md-checkbox>
                     </md-list-item>
                 </md-list>
             </md-content>

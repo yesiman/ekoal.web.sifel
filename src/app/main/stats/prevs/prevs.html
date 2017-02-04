@@ -78,7 +78,6 @@
                     <md-list-item class="min-line" ng-repeat="p in producteurs" tag-bg item="p">
                         <p> {{ p.name }} </p>
                         <md-checkbox class="md-secondary" ng-model="p.selected"></md-checkbox>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -91,7 +90,7 @@
             <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
                 
                 <md-tab layout-fill label="Produits" >
-                <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill layout-padding  ms-scroll>
+                <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
                     
                         <div class="widget-group" layout="row" style="width:100%;" >
                 <ms-widget layout="row"  style="width:100%;">
@@ -115,8 +114,8 @@
                         <div class="p-16">
                             <canvas id="bar"  height="400" 
                                 width="400" class="chart chart-bar" 
-                                chart-data="cLines.data" chart-labels="cLines.labels"  chart-options="cLines.options" 
-                                chart-series="cLines.series" chart-colors="cLines.colors" chart-dataset-override="cLines.datasetOverride" ></canvas>
+                                chart-data="vm.cLines.data" chart-labels="vm.cLines.labels"  chart-options="vm.cLines.options" 
+                                chart-series="vm.cLines.series" chart-colors="vm.cLines.colors" chart-dataset-override="vm.cLines.datasetOverride" ></canvas>
                         </div>
                     </ms-widget-front>
                 </ms-widget>
@@ -141,8 +140,8 @@
                         </div>
                         <md-divider></md-divider>
                                 <div class="p-16">
-                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonut.options"  chart-series="cDonut.series"  chart-legend="true"  
-                                chart-data="cDonut.data" chart-labels="cDonut.labels" chart-colors="cDonut.colors"></canvas>
+                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="vm.cDonut.options"  chart-series="vm.cDonut.series"  chart-legend="true"  
+                                        chart-data="vm.cDonut.data" chart-labels="vm.cDonut.labels" chart-colors="vm.cDonut.colors"></canvas>
                                 </div>
 
 
@@ -259,9 +258,40 @@
                 </md-tab-content>
                 </md-tab>
                 <md-tab layout-fill label="Producteurs" >
+                    <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
+                    
+                        <div class="widget-group" layout="row" style="width:100%;" >
+                            <ms-widget layout="row"  style="width:100%;">
+                                <ms-widget-front class="white-bg">
+                                    <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                                        <div class="h3 widget-head">Prévisions récoltes</div>
+                                        <div>
+                                            <span class="cLines-groupMode">Grouper par </span>
+                                            <md-select class="cLines-groupMode" ng-model="vm.groupMode" ng-change="refresh()">
+                                                <md-option value="d">jour</md-option>
+                                                <md-option value="w" ng-selected="true">semaine</md-option>
+                                                <md-option value="m">mois</md-option>
+                                            </md-select>
+                                            <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
+                                                <md-tooltip>Exporter vers excel</md-tooltip>
+                                                <md-icon md-font-icon="icon-export"></md-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <md-divider></md-divider>
+                                    <div class="p-16">
+                                        <canvas id="bar"  height="400" 
+                                            width="400" class="chart chart-bar" 
+                                            chart-data="vm.clinesProducteurs.data" chart-labels="vm.clinesProducteurs.labels"  chart-options="vm.clinesProducteurs.options" 
+                                            chart-series="vm.clinesProducteurs.series" chart-colors="vm.clinesProducteurs.colors" chart-dataset-override="vm.clinesProducteurs.datasetOverride" ></canvas>
+                                    </div>
+                                </ms-widget-front>
+                            </ms-widget>
+                        </div>
+                    </md-tab-content>
                 </md-tab>
                 <md-tab layout-fill label="Planifications" >
-                    <md-tab-content>
+                    <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill>
                         <div id="grid1"  layout="column"  ui-grid="vm.gridPlanifOptions"  class="grid"></div>
                         <div class="footer" layout="column" layout-align="space-between">
                         <div paging class="pager" 

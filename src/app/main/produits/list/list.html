@@ -1,4 +1,4 @@
-<div id="list" class="page-layout simple fullwidth doc-page element-doc-page">
+<div id="list" class="page-layout simple left-sidenav inner-sidenav">
 
             
 
@@ -8,15 +8,34 @@
         <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
     </div>
     <!-- / HEADER -->
-    <div class="content" layout="column" flex>
-        <div id="grid1"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
-        <div class="footer" layout="column" layout-align="space-between">
-        <div paging class="pager" 
-            page="paginationOptions.pageNumber" 
-            page-size="paginationOptions.pageSize" 
-            paging-action="loadPageAction(page)" 
-            total="gridOptions.totalItems">
-        </div> 
+    <div class="content" md-background-bg layout="row"  ms-scroll>
+        <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
+                    ms-sidenav-helper>
+            <md-content class="content" ms-scroll>
+                <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">Filtre texte</md-subheader>
+                    <md-list-item>
+                        <input type="text" ng-model="filters.text" placeholder="Premiers charactères..."/>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Niveaux de droits</md-subheader>
+                    <md-list-item ng-repeat="l in vm.filters.levels" tag-bg item="p">
+                        <span class="status {{getUserBg($index+1)}}">{{l}}</span>
+                        <md-checkbox class="md-secondary" ng-model="l.selected"></md-checkbox>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <md-content class="content" style="width:100%;overflow:hidden;" flex>   
+            <div id="grid1"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
+            <div class="footer" layout="column" layout-align="space-between">
+            <div paging class="pager" 
+                page="paginationOptions.pageNumber" 
+                page-size="paginationOptions.pageSize" 
+                paging-action="loadPageAction(page)" 
+                total="gridOptions.totalItems">
+            </div>
+        </md-content> 
     </div>
     </div>
     <!-- / CONTENT -->

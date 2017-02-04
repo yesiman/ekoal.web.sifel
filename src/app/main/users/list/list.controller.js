@@ -40,6 +40,9 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
+        vm.filters = { 
+            levels: ["Administrateur","Administrateur OP","Technicien","Producteur","Commercial"]
+        }
         // Data
         $scope.getUserType = function(it)
         {
@@ -53,6 +56,8 @@
                     return "Technicien";
                 case 4:
                     return "Producteur";
+                case 5:
+                    return "Commercial";
             }
             
         }
@@ -67,6 +72,8 @@
                 case 3:
                     return "md-lime-400-bg";
                 case 4:
+                    return "md-blue-400-bg";
+                case 5: //TODO SPECIFIC COMM COLOR
                     return "md-blue-400-bg";
             }
             

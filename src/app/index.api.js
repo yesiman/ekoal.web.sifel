@@ -332,6 +332,16 @@
                 post: {
                     method: 'POST'
                 }
+            }),
+            prevsByProd: $resource(api.baseUrl + 'stats/prevsByProd/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            prevsPlanifsLines: $resource(api.baseUrl + 'stats/prevsPlanifsLines/:pid/:nbp', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat',pid:'@pid',nbp:'@nbp' } , {
+                post: {
+                    method: 'POST'
+                }
             })
         }
         api.mailing = {

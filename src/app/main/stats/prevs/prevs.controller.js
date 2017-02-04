@@ -44,7 +44,6 @@
             dateTo: sunday,
             showObjectifs:true
         }
-
         vm.gridPlanifOptions = standardizer.getGridOptionsStd();
         vm.gridPlanifOptions.columnDefs = [
                 { field: 'name', displayName: 'Nom' },
@@ -66,7 +65,6 @@
         }
         vm.getObjectif = function(lab, pId)
         {
-            //console.log(lab  + "/" + vm.groupMode);
             var itemsProcessed = 0;
             switch(vm.groupMode)
             {
@@ -86,7 +84,7 @@
                                 {
                                     if (element2.rendements[sid])
                                     {
-                                        return element2.rendements[sid];
+                                        return element2.rendements[sid].val;
                                     }
                                 }
                             }
@@ -94,7 +92,6 @@
                     } 
                     break;
                 case "m":
-                    console.log(vm.objectifs);
                     for (var ei = 0;ei < vm.objectifs.length;ei++)
                     {
                         var element = vm.objectifs[ei];
@@ -108,7 +105,7 @@
                                 {
                                     if (element2.rendement)
                                     {
-                                        return element2.rendement;
+                                        return element2.rendement.val;
                                     }
                                 }
                                 
@@ -131,7 +128,7 @@
                                 {
                                     if (element2.rendements[sid])
                                     {
-                                        return element2.rendements[sid];
+                                        return element2.rendements[sid].val;
                                     }
                                 }
                             }
@@ -159,16 +156,16 @@
                         o[$scope.filters.selectedItems[i].lib] = $scope.filters.selectedItems[i].lib;
                     }
                     exp.push(o);
-                    for (var ilab = 0;ilab < $scope.cLines.labels.length;ilab++)
+                    for (var ilab = 0;ilab < vm.cLines.labels.length;ilab++)
                     {
                         o = {};
-                        o["label"] = $scope.cLines.labels[ilab];
+                        o["label"] = vm.cLines.labels[ilab];
                         for (var i = 0;i < $scope.filters.selectedItems.length;i++)
                         {
-                            o[$scope.filters.selectedItems[i].lib] = $scope.cLines.data[i][ilab];
+                            o[$scope.filters.selectedItems[i].lib] = vm.cLines.data[i][ilab];
                         }
                         exp.push(o);
-                        //exp.push({ label:$scope.cLines.labels[ilab], "tomates":$scope.cLines.data[0][ilab] });
+                        //exp.push({ label:vm.cLines.labels[ilab], "tomates":vm.cLines.data[0][ilab] });
                     }
                     break;
             }
@@ -176,7 +173,6 @@
             //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
             
             return exp;
-            //console.log(exp);
             //alasql('SELECT label,tomates INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
         }
 
@@ -185,7 +181,22 @@
         $scope.refresh = function() {
             $rootScope.loadingProgress = true;
 
-            $scope.cLines = {
+            vm.clinesProducteurs = {
+                labels:[],
+                series: [],
+                colors: [],
+                data:[],
+                options:{
+                    legend: {display: true},
+                    maintainAspectRatio:false,
+                    size: {
+                        height: 300,
+                        width: 400
+                    }
+                },
+                datasetOverride:[]
+            }
+            vm.cLines = {
                 labels:[],
                 series: [],
                 colors: [],
@@ -200,7 +211,7 @@
                 },
                 datasetOverride:[]
             };
-            $scope.cDonut = {
+            vm.cDonut = {
                 labels:[],
                 series: [],
                 colors: [],
@@ -209,7 +220,7 @@
                     legend: {display: true}
                 }
             };
-            $scope.cDonutProducteurs = {
+            vm.cDonutProducteurs = {
                 labels:[],
                 series: [],
                 colors: [],
@@ -230,8 +241,6 @@
                 // Success
                 function (response)
                 {
-                    console.log("response.items",response.items);
-
                     var sumP = 0;
                     var oneLabelPass = false;
                     $scope.sortedPlanifs = response.items;
@@ -256,9 +265,9 @@
                                 for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
                                 {
                                     var found = false;
-                                    for (var reliLab = 0;reliLab < $scope.cLines.labels.length;reliLab++ )
+                                    for (var reliLab = 0;reliLab < vm.cLines.labels.length;reliLab++ )
                                     {
-                                        if ($scope.cLines.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
+                                        if (vm.cLines.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
                                         {
                                             found = true;
                                             break;
@@ -266,7 +275,7 @@
                                     }
                                     if (!found)
                                     {
-                                        $scope.cLines.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
+                                        vm.cLines.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
                                     }
                                 }
                                 break;
@@ -274,9 +283,9 @@
                                 for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
                                 {
                                     var found = false;
-                                    for (var reliLab = 0;reliLab < $scope.cLines.labels.length;reliLab++ )
+                                    for (var reliLab = 0;reliLab < vm.cLines.labels.length;reliLab++ )
                                     {
-                                        if ($scope.cLines.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
+                                        if (vm.cLines.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
                                         {
                                             found = true;
                                             break;
@@ -284,7 +293,7 @@
                                     }
                                     if (!found)
                                     {
-                                        $scope.cLines.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
+                                        vm.cLines.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
                                     }
                                 }
                                 break;
@@ -294,11 +303,11 @@
                     {   
                         sumP = 0;
                         var dataTmp = [];
-                        $scope.cLines.series.push($scope.filters.selectedItems[i].lib);
-                        $scope.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                        $scope.cDonut.series.push($scope.filters.selectedItems[i].lib);
-                        $scope.cDonut.labels.push($scope.filters.selectedItems[i].lib);
-                        $scope.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
+                        vm.cLines.series.push($scope.filters.selectedItems[i].lib);
+                        vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
+                        vm.cDonut.series.push($scope.filters.selectedItems[i].lib);
+                        vm.cDonut.labels.push($scope.filters.selectedItems[i].lib);
+                        vm.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
                         switch(vm.groupMode)
                         {
                             case "d":
@@ -321,12 +330,12 @@
                                         }
                                     }
                                     if (!found) { dataTmp.push(0); }
-                                    if (!oneLabelPass) {$scope.cLines.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
+                                    if (!oneLabelPass) {vm.cLines.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
                                 }
                                 break;
                             case "m":
                                 
-                                for (var i3 = 0;i3<$scope.cLines.labels.length;i3++)
+                                for (var i3 = 0;i3<vm.cLines.labels.length;i3++)
                                 {
                                     found = false;
                                     for (var i2 = 0;i2<response.items.length;i2++)
@@ -334,7 +343,7 @@
                                         var o = response.items[i2];
                                         if (o._id.produit == $scope.filters.selectedItems[i]._id)
                                         {
-                                            if ((o._id.month + "/" + o._id.year) === $scope.cLines.labels[i3]) 
+                                            if ((o._id.month + "/" + o._id.year) === vm.cLines.labels[i3]) 
                                             {
                                                 sumP+= o.count;
                                                 dataTmp.push(o.count);
@@ -348,7 +357,7 @@
                                 break;  
                             case "w":
 
-                                for (var i3 = 0;i3<$scope.cLines.labels.length;i3++)
+                                for (var i3 = 0;i3<vm.cLines.labels.length;i3++)
                                 {
                                     found = false;
                                     for (var i2 = 0;i2<response.items.length;i2++)
@@ -356,7 +365,7 @@
                                         var o = response.items[i2];
                                         if (o._id.produit == $scope.filters.selectedItems[i]._id)
                                         {
-                                            if (("S" + o._id.week + "/" + o._id.year) === $scope.cLines.labels[i3]) 
+                                            if (("S" + o._id.week + "/" + o._id.year) === vm.cLines.labels[i3]) 
                                             {
                                                 sumP+= o.count;
                                                 dataTmp.push(o.count);
@@ -368,9 +377,9 @@
                                 }
                                 break;
                         }
-                        $scope.cLines.data.push(dataTmp);
-                        $scope.cLines.datasetOverride.push({type: 'bar'})
-                        $scope.cDonut.data.push(sumP);
+                        vm.cLines.data.push(dataTmp);
+                        vm.cLines.datasetOverride.push({type: 'bar'})
+                        vm.cDonut.data.push(sumP);
                         oneLabelPass = true;
                     }
 
@@ -379,34 +388,188 @@
                         for (var i = 0;i < $scope.filters.selectedItems.length;i++)
                         {   
                             var objs = [];
-                            $scope.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                            for (var i2 = 0;i2 < $scope.cLines.labels.length;i2++)
+                            vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
+                            for (var i2 = 0;i2 < vm.cLines.labels.length;i2++)
                             {
-                                objs.push(vm.getObjectif($scope.cLines.labels[i2],$scope.filters.selectedItems[i]._id));
+                                objs.push(vm.getObjectif(vm.cLines.labels[i2],$scope.filters.selectedItems[i]._id));
                             }
-                            $scope.cLines.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
-                            $scope.cLines.data.push(objs);
+                            vm.cLines.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
+                            vm.cLines.data.push(objs);
 
                         }
                     }
-                    
-                    //DOCUNT PRODUCTEURS
+                     $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    $rootScope.loadingProgress = false;
+                }
+            );
+            api.stats.prevsByProd.post( args ,
+                // Success
+                function (response)
+                {
+                    var sumP = 0;
+                    var oneLabelPass = false;
                     $scope.producteurs = response.producteurs;
-                    for(var i = 0;i < $scope.producteurs.length;i++)
-                    {
-                        $scope.cDonutProducteurs.series.push($scope.producteurs[i].surn + " " + $scope.producteurs[i].name);
-                        $scope.cDonutProducteurs.labels.push($scope.producteurs[i].surn + " " + $scope.producteurs[i].name);
-                        var sumP = 0;
-                        for (var i2 = 0;i2<response.items.length;i2++)
+                    //$scope.sortedPlanifs = response.items;
+                    switch(vm.groupMode)
                         {
-                            var o = response.items[i2];
-                            if (o.producteur == $scope.producteurs[i]._id)
-                            {
-                                sumP+= o.count;
-                            }
+                            case "d":
+                                
+                                break;
+                            case "m":
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                                {
+                                    var found = false;
+                                    for (var reliLab = 0;reliLab < vm.clinesProducteurs.labels.length;reliLab++ )
+                                    {
+                                        if (vm.clinesProducteurs.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found)
+                                    {
+                                        vm.clinesProducteurs.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
+                                    }
+                                }
+                                break;
+                            case "w":
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                                {
+                                    var found = false;
+                                    for (var reliLab = 0;reliLab < vm.clinesProducteurs.labels.length;reliLab++ )
+                                    {
+                                        if (vm.clinesProducteurs.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found)
+                                    {
+                                        vm.clinesProducteurs.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
+                                    }
+                                }
+                                break;
                         }
-                        $scope.cDonutProducteurs.data.push(sumP);
+
+                    for (var i = 0;i < $scope.producteurs.length;i++)
+                    {   
+                        sumP = 0;
+                        var dataTmp = [];
+                        vm.clinesProducteurs.series.push($scope.producteurs[i].name + " " + $scope.producteurs[i].surn);
+                        //vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
+                        //vm.cDonut.series.push($scope.filters.selectedItems[i].lib);
+                        //vm.cDonut.labels.push($scope.filters.selectedItems[i].lib);
+                        //vm.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
+                        switch(vm.groupMode)
+                        {
+                            case "d":
+                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                                {
+                                    var found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
+                                        {
+                                            if (o._id.day == d.getDate() && 
+                                            (o._id.month == (d.getMonth() + 1)) && 
+                                            (o._id.year == d.getFullYear()))
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                    if (!oneLabelPass) {vm.clinesProducteurs.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
+                                }
+                                break;
+                            case "m":
+                                
+                                for (var i3 = 0;i3<vm.clinesProducteurs.labels.length;i3++)
+                                {
+                                    found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.producteur == $scope.producteurs[i]._id)
+                                        {
+                                            if ((o._id.month + "/" + o._id.year) === vm.clinesProducteurs.labels[i3]) 
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                }
+                                
+                                break;  
+                            case "w":
+
+                                for (var i3 = 0;i3<vm.clinesProducteurs.labels.length;i3++)
+                                {
+                                    found = false;
+                                    for (var i2 = 0;i2<response.items.length;i2++)
+                                    {
+                                        var o = response.items[i2];
+                                        if (o._id.producteur == $scope.producteurs[i]._id)
+                                        {
+                                            if (("S" + o._id.week + "/" + o._id.year) === vm.clinesProducteurs.labels[i3]) 
+                                            {
+                                                sumP+= o.count;
+                                                dataTmp.push(o.count);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                    if (!found) { dataTmp.push(0); }
+                                }
+                                break;
+                        }
+                        vm.clinesProducteurs.data.push(dataTmp);
+                        vm.clinesProducteurs.datasetOverride.push({type: 'bar'})
+                        //vm.cDonut.data.push(sumP);
+                        oneLabelPass = true;
                     }
+                    if ($scope.filters.showObjectifs)
+                    {
+                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                        {   
+                            var objs = [];
+                            //vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
+                            for (var i2 = 0;i2 < vm.clinesProducteurs.labels.length;i2++)
+                            {
+                                objs.push(vm.getObjectif(vm.clinesProducteurs.labels[i2],$scope.filters.selectedItems[i]._id));
+                            }
+                            vm.clinesProducteurs.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
+                            vm.clinesProducteurs.data.push(objs);
+                        }
+                    }
+                     $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    $rootScope.loadingProgress = false;
+                }
+            );
+
+            args.pid = 1;
+            args.nbp = 100;
+            
+            api.stats.prevsPlanifsLines.post( args ,
+                // Success
+                function (response)
+                {
                      $rootScope.loadingProgress = false;
                 },
                 // Error
@@ -430,7 +593,6 @@
                         var found = false;
                         if (response.items[eo].customs)
                         {
-                            //console.log("vm.objectifs",response.objectifs[eo]);
                             for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
                             {
                                 if (response.items[eo].customs.produit === vm.objectifs[eo]._id)
