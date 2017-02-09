@@ -1,0 +1,22 @@
+<div class="widget-group" layout="row" style="width:100%;" >
+    <ms-widget layout="row"  style="width:100%;">
+        <ms-widget-front class="white-bg">
+            <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                <div class="h3 widget-head">Prévisions récoltes</div>
+                <div>
+                    <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
+                        <md-tooltip>Exporter vers excel</md-tooltip>
+                        <md-icon md-font-icon="icon-export"></md-icon>
+                    </button>
+                </div>
+            </div>
+            <md-divider></md-divider>
+            <div class="p-16">
+                <canvas id="bar"  height="400" 
+                    width="400" class="chart chart-bar" 
+                    chart-data="clinesProducteurs.data" chart-labels="clinesProducteurs.labels"  chart-options="clinesProducteurs.options" 
+                    chart-series="clinesProducteurs.series" chart-colors="clinesProducteurs.colors" chart-dataset-override="clinesProducteurs.datasetOverride" ></canvas>
+            </div>
+        </ms-widget-front>
+    </ms-widget>
+</div>

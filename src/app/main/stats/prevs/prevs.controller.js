@@ -42,15 +42,13 @@
             selectedItems:[],
             dateFrom: new Date(),
             dateTo: sunday,
-            showObjectifs:true
+            showObjectifs:true,
+            groupMode:"w"
         }
-        vm.gridPlanifOptions = standardizer.getGridOptionsStd();
-        vm.gridPlanifOptions.columnDefs = [
-                { field: 'name', displayName: 'Nom' },
-                { field: 'surn', displayName: 'Prénom' }];
-        vm.gridPlanifOptions.data  = [];
+             
 
         $scope.filters.produitChange = function(it) {
+            if (!it) { return; }
             var found = false;
             for (var i = 0;i< $scope.filters.selectedItems.length;i++)
             {
@@ -63,7 +61,94 @@
             if (!found) { $scope.filters.selectedItems.push(it);$scope.refresh(); }
             $scope.filters.searchText = "";
         }
-        vm.getObjectif = function(lab, pId)
+        $scope.toggleSidenav = function(sidenavId)
+        {
+            $mdSidenav(sidenavId).toggle();
+        }
+        $scope.export = function(chartId) {
+            
+            var exp = [];
+            var o;
+            switch (chartId)
+            {
+                case 1:
+                    o = {};
+                    o["label"] = "Periode";
+                    for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                    {
+                        o[$scope.filters.selectedItems[i].lib] = $scope.filters.selectedItems[i].lib;
+                    }
+                    exp.push(o);
+                    for (var ilab = 0;ilab < $scope.clines.labels.length;ilab++)
+                    {
+                        o = {};
+                        o["label"] = $scope.clines.labels[ilab];
+                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                        {
+                            o[$scope.filters.selectedItems[i].lib] = $scope.clines.data[i][ilab];
+                        }
+                        exp.push(o);
+                        //exp.push({ label:vm.cLines.labels[ilab], "tomates":vm.cLines.data[0][ilab] });
+                    }
+                    break;
+            }
+           // alasql("CREATE TABLE cities (city string, population number)");
+            //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
+            
+            return exp;
+            //alasql('SELECT label,tomates INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
+        }
+        
+        $scope.getProdsIds = function()
+        {
+            var prodsIds = [];
+            for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+            {
+                prodsIds.push($scope.filters.selectedItems[i]._id);
+            }
+            return prodsIds;
+        }
+        $scope.getSeries = function(series,colors) {
+            var ret = series;
+            for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+            {   
+                var found = false;
+                for (var reliSeries = 0;reliSeries<series.length;reliSeries++)
+                {
+                    console.log(series[reliSeries],$scope.filters.selectedItems[i].lib);
+                    if (series[reliSeries] == $scope.filters.selectedItems[i].lib)
+                    {
+                        found = true;
+                    }
+                }
+                if (!found)
+                {
+                    ret.push($scope.filters.selectedItems[i].lib);
+                }
+            }
+            
+            return ret;
+        }
+        $scope.getColors = function(series,colors) {
+            var ret = colors;
+            for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+            {   
+                var found = false;
+                for (var reliSeries = 0;reliSeries<series.length;reliSeries++)
+                {
+                    if (series[reliSeries] == $scope.filters.selectedItems[i].lib)
+                    {
+                        found = true;
+                    }
+                }
+                if (!found)
+                {
+                    ret.push($scope.filters.selectedItems[i].bgColor);
+                }
+            }
+            return ret;
+        }
+        $scope.getObjectif = function(lab, pId)
         {
             var itemsProcessed = 0;
             switch(vm.groupMode)
@@ -138,79 +223,58 @@
             }
             return 0;
         }
-        $scope.toggleSidenav = function(sidenavId)
-        {
-            $mdSidenav(sidenavId).toggle();
-        }
-        $scope.export = function(chartId) {
-            
-            var exp = [];
-            var o;
-            switch (chartId)
+        $scope.getLabels = function(labels) {
+            var ret = labels;
+            switch($scope.filters.groupMode)
             {
-                case 1:
-                    o = {};
-                    o["label"] = "Periode";
-                    for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                case "d":
+                    break;
+                case "m":
+                    for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
                     {
-                        o[$scope.filters.selectedItems[i].lib] = $scope.filters.selectedItems[i].lib;
-                    }
-                    exp.push(o);
-                    for (var ilab = 0;ilab < vm.cLines.labels.length;ilab++)
-                    {
-                        o = {};
-                        o["label"] = vm.cLines.labels[ilab];
-                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
+                        var found = false;
+                        for (var reliLab = 0;reliLab < ret.length;reliLab++ )
                         {
-                            o[$scope.filters.selectedItems[i].lib] = vm.cLines.data[i][ilab];
+                            if (ret[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
+                            {
+                                found = true;
+                                break;
+                            }
                         }
-                        exp.push(o);
-                        //exp.push({ label:vm.cLines.labels[ilab], "tomates":vm.cLines.data[0][ilab] });
+                        if (!found)
+                        {
+                            ret.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
+                        }
+                    }
+                    break;
+                case "w":
+                    
+                    for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
+                    {
+                        var found = false;
+                        for (var reliLab = 0;reliLab < ret.length;reliLab++ )
+                        {
+                            if (ret[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                                ret.push("S" + d.getWeek() + "/" + d.getFullYear());
+                        }
                     }
                     break;
             }
-           // alasql("CREATE TABLE cities (city string, population number)");
-            //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
-            
-            return exp;
-            //alasql('SELECT label,tomates INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
+            return ret;
         }
-
-        
-
-        $scope.refresh = function() {
+        $scope.refresh = function(clearSeries) {
             $rootScope.loadingProgress = true;
-
-            vm.clinesProducteurs = {
-                labels:[],
-                series: [],
-                colors: [],
-                data:[],
-                options:{
-                    legend: {display: true},
-                    maintainAspectRatio:false,
-                    size: {
-                        height: 300,
-                        width: 400
-                    }
-                },
-                datasetOverride:[]
-            }
-            vm.cLines = {
-                labels:[],
-                series: [],
-                colors: [],
-                data:[],
-                options:{
-                    legend: {display: true},
-                    maintainAspectRatio:false,
-                    size: {
-                        height: 300,
-                        width: 400
-                    }
-                },
-                datasetOverride:[]
-            };
+            $scope.clearSeries = true;
+            $scope.refreshPrevsByProdukt();
+            $scope.refreshPrevsByProdukteur();
+            $scope.refreshPrevsByLines();
             vm.cDonut = {
                 labels:[],
                 series: [],
@@ -229,355 +293,7 @@
                     legend: {display: true}
                 }
             };
-            
-
-            var prodsIds = [];
-            for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-            {
-                prodsIds.push($scope.filters.selectedItems[i]._id);
-            }
-            var args = { prodsIds:prodsIds,dateFrom:$scope.filters.dateFrom,dateTo:$scope.filters.dateTo, dateFormat:vm.groupMode }
-            api.stats.prevsByDay.post( args ,
-                // Success
-                function (response)
-                {
-                    var sumP = 0;
-                    var oneLabelPass = false;
-                    $scope.sortedPlanifs = response.items;
-                    for (var i = 0;i < $scope.sortedPlanifs.length;i++)
-                    {
-                        for (var ip = 0;ip < $scope.filters.selectedItems.length;ip++)
-                        {  
-                            if ($scope.filters.selectedItems[ip]._id === $scope.sortedPlanifs[i]._id.produit)
-                            {
-                                $scope.sortedPlanifs[i].produitLib = $scope.filters.selectedItems[ip].lib;
-                                $scope.sortedPlanifs[i].bgColor = $scope.filters.selectedItems[ip].bgColor;
-                                break;
-                            }
-                        }
-                    }
-                    switch(vm.groupMode)
-                        {
-                            case "d":
-                                
-                                break;
-                            case "m":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var reliLab = 0;reliLab < vm.cLines.labels.length;reliLab++ )
-                                    {
-                                        if (vm.cLines.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
-                                        {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!found)
-                                    {
-                                        vm.cLines.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
-                                    }
-                                }
-                                break;
-                            case "w":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var reliLab = 0;reliLab < vm.cLines.labels.length;reliLab++ )
-                                    {
-                                        if (vm.cLines.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
-                                        {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!found)
-                                    {
-                                        vm.cLines.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
-                                    }
-                                }
-                                break;
-                        }
-
-                    for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-                    {   
-                        sumP = 0;
-                        var dataTmp = [];
-                        vm.cLines.series.push($scope.filters.selectedItems[i].lib);
-                        vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                        vm.cDonut.series.push($scope.filters.selectedItems[i].lib);
-                        vm.cDonut.labels.push($scope.filters.selectedItems[i].lib);
-                        vm.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
-                        switch(vm.groupMode)
-                        {
-                            case "d":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
-                                        {
-                                            if (o._id.day == d.getDate() && 
-                                            (o._id.month == (d.getMonth() + 1)) && 
-                                            (o._id.year == d.getFullYear()))
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                    if (!oneLabelPass) {vm.cLines.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
-                                }
-                                break;
-                            case "m":
-                                
-                                for (var i3 = 0;i3<vm.cLines.labels.length;i3++)
-                                {
-                                    found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
-                                        {
-                                            if ((o._id.month + "/" + o._id.year) === vm.cLines.labels[i3]) 
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                }
-                                
-                                break;  
-                            case "w":
-
-                                for (var i3 = 0;i3<vm.cLines.labels.length;i3++)
-                                {
-                                    found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
-                                        {
-                                            if (("S" + o._id.week + "/" + o._id.year) === vm.cLines.labels[i3]) 
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                }
-                                break;
-                        }
-                        vm.cLines.data.push(dataTmp);
-                        vm.cLines.datasetOverride.push({type: 'bar'})
-                        vm.cDonut.data.push(sumP);
-                        oneLabelPass = true;
-                    }
-
-                    if ($scope.filters.showObjectifs)
-                    {
-                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-                        {   
-                            var objs = [];
-                            vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                            for (var i2 = 0;i2 < vm.cLines.labels.length;i2++)
-                            {
-                                objs.push(vm.getObjectif(vm.cLines.labels[i2],$scope.filters.selectedItems[i]._id));
-                            }
-                            vm.cLines.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
-                            vm.cLines.data.push(objs);
-
-                        }
-                    }
-                     $rootScope.loadingProgress = false;
-                },
-                // Error
-                function (response)
-                {
-                    $rootScope.loadingProgress = false;
-                }
-            );
-            api.stats.prevsByProd.post( args ,
-                // Success
-                function (response)
-                {
-                    var sumP = 0;
-                    var oneLabelPass = false;
-                    $scope.producteurs = response.producteurs;
-                    //$scope.sortedPlanifs = response.items;
-                    switch(vm.groupMode)
-                        {
-                            case "d":
-                                
-                                break;
-                            case "m":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var reliLab = 0;reliLab < vm.clinesProducteurs.labels.length;reliLab++ )
-                                    {
-                                        if (vm.clinesProducteurs.labels[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
-                                        {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!found)
-                                    {
-                                        vm.clinesProducteurs.labels.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
-                                    }
-                                }
-                                break;
-                            case "w":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var reliLab = 0;reliLab < vm.clinesProducteurs.labels.length;reliLab++ )
-                                    {
-                                        if (vm.clinesProducteurs.labels[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
-                                        {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!found)
-                                    {
-                                        vm.clinesProducteurs.labels.push("S" + d.getWeek() + "/" + d.getFullYear());
-                                    }
-                                }
-                                break;
-                        }
-
-                    for (var i = 0;i < $scope.producteurs.length;i++)
-                    {   
-                        sumP = 0;
-                        var dataTmp = [];
-                        vm.clinesProducteurs.series.push($scope.producteurs[i].name + " " + $scope.producteurs[i].surn);
-                        //vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                        //vm.cDonut.series.push($scope.filters.selectedItems[i].lib);
-                        //vm.cDonut.labels.push($scope.filters.selectedItems[i].lib);
-                        //vm.cDonut.colors.push($scope.filters.selectedItems[i].bgColor);
-                        switch(vm.groupMode)
-                        {
-                            case "d":
-                                for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                                {
-                                    var found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.produit == $scope.filters.selectedItems[i]._id)
-                                        {
-                                            if (o._id.day == d.getDate() && 
-                                            (o._id.month == (d.getMonth() + 1)) && 
-                                            (o._id.year == d.getFullYear()))
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                    if (!oneLabelPass) {vm.clinesProducteurs.labels.push(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());}
-                                }
-                                break;
-                            case "m":
-                                
-                                for (var i3 = 0;i3<vm.clinesProducteurs.labels.length;i3++)
-                                {
-                                    found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.producteur == $scope.producteurs[i]._id)
-                                        {
-                                            if ((o._id.month + "/" + o._id.year) === vm.clinesProducteurs.labels[i3]) 
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                }
-                                
-                                break;  
-                            case "w":
-
-                                for (var i3 = 0;i3<vm.clinesProducteurs.labels.length;i3++)
-                                {
-                                    found = false;
-                                    for (var i2 = 0;i2<response.items.length;i2++)
-                                    {
-                                        var o = response.items[i2];
-                                        if (o._id.producteur == $scope.producteurs[i]._id)
-                                        {
-                                            if (("S" + o._id.week + "/" + o._id.year) === vm.clinesProducteurs.labels[i3]) 
-                                            {
-                                                sumP+= o.count;
-                                                dataTmp.push(o.count);
-                                                found = true;
-                                            }
-                                        }
-                                    }
-                                    if (!found) { dataTmp.push(0); }
-                                }
-                                break;
-                        }
-                        vm.clinesProducteurs.data.push(dataTmp);
-                        vm.clinesProducteurs.datasetOverride.push({type: 'bar'})
-                        //vm.cDonut.data.push(sumP);
-                        oneLabelPass = true;
-                    }
-                    if ($scope.filters.showObjectifs)
-                    {
-                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-                        {   
-                            var objs = [];
-                            //vm.cLines.colors.push($scope.filters.selectedItems[i].bgColor);
-                            for (var i2 = 0;i2 < vm.clinesProducteurs.labels.length;i2++)
-                            {
-                                objs.push(vm.getObjectif(vm.clinesProducteurs.labels[i2],$scope.filters.selectedItems[i]._id));
-                            }
-                            vm.clinesProducteurs.datasetOverride.push({label:"Obj. " + $scope.filters.selectedItems[i].lib,type: 'line',borderWidth: 1})
-                            vm.clinesProducteurs.data.push(objs);
-                        }
-                    }
-                     $rootScope.loadingProgress = false;
-                },
-                // Error
-                function (response)
-                {
-                    $rootScope.loadingProgress = false;
-                }
-            );
-
-            args.pid = 1;
-            args.nbp = 100;
-            
-            api.stats.prevsPlanifsLines.post( args ,
-                // Success
-                function (response)
-                {
-                     $rootScope.loadingProgress = false;
-                },
-                // Error
-                function (response)
-                {
-                    $rootScope.loadingProgress = false;
-                }
-            );
+            $rootScope.loadingProgress = false;
         }
 
         $scope.querySearch = function(query, type) {
@@ -622,7 +338,7 @@
             d3.selectAll('.nvtooltip').remove();
         });
 
-        $scope.refresh();
+        //$scope.refresh();
         
     }
 })();

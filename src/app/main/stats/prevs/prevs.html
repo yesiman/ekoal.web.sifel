@@ -32,13 +32,14 @@
                     ms-sidenav-helper>
             <md-content class="content" ms-scroll>
                 <md-list ng-cloak>
-                    <md-subheader class="md-no-sticky">Du</md-subheader>
+                    <md-subheader class="md-no-sticky">Dates</md-subheader>
                     <md-list-item>
-                        <md-datepicker ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                        <p>Du</p>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
-                    <md-subheader class="md-no-sticky">Au</md-subheader>
                     <md-list-item>
-                        <md-datepicker ng-model="filters.dateTo" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                        <p>Au</p>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Produits</md-subheader>
@@ -50,17 +51,12 @@
                             md-item-text="item.lib"
                             placeholder="Premiers charactères..."
                             md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
+                            <span md-highlight-text="filters.searchText">{{item.lib}}</span>
                         </md-autocomplete>
                     </md-list-item>
                     <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
                         <p> {{ p.lib }} </p>
                         <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item>
-                        <md-checkbox  ng-model="filters.showObjectifs" ng-change="refresh()"></md-checkbox>
-                        <p>Afficher objectifs</p>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Producteurs</md-subheader>
@@ -79,6 +75,21 @@
                         <p> {{ p.name }} </p>
                         <md-checkbox class="md-secondary" ng-model="p.selected"></md-checkbox>
                     </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Options</md-subheader>
+                    <md-list-item>
+                        <p>Afficher objectifs</p>
+                        <md-switch class="md-secondary"  ng-model="filters.showObjectifs" ng-change="refresh(true)"></md-switch>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Grouper par</p>
+                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.groupMode" ng-change="refresh(true)">
+                            <md-option value="d">jour</md-option>
+                            <md-option value="w" ng-selected="true">semaine</md-option>
+                            <md-option value="m">mois</md-option>
+                        </md-select>
+                    </md-list-item>
+                    
                 </md-list>
             </md-content>
 
@@ -88,219 +99,19 @@
 
         <md-content class="content" style="width:100%;" ms-scroll>
             <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
-                
                 <md-tab layout-fill label="Produits" >
-                <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
-                    
-                        <div class="widget-group" layout="row" style="width:100%;" >
-                <ms-widget layout="row"  style="width:100%;">
-                    <ms-widget-front class="white-bg">
-                        <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                            <div class="h3 widget-head">Prévisions récoltes</div>
-                            <div>
-                                <span class="cLines-groupMode">Grouper par </span>
-                                <md-select class="cLines-groupMode" ng-model="vm.groupMode" ng-change="refresh()">
-                                    <md-option value="d">jour</md-option>
-                                    <md-option value="w" ng-selected="true">semaine</md-option>
-                                    <md-option value="m">mois</md-option>
-                                </md-select>
-                                 <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
-                                    <md-tooltip>Exporter vers excel</md-tooltip>
-                                    <md-icon md-font-icon="icon-export"></md-icon>
-                                </button>
-                            </div>
-                        </div>
-                        <md-divider></md-divider>
-                        <div class="p-16">
-                            <canvas id="bar"  height="400" 
-                                width="400" class="chart chart-bar" 
-                                chart-data="vm.cLines.data" chart-labels="vm.cLines.labels"  chart-options="vm.cLines.options" 
-                                chart-series="vm.cLines.series" chart-colors="vm.cLines.colors" chart-dataset-override="vm.cLines.datasetOverride" ></canvas>
-                        </div>
-                    </ms-widget-front>
-                </ms-widget>
-            </div>
-            <!-- WIDGET GROUP -->
-                    <div class="widget-group" layout="row" flex="100" layout-wrap>
-
-                        <!-- WIDGET 6 -->
-                        <ms-widget layout="column" flex="50"  flex-xs="100">
-
-                            <!-- Front -->
-                            <ms-widget-front class="white-bg">
-                                
-                                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                            <div class="h3 widget-head">Cumuls par produit</div>
-                            <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
-                                    <md-tooltip>Exporter vers excel</md-tooltip>
-                                    <md-icon md-font-icon="icon-export"></md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                        <md-divider></md-divider>
-                                <div class="p-16">
-                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="vm.cDonut.options"  chart-series="vm.cDonut.series"  chart-legend="true"  
-                                        chart-data="vm.cDonut.data" chart-labels="vm.cDonut.labels" chart-colors="vm.cDonut.colors"></canvas>
-                                </div>
-
-
-                            </ms-widget-front>
-                            <!-- / Front -->
-
-                        </ms-widget>
-                        <!-- / WIDGET 6 -->
-
-                        <ms-widget layout="column" flex="50"  flex-xs="100">
-
-                            <!-- Front -->
-                            <ms-widget-front class="white-bg">
-                                
-                                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                            <div class="h3 widget-head">Cumuls par producteur</div>
-                            <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
-                                    <md-tooltip>Exporter vers excel</md-tooltip>
-                                    <md-icon md-font-icon="icon-export"></md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                        <md-divider></md-divider>
-                                <div class="p-16">
-                                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutProducteurs.options"  chart-series="cDonutProducteurs.series"  chart-legend="true"  
-                                chart-data="cDonutProducteurs.data" chart-labels="cDonutProducteurs.labels" chart-colors="cDonutProducteurs.colors"></canvas>
-                                </div>
-
-
-                            </ms-widget-front>
-                            <!-- / Front -->
-
-                        </ms-widget>
-                        <!-- END WIDGET CUMUL PRODUCTEURS -->
-                        
-                        <!-- WIDGET 7 -->
-                        <ms-widget layout="column" flex="50"  flex-xs="100">
-
-                            <!-- Front -->
-                            <ms-widget-front class="white-bg">
-<div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                            <div class="h3 widget-head">Prochaines récoltes</div>
-                            <div>
-                                <md-button class="md-icon-button md-primary" ng-click="export(3)" aria-label="Export">
-                                    <md-tooltip>Exporter vers excel</md-tooltip>
-                                    <md-icon md-font-icon="icon-export"></md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                                    
-                                    <md-divider></md-divider>
-                                    
-                                    <!--<md-list class="p-16" ms-scroll style="overflow:hidden;">
-
-                                        <md-list-item class="md-3-line" ng-repeat="sp in sortedPlanifs" ng-click="null">
-                                        <div class="md-list-item-text" layout="column">
-                                            <h3>{{sp.produitLib}}</h3>
-                                            <h4>{{sp._id.day + "-" + sp._id.month + "-" + sp._id.year}}</h4>
-                                            <p>{{sp.count}} kg(s)</p>
-                                        </div>
-                                        </md-list-item>
-                                    </md-list>-->
-                                    
-<md-content ms-scroll>
-                                <div class="simple-table-container scrollable" ms-responsive-table  >
-                                    <table class="simple">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Date
-                                                </th>
-                                                <th>
-                                                    Produit
-                                                </th>
-                                                <th>
-                                                    Quantité
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr ng-repeat="sp in sortedPlanifs">
-                                                <td>
-                                                    <span>
-                                                        {{sp._id.day + "-" + sp._id.month + "-" + sp._id.year}}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="text-boxed" style="background-color:{{sp.bgColor}};">
-                                                        {{sp.produitLib}}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span>
-                                                        {{sp.count}}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </md-content>
-
-
-                            </ms-widget-front>
-                            <!-- / Front -->
-
-                        </ms-widget>
-                        <!-- / WIDGET 7 -->
-
-                      
-                    </div>
-                </md-tab-content>
+                    <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
+                        <prevs-by-produkt refresh-method="injectedObject"></prevs-by-produkt>
+                    </md-tab-content>
                 </md-tab>
                 <md-tab layout-fill label="Producteurs" >
                     <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
-                    
-                        <div class="widget-group" layout="row" style="width:100%;" >
-                            <ms-widget layout="row"  style="width:100%;">
-                                <ms-widget-front class="white-bg">
-                                    <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
-                                        <div class="h3 widget-head">Prévisions récoltes</div>
-                                        <div>
-                                            <span class="cLines-groupMode">Grouper par </span>
-                                            <md-select class="cLines-groupMode" ng-model="vm.groupMode" ng-change="refresh()">
-                                                <md-option value="d">jour</md-option>
-                                                <md-option value="w" ng-selected="true">semaine</md-option>
-                                                <md-option value="m">mois</md-option>
-                                            </md-select>
-                                            <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
-                                                <md-tooltip>Exporter vers excel</md-tooltip>
-                                                <md-icon md-font-icon="icon-export"></md-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <md-divider></md-divider>
-                                    <div class="p-16">
-                                        <canvas id="bar"  height="400" 
-                                            width="400" class="chart chart-bar" 
-                                            chart-data="vm.clinesProducteurs.data" chart-labels="vm.clinesProducteurs.labels"  chart-options="vm.clinesProducteurs.options" 
-                                            chart-series="vm.clinesProducteurs.series" chart-colors="vm.clinesProducteurs.colors" chart-dataset-override="vm.clinesProducteurs.datasetOverride" ></canvas>
-                                    </div>
-                                </ms-widget-front>
-                            </ms-widget>
-                        </div>
+                         <prevs-by-produkteur refresh-method="injectedObject"></prevs-by-produkteur>
                     </md-tab-content>
                 </md-tab>
                 <md-tab layout-fill label="Planifications" >
                     <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill>
-                        <div id="grid1"  layout="column"  ui-grid="vm.gridPlanifOptions"  class="grid"></div>
-                        <div class="footer" layout="column" layout-align="space-between">
-                        <div paging class="pager" 
-                            page="paginationOptions.pageNumber" 
-                            page-size="paginationOptions.pageSize" 
-                            paging-action="loadPageAction(page)" 
-                            total="gridOptions.totalItems">
-                        </div> 
-                        </div>
+                        <prevs-by-lines refresh-method="injectedObject"></prevs-by-lines>
                     </md-tab-content>
                 </md-tab>
             </md-tabs>
