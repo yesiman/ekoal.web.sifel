@@ -281,6 +281,11 @@
                 get: {
                     method: 'GET'
                 }
+            }),
+            getAllFromDouane: $resource(api.baseUrl + 'products/getAllFromDouane/:level/:parent', {level:'@level',parent:'@parent'} , {
+                get: {
+                    method: 'GET'
+                }
             })
         }
         api.planifs = {

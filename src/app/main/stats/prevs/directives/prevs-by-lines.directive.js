@@ -15,10 +15,30 @@
             templateUrl: 'app/main/stats/prevs/directives/prevs-by-lines/prevs-by-lines.html',
             link: function(scope) {
                 
+
+
+
+
+                var producteurHtml = '<div class="ui-grid-cell-contents">';
+                producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
+                producteurHtml += '</div>';
                 scope.gridPlanifOptions = standardizer.getGridOptionsStd();
                 scope.gridPlanifOptions.columnDefs = [
                         { field: 'semaine', displayName: 'Semaine' },
+                        { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
                         { field: 'qte.val', displayName: 'Quantité' }];   
+                
+
+                scope.getProducteurName = function(id) {
+                    for (var i = 0;i < scope.producteurs.length;i++)
+                    {
+                        if (scope.producteurs[i]._id === id)
+                        {
+                            return scope.producteurs[i].surn + " " + scope.producteurs[i].name;
+                        }
+                    }
+                    return "";
+                }
 
                 scope.refreshPrevsByLines = function()
                 {

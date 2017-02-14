@@ -41,7 +41,13 @@
             language: standardizer.getDatatableLanguages()
         };
         vm.filters = { 
-            levels: ["Administrateur","Administrateur OP","Technicien","Producteur","Commercial"]
+            levels: [
+                {lib:"Administrateur",checked:true},
+                {lib:"Administrateur OP",checked:true},
+                {lib:"Technicien",checked:true},
+                {lib:"Producteur",checked:true},
+                {lib:"Commercial",checked:true}
+            ]
         }
         // Data
         $scope.getUserType = function(it)

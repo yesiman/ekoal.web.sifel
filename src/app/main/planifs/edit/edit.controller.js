@@ -23,9 +23,10 @@
         };
         vm.rules = [];
         vm.selectedRule = {};
+        
         //
         vm.ruleChanged = function() {
-            $scope.item.linesWeeks = [];
+            $scope.item.lines = [];
             var startDate = new Date($scope.item.datePlant);
             startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
             var wStart = startDate.getWeek();
@@ -39,9 +40,13 @@
                     mois:startDate.getMonth() + 1,
                     startAt:new Date(startDate),
                     percent:vm.selectedRule.weeks[i].percent,
-                    qte:valueQte*surfacePercent
+                    qte:{
+                        val:valueQte*surfacePercent,
+                        unit:1
+                    }
                 }
-                $scope.validLine(oIt);
+                console.log("oIt",oIt);
+                $scope.validLine(oIt,true);
                 startDate.setDate(startDate.getDate() + 7);
             }
         }
@@ -76,9 +81,9 @@
             $scope.item.producteur = $rootScope.user;
         }
         
-        if (!$scope.item.linesWeeks)
+        if (!$scope.item.lines)
         {
-            $scope.item.linesWeeks = [];
+            $scope.item.lines = [];
             $scope.item.linesToRem = [];
             $scope.item.datePlant = new Date();
         }
@@ -86,6 +91,18 @@
             $scope.item.datePlant = new Date($scope.item.datePlant);
         }
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
+            $scope.dialog = { 
+                weeks:[],
+                years:[]
+            };
+            for (var i = 1;i < 53;i++)
+            {
+                $scope.dialog.weeks.push(i);
+            }
+            for (var i = 2010;i < 2030;i++)
+            {
+                $scope.dialog.years.push(i);
+            }
             $scope.item = item;
             $scope.onCancel = onCancel;
             $scope.onValid = onValid;   
@@ -134,33 +151,45 @@
         {
             $mdDialog.hide();
         }
-        $scope.validLine = function(item){
+
+        vm.getDateOfISOWeek = function(weekNo, y) {
+            var d1 = new Date();
+            d1.setFullYear(y);
+            var numOfdaysPastSinceLastMonday = eval(d1.getDay()- 1);
+            d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+            var weekNoToday = d1.getWeek();
+            var weeksInTheFuture = eval( weekNo - weekNoToday );
+            d1.setDate(d1.getDate() + eval( 7 * weeksInTheFuture ));
+            return new Date(d1);
+            //var rangeIsFrom = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + y;
+            //d1.setDate(d1.getDate() + 6);
+            //var rangeIsTo = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + y ;
+            //return rangeIsFrom + " to "+rangeIsTo;
+        }
+
+        $scope.validLine = function(item,fromrule){
             
-            var firstMonday = "";
-            var d = new Date(new Date().getFullYear(),0,1,1,1,1);
-            while(d.getDay() != 1)
+            if (!fromrule)
             {
-                d.setDate(d.getDate()+1);
+                var firstMonday = "";
+                var d = vm.getDateOfISOWeek(item.semaine,item.anne);
+                //var w = d.getTime() + 604800000 * (week-1);
+                //var n1 = new Date(w);
+                //var n2 = new Date(w + 518400000)
+                //semaine:startDate.getWeek(),
+                item.mois = d.getMonth() + 1;
+                item.startAt = d;    
             }
-            var year = new Date().getFullYear();
-            var week = item.semaine;
-            var d = new Date( new Date().getFullYear(),1,d.getDate(),1,1,1);
-            var w = d.getTime() + 604800000 * (week-1);
-            var n1 = new Date(w);
-            var n2 = new Date(w + 518400000)
-            //semaine:startDate.getWeek(),
-            item.mois = d.getMonth() + 1;
-            item.startAt = new Date(d);
             //
             if (!item._id)
             {
-                item.id = "tmp" + ($scope.item.linesWeeks.length + 1);
-                $scope.item.linesWeeks.push(item);
+                item.id = "tmp" + ($scope.item.lines.length + 1);
+                $scope.item.lines.push(item);
             }else {
                 var increm = 0;
-                angular.forEach($scope.item.linesWeeks, function(value) {
+                angular.forEach($scope.item.lines, function(value) {
                     if (value._id == item._id) {
-                        $scope.item.linesWeeks[increm] = item;
+                        $scope.item.lines[increm] = item;
                     }
                     increm++;
                 });
@@ -220,7 +249,7 @@
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 dateRecStart:startDate,
-                linesWeeks:$scope.item.linesWeeks,
+                lines:$scope.item.lines,
                 linesToRem:$scope.item.linesToRem
             };
 
@@ -252,18 +281,18 @@
                 //loop on array and remove
                 var increm = 0;
                 
-                angular.forEach($scope.item.linesWeeks, function(value) {
+                angular.forEach($scope.item.lines, function(value) {
                     if (value._id) {
                         if (value._id === il._id)
                         {
                             $scope.item.linesToRem.push(il._id);
-                            $scope.item.linesWeeks.splice(increm,1);
+                            $scope.item.lines.splice(increm,1);
                         }
                     }
                     else {
                         if (value.id === il.id)
                         {
-                            $scope.item.linesWeeks.splice(increm,1);
+                            $scope.item.lines.splice(increm,1);
                         }
                     }
                     increm++;

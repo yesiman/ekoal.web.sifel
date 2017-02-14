@@ -7,7 +7,7 @@
         .controller('MainController', MainController);
 
     /** @ngInject */
-    function MainController($scope, $rootScope, $interval,$cookies, api,$http)
+    function MainController($scope, $rootScope, $interval,$cookies, api,$http,$mdDialog)
     {
         // Data
         //CHECK TOKEN EXPIRATION
@@ -37,7 +37,28 @@
                 }
             }
         }
-        //$interval(checkDateDiff, 55000);
+        /*$rootScope.$on('$locationChangeStart', function (event, next, current) {
+            event.preventDefault();
+            if (current.endsWith("/edit"))
+            {
+                event.preventDefault();
+                var confirm = $mdDialog.confirm()
+                    .title('Êtes vous sur de vouloir supprimer cette ligne?')
+                    .textContent('(Cette action est irréversible))')
+                    .ariaLabel('Supprimer')
+                    .targetEvent(event)
+                    .ok('Valider')
+                    .cancel('Annuler');
+
+                $mdDialog.show(confirm).then(function() {
+                        
+                    }, function() {
+                        
+                    });
+                    
+            }
+          
+        });*/
         // Remove the splash screen
         $scope.$on('$viewContentAnimationEnded', function (event)
         {

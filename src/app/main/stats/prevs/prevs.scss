@@ -18,7 +18,9 @@ md-sidenav {
             margin-top:5px;
         }
     }
-    
+    md-list{
+        overflow-x: hidden;
+    }
 }
 .md-chips{
     padding-bottom: 0px;

@@ -38,6 +38,31 @@
             swatchOnly:true 
         }
 
+        function ParentsDialogController($scope, $mdDialog) {
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function() {
+            $mdDialog.cancel();
+            };
+            $scope.answer = function(answer) {
+            $mdDialog.hide(answer);
+            };
+        }
+        vm.showParentsDialog = function(ev) {
+            $mdDialog.show({
+                controller         : ParentsDialogController,
+                controllerAs       : 'vm',
+                templateUrl        : 'app/main/produits/edit/dialogs/produit-parent/produit-parent.html',
+                parent             : angular.element($document.body),
+                targetEvent        : ev,
+                clickOutsideToClose: true})
+                .then(function(answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+                }, function() {
+                $scope.status = 'You cancelled the dialog.';
+                });
+        }
 
         $scope.current =  {userForm : {}};
         $scope.head = {

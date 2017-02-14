@@ -1,0 +1,29 @@
+<div>
+
+
+<ul id="dpMap">
+    <li ng-if="curLevel != 1">
+        <a href="#" ng-click="rootCateg()">Racine 
+         <md-icon ng-if="curLevel > 1" md-font-icon="icon-chevron-right" class="icon s16"></md-icon>
+         </a>
+    </li>
+    <li ng-if="curLevel != 1" ng-repeat="p in pile" ng-disabled="true">
+        <a ng-if="($index+2) < curLevel" href="#" ng-click="backParent(p, $index+1)">{{p.lib}}
+         <md-icon   md-font-icon="icon-chevron-right" class="icon s16"></md-icon>
+        </a>
+        <span ng-if="($index+2) >= curLevel">{{p.lib}}</span>
+    </li>   
+</ul>
+
+</div>
+
+
+<div id="grid1" ng-disabled="{{true}}"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
+<div class="footer" layout="column" layout-align="space-between">
+    <div paging class="pager" 
+        page="paginationOptions.pageNumber" 
+        page-size="paginationOptions.pageSize" 
+        paging-action="loadPageAction(page)" 
+        total="gridOptions.totalItems">
+    </div> 
+</div>

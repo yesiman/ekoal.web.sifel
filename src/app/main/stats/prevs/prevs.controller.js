@@ -29,7 +29,7 @@
         monday.setMinutes(0);
         monday.setSeconds(0);
         var sunday = new Date(monday);
-        sunday.setMonth(sunday.getMonth() + 1);
+        sunday.setMonth(sunday.getMonth() + 6);
         sunday.setHours(23);
         sunday.setMinutes(59);
         sunday.setSeconds(59);
@@ -115,7 +115,6 @@
                 var found = false;
                 for (var reliSeries = 0;reliSeries<series.length;reliSeries++)
                 {
-                    console.log(series[reliSeries],$scope.filters.selectedItems[i].lib);
                     if (series[reliSeries] == $scope.filters.selectedItems[i].lib)
                     {
                         found = true;
@@ -130,21 +129,10 @@
             return ret;
         }
         $scope.getColors = function(series,colors) {
-            var ret = colors;
+            var ret = [];
             for (var i = 0;i < $scope.filters.selectedItems.length;i++)
             {   
-                var found = false;
-                for (var reliSeries = 0;reliSeries<series.length;reliSeries++)
-                {
-                    if (series[reliSeries] == $scope.filters.selectedItems[i].lib)
-                    {
-                        found = true;
-                    }
-                }
-                if (!found)
-                {
-                    ret.push($scope.filters.selectedItems[i].bgColor);
-                }
+               ret.push($scope.filters.selectedItems[i].bgColor);
             }
             return ret;
         }
@@ -275,24 +263,6 @@
             $scope.refreshPrevsByProdukt();
             $scope.refreshPrevsByProdukteur();
             $scope.refreshPrevsByLines();
-            vm.cDonut = {
-                labels:[],
-                series: [],
-                colors: [],
-                data:[],
-                options:{
-                    legend: {display: true}
-                }
-            };
-            vm.cDonutProducteurs = {
-                labels:[],
-                series: [],
-                colors: [],
-                data:[],
-                options:{
-                    legend: {display: true}
-                }
-            };
             $rootScope.loadingProgress = false;
         }
 

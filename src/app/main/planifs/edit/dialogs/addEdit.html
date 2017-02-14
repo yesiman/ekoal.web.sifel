@@ -12,12 +12,24 @@
 
     <md-dialog-content>
       <div layout-gt-sm="row">
-        <md-input-container class="md-inline" flex>
+        <md-input-container class="md-inline" flex="25">
           <h4>Semaine</h4>
-          <input type="number" ng-model="item.semaine" required>
+          <md-select ng-model="item.semaine">
+            <md-option ng-value="w" ng-repeat="w in dialog.weeks">
+                {{w}}    
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="md-inline" flex="25">
+          <h4>Année</h4>
+          <md-select ng-model="item.anne">
+            <md-option ng-value="a" ng-repeat="a in dialog.years">
+                {{a}}    
+            </md-option>
+          </md-select>
         </md-input-container>
         <md-input-container class="md-inline" flex>
-        <div class="md-inline" flex-gt-sm qte-input  change-fn="recalc('m',it)" required="true"  ng-model="item.qte"></div>
+        <div class="md-inline"  class="md-inline" flex="50" qte-input  change-fn="recalc('m',it)" required="true"  ng-model="item.qte"></div>
         </md-input-container>
       </div>
     </md-dialog-content>

@@ -33,6 +33,15 @@
                         },
                         datasetOverride:[]
                     };
+                    scope.cDonutProdutks = {
+                        labels:[],
+                        series: [],
+                        colors: [],
+                        data:[],
+                        options:{
+                            legend: {display: true}
+                        }
+                    };
                     var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,dateTo:scope.filters.dateTo, dateFormat:scope.filters.groupMode }
                     api.stats.prevsByDay.post( args ,
                         // Success
@@ -41,9 +50,14 @@
                             scope.cPrevsByProdukt.labels = scope.getLabels(scope.cPrevsByProdukt.labels);
                             scope.cPrevsByProdukt.series = scope.getSeries(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
                             scope.cPrevsByProdukt.colors = scope.getColors(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
+                            scope.cDonutProdutks.labels = scope.getSeries(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
+                            scope.cDonutProdutks.series = scope.getSeries(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
+                            scope.cDonutProdutks.colors = scope.getColors(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
+                            
                             var dataTmp = [];
                             for (var iprods = 0;iprods<scope.filters.selectedItems.length;iprods++)
                             {
+                                var sumP = 0;
                                 var prod = scope.filters.selectedItems[iprods];
                                 for (var ilabs = 0;ilabs<scope.cPrevsByProdukt.labels.length;ilabs++)
                                 {
@@ -67,6 +81,7 @@
                                             if (tester === lab) 
                                             {
                                                 dataTmp.push(o.count);
+                                                sumP+=o.count;
                                                 found = true;
                                                 break;
                                             }
@@ -76,6 +91,7 @@
                                 }
                                 scope.cPrevsByProdukt.data.push(dataTmp);
                                 scope.cPrevsByProdukt.datasetOverride.push({type: 'bar'})
+                                scope.cDonutProdutks.data.push(sumP)
                             }
                             if (scope.filters.showObjectifs) {
                                 for (var iprods = 0;iprods<scope.filters.selectedItems.length;iprods++)

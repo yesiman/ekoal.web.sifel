@@ -33,6 +33,15 @@
                         },
                         datasetOverride:[]
                     }
+                    scope.cDonutProducteurs = {
+                        labels:[],
+                        series: [],
+                        colors: [],
+                        data:[],
+                        options:{
+                            legend: {display: true}
+                        }
+                    };
                     var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,dateTo:scope.filters.dateTo, dateFormat:scope.filters.groupMode }
                     api.stats.prevsByProd.post( args ,
                         // Success
@@ -43,20 +52,30 @@
                             //scope.clinesProducteurs.series = scope.getSeries(scope.clinesProducteurs.series,scope.clinesProducteurs.colors);
                             //scope.clinesProducteurs.colors = scope.getColors(scope.clinesProducteurs.series,scope.clinesProducteurs.colors);
                             for (var i = 0;i < scope.producteurs.length;i++)
+                            {
+                                scope.producteurs[i].checked = true;
+                                scope.clinesProducteurs.series.push(scope.producteurs[i].name + " " + scope.producteurs[i].surn);
+                                scope.cDonutProducteurs.series.push(scope.producteurs[i].name + " " + scope.producteurs[i].surn);
+                                scope.cDonutProducteurs.labels.push(scope.producteurs[i].name + " " + scope.producteurs[i].surn);  
+                            }
+                            for (var i = 0;i < scope.producteurs.length;i++)
                             {   
                                 var sumP = 0;
                                 var dataTmp = [];
                                 var found= false;
-                                scope.clinesProducteurs.series.push(scope.producteurs[i].name + " " + scope.producteurs[i].surn);
-                                switch(scope.groupMode)
+                                 switch(scope.filters.groupMode)
                                 {
                                     case "w":
                                         for (var i3 = 0;i3<scope.clinesProducteurs.labels.length;i3++)
                                         {
+                                            console.log("scope.clinesProducteurs.labels.length",scope.clinesProducteurs.labels.length);
                                             found = false;
                                             for (var i2 = 0;i2<response.items.length;i2++)
                                             {
                                                 var o = response.items[i2];
+                                                console.log("o",o);
+                                                console.log("scope.producteurs[i]._id",scope.producteurs[i]._id);
+                                                
                                                 if (o._id.producteur == scope.producteurs[i]._id)
                                                 {
                                                     if (("S" + o._id.week + "/" + o._id.year) === scope.clinesProducteurs.labels[i3]) 
@@ -93,6 +112,7 @@
                                 }
                                 scope.clinesProducteurs.data.push(dataTmp);
                                 scope.clinesProducteurs.datasetOverride.push({type: 'bar'})
+                                scope.cDonutProducteurs.data.push(sumP);
                             }
 
                             if (scope.filters.showObjectifs) {

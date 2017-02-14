@@ -1,0 +1,25 @@
+<md-dialog class="rule-dialog" aria-label="New Task">
+    <form name="taskForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">Sélection produit parent</span>
+                <md-button class="md-icon-button" ng-click="vm.close()">
+                    <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <douanes-products></douanes-products>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+      <md-button ng-click="vm.close()">
+        Annuler
+      </md-button>
+    </md-dialog-actions>
+
+
+       
+    </form>
+</md-dialog>

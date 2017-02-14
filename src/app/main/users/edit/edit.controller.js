@@ -31,6 +31,10 @@
             ico:"icon-account-box",
             title:"Mise à jour utilisateur"
         };
+
+        
+
+
         $scope.current =  {userForm : {}};
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
