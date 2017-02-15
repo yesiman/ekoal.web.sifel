@@ -216,9 +216,9 @@
                     method: 'DELETE'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'users/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
-                get: {
-                    method: 'GET'
+            getAll: $resource(api.baseUrl + 'users/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp', levels:'@levels'} , {
+                post: {
+                    method: 'POST'
                 }
             }),
             getAllByType: $resource(api.baseUrl + 'users/getAllByType/:pid/:nbp/:idt', {pid:'@pid',nbp:'@nbp',idt:'@idt'} , {
@@ -333,17 +333,17 @@
             })
         }
         api.stats = {
-            prevsByDay: $resource(api.baseUrl + 'stats/prevsByDay/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat' } , {
+            prevsByDay: $resource(api.baseUrl + 'stats/prevsByDay/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat', unit:'@unit' } , {
                 post: {
                     method: 'POST'
                 }
             }),
-            prevsByProd: $resource(api.baseUrl + 'stats/prevsByProd/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat' } , {
+            prevsByProd: $resource(api.baseUrl + 'stats/prevsByProd/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat', unit:'@unit' } , {
                 post: {
                     method: 'POST'
                 }
             }),
-            prevsPlanifsLines: $resource(api.baseUrl + 'stats/prevsPlanifsLines/:pid/:nbp', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat',pid:'@pid',nbp:'@nbp' } , {
+            prevsPlanifsLines: $resource(api.baseUrl + 'stats/prevsPlanifsLines/:pid/:nbp', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat',pid:'@pid',nbp:'@nbp', unit:'@unit' } , {
                 post: {
                     method: 'POST'
                 }

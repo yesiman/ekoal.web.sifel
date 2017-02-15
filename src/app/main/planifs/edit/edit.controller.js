@@ -45,7 +45,6 @@
                         unit:1
                     }
                 }
-                console.log("oIt",oIt);
                 $scope.validLine(oIt,true);
                 startDate.setDate(startDate.getDate() + 7);
             }
@@ -245,7 +244,7 @@
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
-                rendement:$scope.item.produit.customs.rendement,
+                rendement:$scope.item.produit.objectif.rendement,
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 dateRecStart:startDate,
@@ -256,7 +255,6 @@
             /*$scope.item.type = parseInt($scope.item.type);
             */
 
-            console.log($scope.item._id);
             api.planifs.add.post({ id:($scope.item._id?$scope.item._id:-1), planif: toSave } ,
                 function (response)
                 {
@@ -297,7 +295,6 @@
                     }
                     increm++;
                 });
-                console.log($scope.item.linesToRem);
             }, function() {
                 
             });

@@ -7,7 +7,7 @@
         .directive('prevsByLines', prevsByLines);
 
     /** @ngInject */
-    function prevsByLines(api,standardizer)
+    function prevsByLines(api,standardizer,$filter)
     {
         return {
             restrict   : 'E',
@@ -22,13 +22,22 @@
                 var producteurHtml = '<div class="ui-grid-cell-contents">';
                 producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
                 producteurHtml += '</div>';
+                var semaineHtml = '<div class="ui-grid-cell-contents">';
+                semaineHtml += '{{row.entity.semaine}} / {{row.entity.startAt | date : "yyyy"}}';
+                semaineHtml += '</div>';
+                var qteHtml = '<div class="ui-grid-cell-contents">';
+                qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
+                qteHtml += '</div>';
                 scope.gridPlanifOptions = standardizer.getGridOptionsStd();
                 scope.gridPlanifOptions.columnDefs = [
-                        { field: 'semaine', displayName: 'Semaine' },
+                        { field: 'semaine', sort:{priority:0}, displayName: 'Semaine', cellTemplate:semaineHtml },
                         { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
-                        { field: 'qte.val', displayName: 'Quantité' }];   
+                        { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml }];   
                 
-
+                
+                scope.getGoodQte = function(el) {
+                    return standardizer.getPoidsInAskVal(el.qte,scope.filters.unitMode);
+                }
                 scope.getProducteurName = function(id) {
                     for (var i = 0;i < scope.producteurs.length;i++)
                     {
@@ -42,13 +51,16 @@
 
                 scope.refreshPrevsByLines = function()
                 {
-                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,dateTo:scope.filters.dateTo, dateFormat:scope.groupMode }
+                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,
+                        dateTo:scope.filters.dateTo, dateFormat:scope.groupMode,
+                        unit:scope.filters.unitMode  }
                     args.pid = 1;
                     args.nbp = 100;   
                     api.stats.prevsPlanifsLines.post( args ,
                         // Success
                         function (response)
                         {
+                            response.items = $filter('orderBy')(response.items, "startAt", false)
                             scope.gridPlanifOptions.data  = response.items;
                         },
                         // Error

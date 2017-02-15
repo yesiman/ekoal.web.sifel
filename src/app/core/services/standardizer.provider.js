@@ -29,6 +29,27 @@
                     if (cust) {actionsHtml += cust + '</div>';}
                     return actionsHtml;
                 },
+                getPoidsInAskVal: function getHtmlActions(element, askedUnit)
+                {
+                    console.log("getPoidsInAskVal", {
+                        element:element,
+                        askedUnit:askedUnit
+                    });
+                    if (element.unit === parseInt(askedUnit))
+                    {
+                        return element.val;
+                    }
+                    else {
+                        if (askedUnit == 1)
+                        {
+                            return (element.val*1000);
+                        }
+                        else 
+                        {
+                            return (element.val/1000);
+                        }
+                    }
+                },
                 getGridOptionsStd: function getGridOptionsStd()
                 {
                     return {

@@ -26,7 +26,7 @@
                     <md-subheader class="md-no-sticky">Niveaux de droits</md-subheader>
                     <md-list-item ng-repeat="l in vm.filters.levels" tag-bg item="p">
                         <span class="status {{getUserBg($index+1)}}">{{l.lib}}</span>
-                        <md-checkbox class="md-secondary" ng-model="l.checked"></md-checkbox>
+                        <md-checkbox class="md-secondary" ng-model="l.checked" ng-change="loadPage()"></md-checkbox>
                     </md-list-item>
                 </md-list>
             </md-content>

@@ -43,7 +43,8 @@
             dateFrom: new Date(),
             dateTo: sunday,
             showObjectifs:true,
-            groupMode:"w"
+            groupMode:"w",
+            unitMode:1
         }
              
 
@@ -149,9 +150,9 @@
                         var element = vm.objectifs[ei];
                         if(element.produit === pId)
                         {
-                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            for (var eo = 0;eo < element.lines.length;eo++)
                             {
-                                var element2 = element.objectif[eo];
+                                var element2 = element.lines[eo];
                                 var sid = w;
                                 if (element2.rendements)
                                 {
@@ -170,15 +171,15 @@
                         var element = vm.objectifs[ei];
                         if(element.produit === pId)
                         {
-                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            for (var eo = 0;eo < element.lines.length;eo++)
                             {
-                                var element2 = element.objectif[eo];
+                                var element2 = element.lines[eo];
                                 var sid = lab.substring(0,lab.indexOf("/"));
                                 if (element2.id == sid)
                                 {
                                     if (element2.rendement)
                                     {
-                                        return element2.rendement.val;
+                                        return standardizer.getPoidsInAskVal(element2.rendement,$scope.filters.unitMode);
                                     }
                                 }
                                 
@@ -192,16 +193,16 @@
                         var element = vm.objectifs[ei];
                         if(element.produit === pId)
                         {
-                            for (var eo = 0;eo < element.objectif.length;eo++)
+                            for (var eo = 0;eo < element.lines.length;eo++)
                             {
-                                var element2 = element.objectif[eo];
+                                var element2 = element.lines[eo];
                                 var sid = lab.substring(0,lab.indexOf("/"));
                                 sid = sid.replace("S","");
                                 if (element2.rendements)
                                 {
                                     if (element2.rendements[sid])
                                     {
-                                        return element2.rendements[sid].val;
+                                        return standardizer.getPoidsInAskVal(element2.rendements[sid],$scope.filters.unitMode);
                                     }
                                 }
                             }
@@ -277,18 +278,18 @@
                     for (var eo = 0;eo < response.items.length;eo++)
                     {
                         var found = false;
-                        if (response.items[eo].customs)
+                        if (response.items[eo].objectif)
                         {
                             for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
                             {
-                                if (response.items[eo].customs.produit === vm.objectifs[eo]._id)
+                                if (response.items[eo].objectif.produit === vm.objectifs[eo].produit)
                                 {
                                     found = true;
                                 }
                             }
                             if (!found)
                             {
-                                vm.objectifs.push(response.items[eo].customs);
+                                vm.objectifs.push(response.items[eo].objectif);
                             }
                         }
                     }

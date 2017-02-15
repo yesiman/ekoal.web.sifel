@@ -42,7 +42,14 @@
                             legend: {display: true}
                         }
                     };
-                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,dateTo:scope.filters.dateTo, dateFormat:scope.filters.groupMode }
+                    var args = { 
+                        prodsIds:scope.getProdsIds(),
+                        dateFrom:scope.filters.dateFrom,
+                        dateTo:scope.filters.dateTo, 
+                        dateFormat:scope.filters.groupMode,
+                        unit:scope.filters.unitMode 
+                    }
+                    console.log("args",args);
                     api.stats.prevsByDay.post( args ,
                         // Success
                         function (response)

@@ -16,7 +16,6 @@
                 // Success
                 function (response)
                 {
-                    console.log(response);
                     //if (response.success)
                     //{
                         

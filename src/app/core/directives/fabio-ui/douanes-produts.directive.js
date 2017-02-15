@@ -32,6 +32,10 @@
                 scope.pile = [];
                 
                 scope.select = function(it) {
+                     //scope.select(it);
+                    scope.hide(it);
+                    //scope.item.custom.parent = it;
+                    //console.log(scope.item.custom.parent);
                     
                 }
 
@@ -70,8 +74,6 @@
                 }
                 scope.backParent = function(it,level) {
                     scope.curLevel = level;
-                    console.log("it",it);
-                    console.log("level",level);
                     if (it.parents.length > 0)
                     {
                         scope.loadChilds(it.parents[it.parents.length-1]);   

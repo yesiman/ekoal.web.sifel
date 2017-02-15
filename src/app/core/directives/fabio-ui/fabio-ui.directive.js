@@ -69,7 +69,7 @@
             require: 'ngModel',
             scope: {
                 changeFn: '&',
-                required: '='
+                inprequired: '='
             },
             link: function(scope, iElement, iAttrs, ngModel) {
                 scope.units = [

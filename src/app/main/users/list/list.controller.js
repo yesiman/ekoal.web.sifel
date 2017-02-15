@@ -42,11 +42,11 @@
         };
         vm.filters = { 
             levels: [
-                {lib:"Administrateur",checked:true},
-                {lib:"Administrateur OP",checked:true},
-                {lib:"Technicien",checked:true},
-                {lib:"Producteur",checked:true},
-                {lib:"Commercial",checked:true}
+                {lib:"Administrateur",checked:true,level:1},
+                {lib:"Administrateur OP",checked:true,level:2},
+                {lib:"Technicien",checked:true,level:3},
+                {lib:"Producteur",checked:true,level:4},
+                {lib:"Commercial",checked:true,level:5}
             ]
         }
         // Data
@@ -79,8 +79,8 @@
                     return "md-lime-400-bg";
                 case 4:
                     return "md-blue-400-bg";
-                case 5: //TODO SPECIFIC COMM COLOR
-                    return "md-blue-400-bg";
+                case 5:
+                    return "md-orange-400-bg";
             }
             
         }
@@ -104,13 +104,21 @@
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
         {
-            $rootScope.loadingProgress = true;
             $scope.paginationOptions.pageNumber = id;
             $scope.loadPage();
         }
         // Methods
         $scope.loadPage = function() {
-            api.users.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
+            
+            var levels = [];
+            $rootScope.loadingProgress = true;
+            angular.forEach(vm.filters.levels, function(value) {
+                if (value.checked)
+                {
+                    levels.push(value.level);
+                }   
+            });
+            api.users.getAll.post({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize,levels:levels },
                 // Success
                 function (response)
                 {

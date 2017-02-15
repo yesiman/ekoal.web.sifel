@@ -17,62 +17,36 @@
                         <label>Libellé</label>
                         <input required ng-model="item.lib">
                       </md-input-container>
-                      
                       <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Produit parent</label>
-                        <input ng-model="item.custom.parent" readonly ng-click="vm.showParentsDialog($event)">
+                        <label>Code produit</label>
+                        <input required ng-model="item.codeProd">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Produit parent</label>
+                        <input required ng-model="item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
+                      </md-input-container>
+                       <div class="md-inline" qte-input inprequired="true"  ng-model="item.rendement" flex="50"></div>
+                      
+                    </div>
+                    <div layout-gt-sm="row">
+                     
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="item.color"></color-picker>
                       </md-input-container>
                     </div>
-                    
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Decription</label>
                         <textarea ng-model="item.desc" rows="5"></textarea>
                       </md-input-container>
                     </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <md-checkbox
-                          ng-model="item.public"
-                          aria-label="Données publiques" 
-                          ng-true-value="true"
-                          ng-false-value="false"
-                          class="md-warn md-align-top-left" flex>
-                        Les données de ce produit sont publiques
-                      </md-checkbox>
-                      </md-input-container>
-                    </div>
                 </div>
               </md-tab-content>
             </md-tab>
-             <md-tab layout-fill label="Informations spécifiques" ng-if="item._id">
-              <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
-                <div style="width:100%;">
-                    <div layout-gt-sm="row">
-                        <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Code produit</label>
-                        <input ng-model="item.custom.codeProd">
-                      </md-input-container>
-                      <div class="md-inline" qte-input  ng-model="item.custom.rendement" style="width:50%;"></div>
-                    </div>
-                    
-                    <div layout-gt-sm="row" >
-                      <md-input-container class="md-inline" flex-gt-sm>
-                          
-                        <label>Notes</label>
-                        <textarea ng-model="item.custom.notes" rows="5"></textarea>
-                      </md-input-container>
-                    </div>
-                </div>
-              </md-tab-content>
-            </md-tab>
-            <md-tab label="Règles" layout-fill  ng-if="item._id && item.custom.rendement" >
+            <md-tab label="Règles" layout-fill  ng-if="item._id && item.rendement" >
               <md-tab-content  md-theme="docs-dark"   flex layout-fill>
                 <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
                     <md-icon md-font-icon="icon-plus"></md-icon>

@@ -92,6 +92,13 @@
                             <md-option value="m">mois</md-option>
                         </md-select>
                     </md-list-item>
+                    <md-list-item>
+                        <p>Unités poids</p>
+                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.unitMode" ng-change="refresh(true)">
+                            <md-option value="1" ng-selected="true">kilos</md-option>
+                            <md-option value="2">Tonnes</md-option>
+                        </md-select>
+                    </md-list-item>
                     
                 </md-list>
             </md-content>

@@ -42,7 +42,9 @@
                             legend: {display: true}
                         }
                     };
-                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,dateTo:scope.filters.dateTo, dateFormat:scope.filters.groupMode }
+                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,
+                        dateTo:scope.filters.dateTo, dateFormat:scope.filters.groupMode,
+                        unit:scope.filters.unitMode  }
                     api.stats.prevsByProd.post( args ,
                         // Success
                         function (response)
@@ -68,13 +70,10 @@
                                     case "w":
                                         for (var i3 = 0;i3<scope.clinesProducteurs.labels.length;i3++)
                                         {
-                                            console.log("scope.clinesProducteurs.labels.length",scope.clinesProducteurs.labels.length);
                                             found = false;
                                             for (var i2 = 0;i2<response.items.length;i2++)
                                             {
                                                 var o = response.items[i2];
-                                                console.log("o",o);
-                                                console.log("scope.producteurs[i]._id",scope.producteurs[i]._id);
                                                 
                                                 if (o._id.producteur == scope.producteurs[i]._id)
                                                 {

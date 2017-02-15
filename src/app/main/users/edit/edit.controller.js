@@ -25,7 +25,6 @@
             responsive  : true,
             language: standardizer.getDatatableLanguages()
         };
-        console.log($stateParams.profil);
         vm.profil = $stateParams.profil;
         $scope.head = {
             ico:"icon-account-box",
@@ -39,7 +38,6 @@
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
         $scope.item = userResolv;
-        console.log("userResolv",userResolv);
         
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}

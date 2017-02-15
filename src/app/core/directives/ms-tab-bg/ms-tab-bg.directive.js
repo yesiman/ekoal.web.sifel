@@ -57,7 +57,6 @@
             restrict: 'A',
             scope: { item:'=' },
             link: function (scope, el, attrs) {
-                console.log(scope.item);
                 if (scope.item.color){
                     scope.item.bgColor = scope.item.color;
                 }

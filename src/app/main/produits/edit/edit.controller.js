@@ -26,9 +26,9 @@
         $scope.item = prodResolv;
         
 
-        if ($scope.item.custom)
+        if ($scope.item.objectif)
         {
-            vm.mois = $scope.item.custom.objectif;
+            vm.mois = $scope.item.objectif.lines;
         }
         else {
             vm.mois = monthsResolv;
@@ -37,13 +37,18 @@
             format: 'hex',
             swatchOnly:true 
         }
-
+        function setParent(it)
+        {
+            $scope.item.parent = it;
+        }
         function ParentsDialogController($scope, $mdDialog) {
-            $scope.hide = function() {
+            $scope.hide = function(it) {
                 $mdDialog.hide();
+                setParent(it);
             };
+            
             $scope.cancel = function() {
-            $mdDialog.cancel();
+                $mdDialog.cancel();
             };
             $scope.answer = function(answer) {
             $mdDialog.hide(answer);
@@ -71,11 +76,7 @@
         };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
-            if ($scope.item.custom)
-            {
-                $scope.item.custom.objectif = vm.mois;
-            }
-            console.log($scope.item);
+            $scope.item.objectif = vm.mois;
             api.products.add.post({ id:$scope.id, product: $scope.item } ,
                 // Success
                 function (response)
