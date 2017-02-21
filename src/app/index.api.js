@@ -357,7 +357,12 @@
             })
         }
         api.twilio = {
-            testTwilio: $resource(api.baseUrl + 'messaging/testTwilio/', { } , {
+            testTwilio: $resource(api.baseUrl + 'messaging/testTwilio/', { message:'@message' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            testSmsF: $resource(api.baseUrl + 'messaging/testSmsF/', { } , {
                 post: {
                     method: 'POST'
                 }

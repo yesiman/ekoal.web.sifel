@@ -31,10 +31,6 @@
                 },
                 getPoidsInAskVal: function getHtmlActions(element, askedUnit)
                 {
-                    console.log("getPoidsInAskVal", {
-                        element:element,
-                        askedUnit:askedUnit
-                    });
                     if (element.unit === parseInt(askedUnit))
                     {
                         return element.val;

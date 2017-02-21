@@ -7,20 +7,28 @@
         .directive('douanesProducts', douanesProductsDirective);
 
     /** @ngInject */
-    function douanesProductsDirective(standardizer,api,$rootScope)
+    function douanesProductsDirective(standardizer,api,$rootScope,$mdDialog)
     {
         return {
             restrict   : 'E',
             transclude : true,
+            scope: {
+                onSelect:'&',
+                mode:'@'
+            },
             templateUrl: 'app/core/directives/fabio-ui/templates/douanes-products/douanes-products.html',
             link: function(scope) {
-
-
                 var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
-                actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
-                actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.loadChildsViaGrid(row.entity)"><md-tooltip>Voir enfants</md-tooltip><md-icon class="rem" md-font-icon="icon-dots-horizontal"></md-icon></md-button>';
-                actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.select(row.entity)"><md-tooltip>Sélectionner</md-tooltip><md-icon class="rem" md-font-icon="icon-check"></md-icon></md-button>';
-                
+                switch (scope.mode)
+                {
+                    case "sel":
+                        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.loadChildsViaGrid(row.entity)"><md-tooltip>Voir enfants</md-tooltip><md-icon class="rem" md-font-icon="icon-dots-horizontal"></md-icon></md-button>';
+                        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.select(row.entity)"><md-tooltip>Sélectionner</md-tooltip><md-icon class="rem" md-font-icon="icon-check"></md-icon></md-button>';
+                        break;
+                    default:
+                        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.edit(row.entity._id)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+                        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.loadChildsViaGrid(row.entity)"><md-tooltip>Voir enfants</md-tooltip><md-icon class="rem" md-font-icon="icon-dots-horizontal"></md-icon></md-button>';
+                }
                 actionsHtml += '</div>';
                 scope.gridOptions = standardizer.getGridOptionsStd();
                 scope.gridOptions.columnDefs = [
@@ -32,11 +40,7 @@
                 scope.pile = [];
                 
                 scope.select = function(it) {
-                     //scope.select(it);
-                    scope.hide(it);
-                    //scope.item.custom.parent = it;
-                    //console.log(scope.item.custom.parent);
-                    
+                    scope.onSelect({myParam:it});
                 }
 
                 scope.loadChildsViaGrid = function(parent) {

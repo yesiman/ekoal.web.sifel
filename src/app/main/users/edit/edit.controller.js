@@ -41,6 +41,7 @@
         
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
+        if (!$scope.item.parcellesToRem) {$scope.item.parcellesToRem= [];}
         $scope.currentNavItem = "infos";
         //
         $scope.valid = function(frm){
@@ -61,7 +62,7 @@
             
         }
         var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
-            $scope.item = item;
+            $scope.item = angular.copy(item);
             $scope.onCancel = onCancel;
             $scope.onValid = onValid;   
         }
@@ -70,12 +71,31 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
-            if (item.new)
+            var found = false;
+            if (item.id)
             {
-                $scope.item.parcelles.push(item);
+                for (var i = 0;i < $scope.item.parcelles.length;i++)
+                {
+                    if (item.id == $scope.item.parcelles[i].id)
+                    {
+                        $scope.item.parcelles[i] = item;
+                        found = true;
+                    }
+                }
             }
             else {
-                //Maj ARRAY OBJECT
+                for (var i = 0;i < $scope.item.parcelles.length;i++)
+                {
+                    if (item._id == $scope.item.parcelles[i]._id)
+                    {
+                        $scope.item.parcelles[i] = item;
+                        found = true;
+                    }
+                }
+            }
+            if (!found)
+            {
+                $scope.item.parcelles.push(item);
             }
             $mdDialog.hide();
         }
@@ -97,10 +117,36 @@
                 $scope.status = 'You cancelled the dialog.';
             });        
         }
-        $scope.removeParc = function(i) {}
+        $scope.removeParc = function(item,ev) {
+            var confirm = $mdDialog.confirm()
+                .title('Êtes vous sur de vouloir supprimer cette ligne?')
+                .textContent('(Cette action sera prise en compte après sauvegarde)')
+                .ariaLabel('Supprimer')
+                .targetEvent(ev)
+                .ok('Valider')
+                .cancel('Annuler');
+
+            $mdDialog.show(confirm).then(function() {
+                for (var i = 0;i < $scope.item.parcelles.length;i++)
+                {
+                    if ((item._id == $scope.item.parcelles[i]._id) || 
+                    ((item.id) && (item.id == $scope.item.parcelles[i].id)))
+                    {
+                        if (item._id)
+                        {
+                            $scope.item.parcellesToRem.push($scope.item.parcelles[i]._id);
+                        }
+                        $scope.item.parcelles.splice(i,1);
+                        break;
+                    }
+                }
+            }, function() {
+                
+            });
+        }
         $scope.addParcelle = function(ev){
             var item = {
-                new:true,
+                id:$scope.item.parcelles.length*10,
                 lib:"",
                 surface:0
             }

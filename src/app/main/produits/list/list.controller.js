@@ -28,7 +28,6 @@
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
                 { field: 'lib', displayName: 'Libellé' },
-                { field: 'public', displayName: 'Public',width:"70",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-model="row.entity.public" class="md-warn" disabled></md-checkbox></div>' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
         {

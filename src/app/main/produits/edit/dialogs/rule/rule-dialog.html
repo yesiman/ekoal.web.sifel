@@ -29,7 +29,7 @@
                     <div>
                         <span class="filename">Semaine {{w.week}}</span>  
                     </div>
-                    <input ng-model="w.percent" required>
+                    <input type="number" ng-model="w.percent" ng-change="vm.recalc()" required>
                 </div>
             </div>
         </md-dialog-content>
@@ -38,10 +38,11 @@
       <md-button ng-click="vm.close()">
         Annuler
       </md-button>
+      <span ng-class="{'bad-percent':vm.badPercent,'good-percent':!vm.badPercent}">Total: {{vm.sumer | number : 2}}</span>
       <md-button type="submit" ng-click="vm.save()"
-                           class="send-button md-accent md-raised"
-                           ng-disabled="taskForm.$invalid || taskForm.$pristine"
-                           aria-label="Valider">
+            class="send-button md-accent md-raised"
+            ng-disabled="taskForm.$invalid || taskForm.$pristine"
+            aria-label="Valider">
                     Valider
                 </md-button>
     </md-dialog-actions>

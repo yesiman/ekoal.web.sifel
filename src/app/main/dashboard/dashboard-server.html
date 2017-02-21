@@ -67,6 +67,11 @@
                                         Vider DB
                                     </md-button>
                                 </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="vm.senSms()" aria-label="Envoi SMS">
+                                        Envoi SMS
+                                    </md-button>
+                                </md-menu-item>
                             </md-menu-content>
                         </md-menu>
                     </div>
@@ -411,5 +416,61 @@
          / WIDGET GROUP -->
 
     </div>
+
+    <md-content id="chat-content" flex ms-scroll>
+
+                    <!-- CHAT MESSAGES -->
+                    <div class="chat-messages">
+
+                        <!-- MESSAGE -->
+                        <div layout="row" ng-repeat="dialog in vm.chat" class="md-padding message-row"
+                             ng-class="dialog.type">
+
+                            <img ng-if="dialog.type === 'user'"
+                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
+                                 class="avatar"
+                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
+
+                            <img ng-if="dialog.type ==='contact'" class="avatar" ng-src="{{vm.user.avatar}}">
+
+                            <div class="bubble">
+                                <div class="message">{{dialog.replyMessage}}</div>
+                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
+                            </div>
+
+                        </div>
+
+                        <!-- / MESSAGE -->
+
+                    </div>
+                    <!-- CHAT MESSAGES -->
+
+                </md-content>
+<!-- CHAT FOOTER -->
+                <div class="chat-footer flex-noshrink" layout="row" layout-align="center center">
+
+                    <!-- REPLY FORM -->
+                    <form ng-submit="vm.reply()" flex class="reply-form" layout="row" layout-align="start center">
+
+                        <md-input-container flex md-no-float>
+                            <textarea ng-keyup="vm.reply($event)"
+                                      md-no-autogrow ng-model="vm.replyMessage"
+                                      ng-class="{'grow': vm.textareaGrow}"
+                                      placeholder="Type and hit enter to send message"
+                                      translate
+                                      translate-attr-placeholder="Envoir message">
+                            </textarea>
+                        </md-input-container>
+
+                        <md-button class="md-fab" aria-label="Send message" translate
+                                   translate-attr-aria-label="ENvoi message" ng-click="vm.addChat()">
+                            <md-icon md-font-icon="icon-send"></md-icon>
+                        </md-button>
+
+                    </form>
+                    <!-- / REPLY FORM -->
+
+                </div>
+                <!-- / CHAT FOOTER-->
 
 </div>

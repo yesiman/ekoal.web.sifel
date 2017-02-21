@@ -7,18 +7,13 @@
         .directive('prevsByLines', prevsByLines);
 
     /** @ngInject */
-    function prevsByLines(api,standardizer,$filter)
+    function prevsByLines(api,standardizer,$filter,$mdDialog)
     {
         return {
             restrict   : 'E',
             transclude : true,
             templateUrl: 'app/main/stats/prevs/directives/prevs-by-lines/prevs-by-lines.html',
             link: function(scope) {
-                
-
-
-
-
                 var producteurHtml = '<div class="ui-grid-cell-contents">';
                 producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
                 producteurHtml += '</div>';
@@ -28,13 +23,16 @@
                 var qteHtml = '<div class="ui-grid-cell-contents">';
                 qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
                 qteHtml += '</div>';
+                var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
+                actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+                actionsHtml += '</div>';
                 scope.gridPlanifOptions = standardizer.getGridOptionsStd();
                 scope.gridPlanifOptions.columnDefs = [
-                        { field: 'semaine', sort:{priority:0}, displayName: 'Semaine', cellTemplate:semaineHtml },
-                        { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
-                        { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml }];   
-                
-                
+                    { field: 'selected', name: '',cellEditableContition: false, width:"40",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-model="row.entity.selected" class="md-warn"></md-checkbox></div>' },
+                    { field: 'semaine', sort:{priority:0}, displayName: 'Semaine', cellTemplate:semaineHtml },
+                    { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
+                    { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml },
+                    { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
                 scope.getGoodQte = function(el) {
                     return standardizer.getPoidsInAskVal(el.qte,scope.filters.unitMode);
                 }
@@ -79,7 +77,68 @@
                             refreshMe();
                         }
                     }    
-                });  
+                });
+
+                scope.closeMe = function()
+                {
+                    $mdDialog.hide();
+                }
+                scope.validLine = function(item)
+                {
+                    //Save planif line
+                    //Update only line in grid
+                    //Refresh graphs
+                    console.log("iv",item);
+                    $mdDialog.hide();
+                }
+                // MAJ PLANIF
+                var mdDialogCtrl = function (scope, item,onCancel,onValid) { 
+                    scope.dialog = { 
+                        weeks:[],
+                        years:[]
+                    };
+                    for (var i = 1;i < 53;i++)
+                    {
+                        scope.dialog.weeks.push(i);
+                    }
+                    for (var i = 2010;i < 2030;i++)
+                    {
+                        scope.dialog.years.push(i);
+                    }
+                    scope.item = item;
+                    scope.onCancel = onCancel;
+                    scope.onValid = onValid;   
+                }
+
+                scope.showPlanif = function(ev,il){
+            
+                    var item;
+                    if (il)
+                    {
+                        item = il;
+                    } 
+                    else 
+                    {
+                        item = {qte:0};
+                    }
+                    //scope.dialogItems = response.items;
+                    var locals = {item: item, onCancel: scope.closeMe, onValid: scope.validLine };
+                    $mdDialog.show({
+                        templateUrl: 'app/main/planifs/edit/dialogs/addEdit.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        locals: locals,
+                        controller: mdDialogCtrl,
+                        controllerAs: 'ctrl',
+                        clickOutsideToClose:true,
+                        fullscreen: true // Only for -xs, -sm breakpoints.
+                        })
+                        .then(function(answer) {
+                        scope.status = 'You said the information was "' + answer + '".';
+                        }, function() {
+                        scope.status = 'You cancelled the dialog.';
+                    });            
+                }
                 scope.refreshPrevsByLines();             
             }
         };

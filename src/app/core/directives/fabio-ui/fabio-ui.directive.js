@@ -88,6 +88,7 @@
                             value:ngModel.$modelValue.val,
                             unit:ngModel.$modelValue.unit
                         };
+                        ngModel.$setViewValue({val:scope.value.value, unit:scope.value.unit});
                     }
                     else {
                         ngModel.$setViewValue({val:0, unit:1});

@@ -63,20 +63,39 @@
                     <input required ng-model="item.surn">
                     </md-input-container>
                 </div>
+                <div layout-gt-sm="row" ng-if="item.type == 4" >
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Code Adhérent</label>
+                    <input ng-model="item.codeAdh">
+                    </md-input-container>
+                    <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                    <label>Certification</label>
+                    <md-select ng-model="item.certif" style="min-width:200px;">
+                        <md-option ng-value="0">Aucun</md-option>
+                        <md-option ng-value="1">
+                            Certification Environnementale
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Email</label>
-                    <input type="email" required ng-model="item.email">
+                    <input type="email" ng-model="item.email">
+                    </md-input-container>
+                    <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Téléphone portable</label>
+                        <input type="number" ng-model="item.mobphone">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                     <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Login</label>
+                    <input type="text" required ng-model="item.login">
                     </md-input-container>
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Mot de passe</label>
                     <input type="text" required ng-model="item.pass">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Téléphone portable</label>
-                    <input type="number" ng-model="item.mobphone">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">

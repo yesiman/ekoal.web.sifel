@@ -1,15 +1,14 @@
-<md-dialog aria-label="Mango (Fruit)">
-  <form ng-cloak>
-    <md-toolbar>
+<md-dialog class="rule-dialog" aria-label="Ajout/Mise à jour parcelle">
+    <form name="taskForm" class="md-inline-form" novalidate>
+    <md-toolbar class="md-accent md-hue-2">
       <div class="md-toolbar-tools">
         <h2>Ajout/modification parcelle</h2>
         <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
+        <md-button class="md-icon-button" ng-click="onCancel()">
           <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
         </md-button>
       </div>
     </md-toolbar>
-
     <md-dialog-content>
       <div layout-gt-sm="row">
         <md-input-container class="md-inline" flex>
@@ -19,6 +18,10 @@
         <md-input-container class="md-inline" flex>
           <h4>Surface (hectares)</h4>
           <input type="number" ng-model="item.surface"></input>
+        </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <h4>N° cadastral</h4>
+          <input type="text" ng-model="item.cadastre"></input>
         </md-input-container>
       </div>
     </md-dialog-content>

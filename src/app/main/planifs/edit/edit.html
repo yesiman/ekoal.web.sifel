@@ -115,14 +115,14 @@
                             </md-select>
                             </div>
                         <div style="position:absolute;z-index:7;" >
-                            <input type="number"   ng-change="vm.ruleChanged()" ng-if="vm.selectedRule" class="rule-sel" ng-model="item.produit.customs.rendement.val">
+                            <input type="number"   ng-change="vm.ruleChanged()" ng-if="vm.selectedRule" class="rule-sel" ng-model="item.produit.rendement.val">
                                 <md-tooltip>Rendement par defaut</md-tooltip>
                             </input>
-                             <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
+                             <!--<md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
                                 <md-option ng-repeat="r in vm.rules" ng-value="r">
                                     {{r.lib}}
                                 </md-option>
-                            </md-select>
+                            </md-select>-->
                         </div>
                         
                         <datatable-wrapper>

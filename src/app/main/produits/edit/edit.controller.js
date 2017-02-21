@@ -8,7 +8,7 @@
         .directive('objectifLine', objectifLine);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv,$mdDialog,$document)
+    function ProduitsEditController($scope,$rootScope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv,$mdDialog,$document)
     {
         var vm = this;
         vm.dtInstance = {};
@@ -39,14 +39,17 @@
         }
         function setParent(it)
         {
+            console.log(it);
             $scope.item.parent = it;
         }
         function ParentsDialogController($scope, $mdDialog) {
-            $scope.hide = function(it) {
-                $mdDialog.hide();
+            $scope.select = function(it) {
                 setParent(it);
-            };
-            
+                $mdDialog.hide();
+            } 
+            $scope.close = function() {
+                $mdDialog.hide();
+            } 
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
@@ -91,6 +94,44 @@
                 }
             );
         }
+        $scope.removeRule = function(ev,rule) {
+            var confirm = $mdDialog.confirm()
+                .title('Êtes vous sur de vouloir supprimer cette ligne?')
+                .textContent('(Cette action est irréversible))')
+                .ariaLabel('Supprimer')
+                .targetEvent(ev)
+                .ok('Valider')
+                .cancel('Annuler');
+
+            $mdDialog.show(confirm).then(function() {
+                $rootScope.loadingProgress = true;
+                api.rules.delete.delete({ id:rule._id } ,
+                // Success
+                function (response)
+                {
+                    //$scope.loadPage();
+                    for (var i = 0;i < vm.rules.length;i++)
+                    {
+                        if (vm.rules[i]._id.toString() == rule._id.toString())
+                        {
+                            vm.rules.splice(i,1);
+                            break;
+                        }
+                    }
+                    $rootScope.loadingProgress = false;
+                    //$scope.item = response;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );
+            }, function() {
+                
+            });
+        }
         $scope.addRule = function(ev,r) {
             $mdDialog.show({
                 controller         : 'RulesEditController',
@@ -104,7 +145,19 @@
                     Rules: vm.rules,
                     event: ev
                 }
-            });
+            }).then(function (rule) {
+                
+                for (var i = 0;i < vm.rules.length;i++)
+                {
+                    if (vm.rules[i]._id.toString() == rule._id.toString())
+                    {
+                        vm.rules[i] = rule;
+                        break;
+                    }
+                }
+            }, function () {
+                //$scope.status = 'You cancelled the dialog.';
+            });;
 
 
             //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });

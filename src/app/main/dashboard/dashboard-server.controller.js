@@ -13,7 +13,38 @@
 
         // Data
         vm.dashboardData = DashboardData;
+        vm.chat = [];
 
+
+        var socket = io.connect('http://sifel-srv.herokuapp.com');
+        socket.on('numessag', function (data) {
+            vm.chat.push({
+                replyMessage:data.Body,
+                type:"user"
+            });
+            $scope.$apply();
+        });
+
+
+        vm.addChat = function(){
+            
+            api.twilio.testTwilio.post({ message:{text:vm.replyMessage} },
+                // Success
+                function (response)
+                {
+                    vm.chat.push({
+                        replyMessage:vm.replyMessage,
+                        type:"contact"
+                    });
+                    vm.replyMessage = "";
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                }
+            );
+        }
         // Widget 1
         /*
         vm.widget1 = {
@@ -80,7 +111,20 @@
 
         // Widget 3
         vm.widget3 = "Titre";
-
+        vm.senSms = function() {
+            api.twilio.testTwilio.post({ },
+                // Success
+                function (response)
+                {
+                    //console.log(response.tk);
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                }
+            );
+        }
         vm.checkToken = function()
         {
             api.users.refreshToken.get({ },

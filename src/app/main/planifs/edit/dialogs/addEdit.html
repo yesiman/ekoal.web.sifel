@@ -1,4 +1,4 @@
-<md-dialog class="rule-dialog" aria-label="Mango (Fruit)">
+<md-dialog class="rule-dialog" style="width:500px;">
   <form ng-cloak>
     <md-toolbar class="md-accent md-hue-2">
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
@@ -12,24 +12,26 @@
 
     <md-dialog-content>
       <div layout-gt-sm="row">
-        <md-input-container class="md-inline" flex="25">
-          <h4>Semaine</h4>
+        <md-input-container class="md-inline" flex>
+          <label>Semaine</label>
           <md-select ng-model="item.semaine">
             <md-option ng-value="w" ng-repeat="w in dialog.weeks">
                 {{w}}    
             </md-option>
           </md-select>
         </md-input-container>
-        <md-input-container class="md-inline" flex="25">
-          <h4>Année</h4>
+        <md-input-container class="md-inline" flex>
+          <label>Année</label>
           <md-select ng-model="item.anne">
             <md-option ng-value="a" ng-repeat="a in dialog.years">
                 {{a}}    
             </md-option>
           </md-select>
         </md-input-container>
+      </div>
+      <div layout-gt-sm="row">
         <md-input-container class="md-inline" flex>
-        <div class="md-inline"  class="md-inline" flex="50" qte-input  change-fn="recalc('m',it)" required="true"  ng-model="item.qte"></div>
+        <div class="md-inline"  class="md-inline" qte-input required="true"  ng-model="item.qte"></div>
         </md-input-container>
       </div>
     </md-dialog-content>

@@ -34,15 +34,16 @@
             //PASSAGE TOUTES LIGNES EN A SUPPRIMER
             for (var i = 0;i < vm.selectedRule.nbWeek;i++)
             { 
-                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.customs.rendement.val; //PRODUCT DEFAULT RENDEMENT
+                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.rendement.val; //PRODUCT DEFAULT RENDEMENT
                 var oIt = { 
                     semaine:startDate.getWeek(),
                     mois:startDate.getMonth() + 1,
+                    anne:startDate.getFullYear(),
                     startAt:new Date(startDate),
                     percent:vm.selectedRule.weeks[i].percent,
                     qte:{
-                        val:valueQte*surfacePercent,
-                        unit:1
+                        val: parseFloat((valueQte*surfacePercent).toFixed(2)),
+                        unit:$scope.item.produit.rendement.unit
                     }
                 }
                 $scope.validLine(oIt,true);
@@ -89,23 +90,7 @@
         else {
             $scope.item.datePlant = new Date($scope.item.datePlant);
         }
-        var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
-            $scope.dialog = { 
-                weeks:[],
-                years:[]
-            };
-            for (var i = 1;i < 53;i++)
-            {
-                $scope.dialog.weeks.push(i);
-            }
-            for (var i = 2010;i < 2030;i++)
-            {
-                $scope.dialog.years.push(i);
-            }
-            $scope.item = item;
-            $scope.onCancel = onCancel;
-            $scope.onValid = onValid;   
-        }
+        
         $scope.searchText = "";
 
 
@@ -196,18 +181,34 @@
             $mdDialog.hide();
         }
         
+        var mdDialogCtrl = function ($scope, item,onCancel,onValid) { 
+            $scope.dialog = { 
+                weeks:[],
+                years:[]
+            };
+            for (var i = 1;i < 53;i++)
+            {
+                $scope.dialog.weeks.push(i);
+            }
+            for (var i = 2010;i < 2030;i++)
+            {
+                $scope.dialog.years.push(i);
+            }
+            $scope.item = item;
+            $scope.onCancel = onCancel;
+            $scope.onValid = onValid;   
+        }
+
         $scope.showPlanif = function(ev,il){
     
             var item;
             if (il)
             {
                 item = il;
-                il.dateRec = new Date(il.dateRec);
             } 
             else 
             {
-                item = {dateRec:new Date(),
-                qte:0};
+                item = {qte:0};
             }
             //$scope.dialogItems = response.items;
             var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };

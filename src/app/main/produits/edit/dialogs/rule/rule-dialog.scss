@@ -1,5 +1,15 @@
 md-dialog {
 
+
+    .bad-percent{
+        font-size: 13px;
+        color: red;font-weight: bold;
+    }
+    .good-percent{
+        font-size: 13px;
+        color: green;font-weight: normal;
+    }
+
     &.rule-dialog {
         max-width: 720px;
         width: 720px;
