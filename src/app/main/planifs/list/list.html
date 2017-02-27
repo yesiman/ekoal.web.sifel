@@ -8,83 +8,7 @@
         <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
     </div>
     <!-- / HEADER -->
-    <!-- SIDENAV -->
-    <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
-                    ms-sidenav-helper>
-            <md-content class="content" ms-scroll>
-                <md-list ng-cloak>
-                    <md-subheader class="md-no-sticky">Dates</md-subheader>
-                    <md-list-item>
-                        <p>Du</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Au</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Produits</md-subheader>
-                    <md-list-item>
-                        <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
-                            md-item-text="item.lib"
-                            placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}}</span>
-                        </md-autocomplete>
-                    </md-list-item>
-                    <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Producteurs</md-subheader>
-                    <!--<md-list-item>
-                        <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
-                            md-item-text="item.lib"
-                            placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
-                        </md-autocomplete>
-                    </md-list-item>-->
-                    <md-list-item class="min-line" ng-repeat="p in producteurs" tag-bg item="p">
-                        <p> {{ p.name }} </p>
-                        <md-checkbox class="md-secondary" ng-model="p.checked"></md-checkbox>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Options</md-subheader>
-                    <md-list-item>
-                        <p>Afficher objectifs</p>
-                        <md-switch class="md-secondary"  ng-model="filters.showObjectifs" ng-change="refresh(true)"></md-switch>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Cumuler produits</p>
-                        <md-switch class="md-secondary"  ng-model="filters.cumProds" ng-change="refresh(true)"></md-switch>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Grouper par</p>
-                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.groupMode" ng-change="refresh(true)">
-                            <md-option value="w" ng-selected="true">semaine</md-option>
-                            <md-option value="m">mois</md-option>
-                        </md-select>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Unités poids</p>
-                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.unitMode" ng-change="refresh(true)">
-                            <md-option value="1" ng-selected="true">kilos</md-option>
-                            <md-option value="2">Tonnes</md-option>
-                        </md-select>
-                    </md-list-item>
-                    
-                </md-list>
-            </md-content>
-        </md-sidenav>
-    <!-- / SIDENAV -->    
+      
     <div class="content" md-background-bg layout="row"  ms-scroll>
         
         <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
@@ -104,38 +28,78 @@
                     <md-subheader class="md-no-sticky">Produits</md-subheader>
                     <md-list-item>
                         <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
+                            md-selected-item="vm.filters.produits.selectedItem" 
+                            md-search-text="vm.filters.produits.searchText"
+                            md-items="item in querySearch(vm.filters.produits.searchText,1)"
                             md-item-text="item.lib"
                             placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}}</span>
+                            md-selected-item-change="vm.filters.produits.change(item)">
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
+                                    <span> {{item.lib}} </span>
+                                </span>
+                            </md-item-template>
                         </md-autocomplete>
                     </md-list-item>
-                    <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
+                    <md-list-item ng-repeat="p in vm.filters.produits.selectedItems" tag-bg item="p">
                         <p> {{ p.lib }} </p>
                         <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Producteurs</md-subheader>
-                    <!--<md-list-item>
+                    <md-list-item>
                         <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
-                            md-item-text="item.lib"
+                            md-selected-item="vm.filters.producteurs.selectedItem" 
+                            md-search-text="vm.filters.producteurs.searchText"
+                            md-items="item in querySearch(vm.filters.producteurs.searchText,2)"
+                            md-item-text="item.name"
                             placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
+                            md-selected-item-change="vm.filters.producteurs.change(item)">
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline"></md-icon>
+                                    <span> {{item.name}} </span>
+                                </span>
+                            </md-item-template>
                         </md-autocomplete>
-                    </md-list-item>-->
-                    <md-list-item class="min-line" ng-repeat="p in producteurs" tag-bg item="p">
-                        <p> {{ p.name }} </p>
-                        <md-checkbox class="md-secondary" ng-model="p.checked"></md-checkbox>
+                    </md-list-item>
+                    <md-list-item ng-repeat="p in vm.filters.producteurs.selectedItems" tag-bg item="p">
+                        <p> {{ p.lib }} </p>
+                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
-                    
+                    <md-list-item>
+                         <md-menu>
+                            <md-button aria-label=""  class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                Actions groupées
+                                <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item>
+                                <md-button ng-click="ctrl.redial($event)">
+                                    <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
+                                    Redial
+                                </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
+                                    <md-icon md-svg-icon="call:voicemail"></md-icon>
+                                    Check voicemail
+                                </md-button>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                <md-menu-item>
+                                <md-button ng-click="ctrl.toggleNotifications()">
+                                    <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+                                    {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+                                </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-list-item>
                 </md-list>
             </md-content>
 

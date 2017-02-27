@@ -7,7 +7,7 @@
         .controller('DashboardServerController', DashboardServerController);
 
     /** @ngInject */
-    function DashboardServerController($scope, $interval, DashboardData, api)
+    function DashboardServerController($scope, $interval, DashboardData, api,$http)
     {
         var vm = this;
 
@@ -45,6 +45,79 @@
                 }
             );
         }
+
+        $scope.uploadProduitsFile = function(){
+
+            var file = $scope.myFileProduits;
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("https://sifel-srv.herokuapp.com/importer/produits/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+            console.log("success!!");
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        };
+        $scope.uploadProducteursFile = function(){
+
+            var file = $scope.myFileProducteurs;
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("https://sifel-srv.herokuapp.com/importer/producteurs/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+            console.log("success!!");
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        };
+        $scope.uploadObjectifFiles = function(){
+
+            var file = $scope.myFileObjectifs;
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("https://sifel-srv.herokuapp.com/importer/objectifs/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+            console.log("success!!");
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        };
+        $scope.uploadParcellesFiles = function(){
+
+            var file = $scope.myFileParcelles;
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("https://sifel-srv.herokuapp.com/importer/parcelles/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+            console.log("success!!");
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        };
         // Widget 1
         /*
         vm.widget1 = {

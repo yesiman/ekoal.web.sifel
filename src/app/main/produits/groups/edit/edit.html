@@ -5,12 +5,10 @@
         <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
     </div>
     <!-- / HEADER -->
-    
     <!-- CONTENT -->
     <div class="content" md-background-bg layout="row" layout-align="start start">
-        
+      
        <form name="current.userForm"  ng-submit="valid()" layout-fill  autocomplete="off">
-         
           <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
             <md-tab layout-fill label="Informations principales">
               <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
@@ -18,42 +16,20 @@
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Libellé</label>
-                        <input required ng-model="item.lib">
-                      </md-input-container>
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Code produit</label>
-                        <input required ng-model="item.codeProd">
-                      </md-input-container>
-                    </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Produit parent</label>
-                        <input required ng-model="item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
-                      </md-input-container>
-                       <div class="md-inline" qte-input inprequired="true"  ng-model="item.rendement" flex="50"></div>
-                      
-                    </div>
-                    <div layout-gt-sm="row">
-                     
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Couleur du produit</label>
-                        <color-picker style="display:inline;" options="vm.cpOptions" ng-model="item.color"></color-picker>
+                        <input required ng-model="vm.item.lib">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Decription</label>
-                        <textarea ng-model="item.desc" rows="5"></textarea>
+                        <textarea ng-model="vm.item.desc" rows="5"></textarea>
                       </md-input-container>
                     </div>
                 </div>
               </md-tab-content>
             </md-tab>
-            <md-tab label="Règles" layout-fill  ng-if="item._id && item.rendement" >
+            <md-tab label="Produits" layout-fill >
               <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-                <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
-                    <md-icon md-font-icon="icon-plus"></md-icon>
-                </md-button>
                     <datatable-wrapper>
                         <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                                 dt-options="vm.dtOptions">
@@ -95,15 +71,6 @@
                             </tbody>
                         </table>
                       </datatable-wrapper>
-              </md-tab-content>
-            </md-tab>
-           
-            <md-tab layout-fill label="Objectif" ng-if="item._id">
-              <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
-                <div style="width:100%;">
-                    <objectif-line  ng-repeat="m in vm.mois" >
-                    </objectif-line>
-                </div>
               </md-tab-content>
             </md-tab>
           </md-tabs>

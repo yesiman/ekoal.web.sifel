@@ -80,6 +80,7 @@
         $scope.id = $stateParams.id;
         $scope.valid = function(){
             $scope.item.objectif = vm.mois;
+            console.log($scope.item.objectif);
             api.products.add.post({ id:$scope.id, product: $scope.item } ,
                 // Success
                 function (response)

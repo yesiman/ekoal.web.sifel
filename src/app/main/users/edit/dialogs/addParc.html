@@ -1,5 +1,5 @@
-<md-dialog class="rule-dialog" aria-label="Ajout/Mise à jour parcelle">
-    <form name="taskForm" class="md-inline-form" novalidate>
+<md-dialog style="width:500px;" aria-label="Ajout/Mise à jour parcelle">
+    <form  ng-cloak>
     <md-toolbar class="md-accent md-hue-2">
       <div class="md-toolbar-tools">
         <h2>Ajout/modification parcelle</h2>
@@ -19,13 +19,41 @@
           <h4>Surface (hectares)</h4>
           <input type="number" ng-model="item.surface"></input>
         </md-input-container>
+      </div>
+      <div layout-gt-sm="row">
+        <md-input-container class="md-inline" flex>
+          <h4>Code parcelle</h4>
+          <input type="text" ng-model="item.code"></input>
+        </md-input-container>
         <md-input-container class="md-inline" flex>
           <h4>N° cadastral</h4>
           <input type="text" ng-model="item.cadastre"></input>
         </md-input-container>
       </div>
+      <div layout-gt-sm="row">
+        <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+            <label>Type Parcelle</label>
+            <md-select ng-model="item.type">
+                <md-option ng-value="1">Plein champ</md-option>
+                <md-option ng-value="2">
+                    Serre
+                </md-option>
+                <md-option ng-value="3">
+                    Verger
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+            <label>Certification</label>
+            <md-select ng-model="item.certif">
+                <md-option ng-value="0">Aucun</md-option>
+                <md-option ng-value="1">
+                    Certification Environnementale
+                </md-option>
+            </md-select>
+        </md-input-container>
+      </div>
     </md-dialog-content>
-
     <md-dialog-actions layout="row">
       <md-button ng-click="onCancel()">
         Annuler

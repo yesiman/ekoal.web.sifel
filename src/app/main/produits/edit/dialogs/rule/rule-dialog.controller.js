@@ -33,9 +33,8 @@
             vm.sumer = 0;
             for(var i = 0;i < vm.rule.weeks.length;i++)
             {
-                vm.sumer += vm.rule.weeks[i].percent;
+                vm.sumer += parseFloat(vm.rule.weeks[i].percent);
             }
-            
             vm.badPercent = (vm.sumer.toFixed(2) != "100.00");
         }
         vm.save = function() {

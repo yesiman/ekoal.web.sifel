@@ -108,6 +108,25 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                        msNavigationService.saveItem('produits.groups', {
+                            title : 'Groupes',
+                            icon  : 'icon-group',
+                            group : true,
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.groups.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.produits_groups_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.groups.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.produits_groups_edit',
+                            stateParams: {id:-1},
+                            weight: 1
+                        });
                     }
                     else {
                         msNavigationService.deleteItem('produits');
@@ -140,6 +159,25 @@
                             icon  : 'icon-plus-circle-outline',
                             state    : 'app.users_edit',
                             stateParams: {id:-1,profil:false},
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('users.groups', {
+                            title : 'Groupes producteurs',
+                            icon  : 'icon-group',
+                            group : true,
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('users.groups.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.produits_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('users.groups.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.produits_edit',
+                            stateParams: {id:-1},
                             weight: 1
                         });
                     }

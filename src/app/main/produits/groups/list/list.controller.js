@@ -3,17 +3,17 @@
     'use strict';
 
     angular
-        .module('app.produits.list')
-        .controller('ProduitsListController',ProduitsListController);
+        .module('app.produits.groups.list')
+        .controller('ProduitsGroupsListController',ProduitsGroupsListController);
 
     /** @ngInject */
-    function ProduitsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
+    function ProduitsGroupsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
     {
         var vm = this;
         // Data
         $scope.head = {
             ico:"icon-account-box",
-            title:"Liste produits"
+            title:"Liste groupes produits"
         };
         $scope.paginationOptions = {
             pageNumber: 1,
@@ -22,22 +22,11 @@
             totalItems: 0,
             sort: null
         };
-
-        vm.filters = {
-            text:""
-        };
-        vm.filterTextOnChange = function() {
-            if (vm.filters.text.length >= 3)
-            {
-                $scope.loadPageAction(1);
-            }
-        }
         var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
                     
         var actionsHtml = standardizer.getHtmlActions(customBts);
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
-                { field: 'codeProd', displayName: 'Code', width: "150" },
                 { field: 'lib', displayName: 'Libellé' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         $scope.loadPageAction = function(id)
@@ -48,21 +37,7 @@
         }
         // Methods
         $scope.loadPage = function() {
-
-            var methodBase;
-            var methodArgs;
-            if ((vm.filters.text.trim() == "") || (vm.filters.text.length < 3))
-            {
-                methodBase = api.products.getAll;
-                methodArgs = { pid:$scope.paginationOptions.pageNumber,
-                nbp:$scope.paginationOptions.pageSize };
-            }
-            else {
-                methodBase = api.products.getAllByLib;
-                methodArgs = { pid:$scope.paginationOptions.pageNumber,
-                nbp:$scope.paginationOptions.pageSize,req:vm.filters.text };
-            }
-            methodBase.get(methodArgs,
+            api.productsGroups.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
                 // Success
                 function (response)
                 {
@@ -83,10 +58,10 @@
             );
         };
         $scope.add = function() {
-            $state.go("app.produits_edit", { id:-1 });
+            $state.go("app.produits_groups_edit", { id:-1 });
         };
         $scope.edit = function(id) {
-            $state.go("app.produits_edit", { id:id });
+            $state.go("app.produits_groups_edit", { id:id });
         };
         $scope.showStats = function(it) {
             $state.go("app.stats_prevs", { selectedItems:[it] });
@@ -103,7 +78,7 @@
 
             $mdDialog.show(confirm).then(function() {
                 $rootScope.loadingProgress = true;
-                api.products.delete.delete({ id:id } ,
+                api.productsGroups.delete.delete({ id:id } ,
                 // Success
                 function (response)
                 {

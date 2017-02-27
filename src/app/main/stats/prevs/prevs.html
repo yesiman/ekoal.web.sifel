@@ -51,7 +51,17 @@
                             md-item-text="item.lib"
                             placeholder="Premiers charactères..."
                             md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}}</span>
+
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
+                                    <span> {{item.lib}} </span>
+                                </span>
+                            </md-item-template>
+
+
+                            <span md-highlight-text="filters.searchText"> </span>
                         </md-autocomplete>
                     </md-list-item>
                     <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
@@ -82,7 +92,7 @@
                         <md-switch class="md-secondary"  ng-model="filters.showObjectifs" ng-change="refresh(true)"></md-switch>
                     </md-list-item>
                     <md-list-item>
-                        <p>Cumuler produits</p>
+                        <p>Grouper (produits/producteurs)</p>
                         <md-switch class="md-secondary"  ng-model="filters.cumProds" ng-change="refresh(true)"></md-switch>
                     </md-list-item>
                     <md-list-item>

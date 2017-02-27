@@ -232,6 +232,29 @@
                 }
             })
         }
+        // USERS GROUPS
+        api.usersGroups = {
+            add: $resource(api.baseUrl + 'usersGroups/add/:id', {id:'@id',orga:'@orga'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'usersGroups/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'usersGroups/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'usersGroups/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
         // ORGAS
         api.orgas = {
             add: $resource(api.baseUrl + 'orgas/add/:id', {id:'@id',orga:'@orga'} , {
@@ -250,6 +273,29 @@
                 }
             }),
             getAll: $resource(api.baseUrl + 'orgas/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
+        // PRODUCTS GROUPS
+        api.productsGroups = {
+            add: $resource(api.baseUrl + 'productsGroups/add/:id', {id:'@id',group:'@group'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'productsGroups/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'productsGroups/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'productsGroups/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
                 get: {
                     method: 'GET'
                 }
@@ -299,9 +345,9 @@
                     method: 'POST'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'planifs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
-                get: {
-                    method: 'GET'
+            getAll: $resource(api.baseUrl + 'planifs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',produits:'@produits',producteurs:'@producteurs'} , {
+                post: {
+                    method: 'POST'
                 }
             }),
             delete: $resource(api.baseUrl + 'planifs/delete/:id', {id:'@id'} , {
@@ -368,6 +414,7 @@
                 }
             })
         }
+        
         return api;
     }
 

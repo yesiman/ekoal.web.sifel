@@ -282,12 +282,16 @@
                         {
                             for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
                             {
-                                if (response.items[eo].objectif.produit === vm.objectifs[eo].produit)
+                                if (vm.objectifs[eo2])
                                 {
-                                    found = true;
+                                    if (response.items[eo].objectif.produit === vm.objectifs[eo2].produit)
+                                    {
+                                        found = true;
+                                    }
                                 }
+                                
                             }
-                            if (!found)
+                            if ((!found) && response.items[eo])
                             {
                                 vm.objectifs.push(response.items[eo].objectif);
                             }
@@ -305,10 +309,9 @@
             return deferred.promise;
         }
 
-        $scope.$on("$destroy", function(){
-            d3.selectAll('.nvtooltip').remove();
-        });
-
+        //$scope.$on("$destroy", function(){
+        //    d3.selectAll('.nvtooltip').remove();
+        //});
         //$scope.refresh();
         
     }

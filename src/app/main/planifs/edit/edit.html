@@ -108,8 +108,8 @@
                         </md-button>
                         <div style="position:absolute;z-index:8;" >
                             <md-tooltip>Vous devez sélectionner un produit et une parcelle, ou saisir une surface</md-tooltip>
-                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
-                                <md-option ng-repeat="r in vm.rules" ng-value="r">
+                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule" class="rule-sel">
+                                <md-option ng-repeat="r in vm.rules" ng-value="r._id">
                                     {{r.lib}}
                                 </md-option>
                             </md-select>

@@ -26,6 +26,13 @@
         
         //
         vm.ruleChanged = function() {
+            for (var i = 0;i< vm.rules.length;i++)
+            {
+                if (vm.rules[i]._id == $scope.item.rule)
+                {
+                    vm.selectedRule = vm.rules[i];
+                }
+            }
             $scope.item.lines = [];
             var startDate = new Date($scope.item.datePlant);
             startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
@@ -245,7 +252,8 @@
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
-                rendement:$scope.item.produit.objectif.rendement,
+                rule: ($scope.item.rule?$scope.item.rule:null),
+                rendement:$scope.item.produit.rendement.val,
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 dateRecStart:startDate,
