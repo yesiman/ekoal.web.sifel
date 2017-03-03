@@ -216,12 +216,12 @@
                     method: 'DELETE'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'users/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp', levels:'@levels'} , {
+            getAll: $resource(api.baseUrl + 'users/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp', levels:'@levels',txtFilter:'@txtFilter'} , {
                 post: {
                     method: 'POST'
                 }
             }),
-            getAllByType: $resource(api.baseUrl + 'users/getAllByType/:pid/:nbp/:idt', {pid:'@pid',nbp:'@nbp',idt:'@idt'} , {
+            getAllByType: $resource(api.baseUrl + 'users/getAllByType/:pid/:nbp/:idt/:req', {pid:'@pid',nbp:'@nbp',idt:'@idt',req:'@req'} , {
                 get: {
                     method: 'GET'
                 }

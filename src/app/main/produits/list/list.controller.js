@@ -27,10 +27,8 @@
             text:""
         };
         vm.filterTextOnChange = function() {
-            if (vm.filters.text.length >= 3)
-            {
                 $scope.loadPageAction(1);
-            }
+            
         }
         var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
                     
@@ -51,7 +49,8 @@
 
             var methodBase;
             var methodArgs;
-            if ((vm.filters.text.trim() == "") || (vm.filters.text.length < 3))
+            
+            if (vm.filters.text.trim() == "")
             {
                 methodBase = api.products.getAll;
                 methodArgs = { pid:$scope.paginationOptions.pageNumber,

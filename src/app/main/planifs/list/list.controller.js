@@ -94,9 +94,9 @@
 
         var originatorEv;
 
-        vm.openMenu = function($mdMenu, ev) {
+        vm.openMenu = function($mdOpenMenu,ev) {
             originatorEv = ev;
-            $mdMenu.open(ev);
+            $mdOpenMenu(ev);
         };
 
         $scope.getProduitRend = function(rend)
@@ -153,7 +153,7 @@
                     break;
                 case 2:
                     methodBase = api.users.getAllByType;
-                    methodArgs = { pid:1,nbp:1000, idt:4 };
+                    methodArgs = { pid:1,nbp:20, idt:4,req:vm.filters.producteurs.searchText };
                     break;
                 case 3:
                     methodBase = api.users.getParcelles;

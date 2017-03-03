@@ -132,6 +132,9 @@
                         msNavigationService.deleteItem('produits');
                         msNavigationService.deleteItem('produits.list'); 
                         msNavigationService.deleteItem('produits.new'); 
+                        msNavigationService.deleteItem('produits.groups');
+                        msNavigationService.deleteItem('produits.groups.list'); 
+                        msNavigationService.deleteItem('produits.groups.new'); 
                     }
                     if ($rootScope.user.type < 4)
                     {
@@ -170,14 +173,14 @@
                         msNavigationService.saveItem('users.groups.list', {
                             title : 'Liste',
                             icon  : 'icon-view-list',
-                            state    : 'app.produits_list',
+                            //state    : 'app.produits_list',
                             weight: 1
                         });
                         msNavigationService.saveItem('users.groups.new', {
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
-                            state    : 'app.produits_edit',
-                            stateParams: {id:-1},
+                            //state    : 'app.produits_edit',
+                            //stateParams: {id:-1},
                             weight: 1
                         });
                     }
@@ -185,6 +188,9 @@
                         msNavigationService.deleteItem('users');
                         msNavigationService.deleteItem('users.list'); 
                         msNavigationService.deleteItem('users.new'); 
+                        msNavigationService.deleteItem('users.groups');
+                        msNavigationService.deleteItem('users.groups.list'); 
+                        msNavigationService.deleteItem('users.groups.new'); 
                     }
                     
                 }

@@ -75,6 +75,12 @@
                 );
             }   
         }
+        vm.producteurChange = function(it) {
+            if ($scope.item.producteur)
+            {
+                it.textShow =it.name + " " + it.surn;
+            }   
+        }
 
         $scope.head = {
             ico:"icon-account-box",
@@ -115,7 +121,7 @@
                     break;
                 case 2:
                     methodBase = api.users.getAllByType;
-                    methodArgs = { pid:1,nbp:1000, idt:4 };
+                    methodArgs = { pid:1,nbp:1000, idt:4,req:$scope.item.producteurSearch };
                     break;
                 case 3:
                     methodBase = api.users.getParcelles;

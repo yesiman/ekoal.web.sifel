@@ -49,7 +49,9 @@
                 getGridOptionsStd: function getGridOptionsStd()
                 {
                     return {
-                        useExternalPagination: true,
+                        paginationPageSizes:[10, 25, 50],
+                        paginationPageSize:10,
+                        useExternalPagination:true,
                         useExternalSorting: true,
                         enableRowSelection: true,
                         enableSelectAll: true,
@@ -57,9 +59,8 @@
                         enableSorting: false,
                         saveSelection: false,
                         rowHeight: 35,
-                        height:"100%",
                         enableGridMenu: false,
-                        showGridFooter: false
+                        showGridFooter: false,
                     };
                 },
                 getDatatableLanguages: function getDatatableLanguages() {

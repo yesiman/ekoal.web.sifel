@@ -1,6 +1,8 @@
 #listPlanifs {
     position: relative;
 
+    
+
     > .header {
         height: 76px;
         min-height: 76px;
@@ -109,7 +111,13 @@
             .md-button.md-icon-button{
                 padding: 0px;
             }
+            .grouped-actions{
+                width: 100%;
+                margin: 10px;
+            }
         }
+
+        
 
         #grid1{
             height: calc((100% - 50px));

@@ -102,6 +102,24 @@
                 { field: 'surn', displayName: 'Prénom' },
                 { field: 'type', displayName: 'Type', cellTemplate:typeHtml },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
+        $scope.gridOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                //paginationOptions.pageNumber = newPage;
+                $scope.paginationOptions.pageSize = pageSize;
+                //getPage();
+                $scope.loadPageAction(newPage);
+            });
+        }
+            
         $scope.loadPageAction = function(id)
         {
             $scope.paginationOptions.pageNumber = id;
@@ -118,15 +136,16 @@
                     levels.push(value.level);
                 }   
             });
-            api.users.getAll.post({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize,levels:levels },
+            api.users.getAll.post({ pid:$scope.paginationOptions.pageNumber,
+                nbp:$scope.paginationOptions.pageSize,levels:levels,txtFilter:vm.filters.text },
                 // Success
                 function (response)
                 {
-                    $scope.maxSize = 5;
-                    $scope.totalItems = response.count;
+                    //$scope.maxSize = 5;
+                    //$scope.totalItems = response.count;
                     $scope.gridOptions.totalItems = response.count;
                     $scope.gridOptions.data = response.items;
-                    $scope.paginationOptions.total = Math.ceil(response.count / $scope.paginationOptions.pageSize);
+                    //$scope.paginationOptions.total = Math.ceil(response.count / $scope.paginationOptions.pageSize);
                     $scope.items = response.items;
                     $rootScope.loadingProgress = false;
                 },

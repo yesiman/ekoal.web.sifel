@@ -29,9 +29,10 @@
                                             md-items="item in querySearch(item.producteurSearch,2)"
                                             md-item-text="item.name"
                                             md-require-match
-                                            md-floating-label="Sélection producteur">
+                                            md-floating-label="Sélection producteur"
+                                            md-selected-item-change="vm.producteurChange(item)">
                                         <md-item-template>
-                                            <span md-highlight-text="item.producteurSearch">{{item.name}}</span>
+                                            <span md-highlight-text="item.producteurSearch">{{item.name}} {{item.surn}}</span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>

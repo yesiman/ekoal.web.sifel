@@ -71,52 +71,45 @@
                         <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
-                    <md-list-item>
-                         <md-menu>
-                            <md-button aria-label=""  class="md-icon-button" ng-click="$mdMenu.open($event)">
+                    <md-list-item style="padding-top:20px;padding-bottom:20px;">
+                        <md-menu>
+                            <md-button class="md-accent md-raised md-button grouped-actions" aria-label="" ng-click="vm.openMenu($mdOpenMenu,$event)">
                                 Actions groupées
-                                <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
+                                <md-icon md-font-icon="icon-ruler" md-menu-align-target></md-icon>
                             </md-button>
                             <md-menu-content width="4">
                                 <md-menu-item>
-                                <md-button ng-click="ctrl.redial($event)">
-                                    <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
-                                    Redial
+                                <md-button ng-disabled="(vm.filters.produits.selectedItems.length>1) || (items.length <= 0)">
+                                    <md-icon md-font-icon="icon-ruler" md-menu-align-target></md-icon>
+                                    Modifier règle
                                 </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
-                                    <md-icon md-svg-icon="call:voicemail"></md-icon>
-                                    Check voicemail
+                                <md-button ng-disabled="(items.length <= 0)" ng-click="ctrl.checkVoicemail()">
+                                    <md-icon md-font-icon="icon-arrow-all" md-menu-align-target></md-icon>
+                                    Décaler dates
                                 </md-button>
                                 </md-menu-item>
-                                <md-menu-divider></md-menu-divider>
                                 <md-menu-item>
-                                <md-button ng-click="ctrl.toggleNotifications()">
-                                    <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-                                    {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+                                <md-button ng-disabled="(items.length <= 0)" ng-click="ctrl.checkVoicemail()">
+                                    <md-icon md-font-icon="icon-content-copy" md-menu-align-target></md-icon>
+                                    Dupliquer
                                 </md-button>
                                 </md-menu-item>
                             </md-menu-content>
                         </md-menu>
                     </md-list-item>
                 </md-list>
+                
             </md-content>
 
             
 
         </md-sidenav>
 
-        <md-content class="content" style="width:100%;" ms-scroll>
-        <div id="grid1"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
-        <div class="footer" layout="column" layout-align="space-between">
-        <div paging class="pager" 
-                page="paginationOptions.pageNumber" 
-            page-size="paginationOptions.pageSize" 
-            paging-action="loadPageAction(page)" 
-            total="gridOptions.totalItems">
-            </div> 
-        </div>
+        <md-content class="content" style="width:100%;overflow:hidden;">
+            <div id="grid1"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridOptions"  class="grid"></div>
+            
         </md-content>
     </div>
     <!-- / CONTENT -->

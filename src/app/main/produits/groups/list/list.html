@@ -22,14 +22,8 @@
             </md-content>
         </md-sidenav>
         <md-content class="content" style="width:100%;overflow:hidden;" flex>   
-            <div id="grid1"  layout="column"  ui-grid="gridOptions"  class="grid"></div>
-            <div class="footer" layout="column" layout-align="space-between">
-            <div paging class="pager" 
-                page="paginationOptions.pageNumber" 
-                page-size="paginationOptions.pageSize" 
-                paging-action="loadPageAction(page)" 
-                total="gridOptions.totalItems">
-            </div>
+            <div id="grid1"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridOptions"  class="grid"></div>
+           
         </md-content> 
     </div>
     </div>

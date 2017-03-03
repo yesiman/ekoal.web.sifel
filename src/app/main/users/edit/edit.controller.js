@@ -15,17 +15,68 @@
         // Data
         //vm.products = Products.data;
         vm.producteurs;
-        vm.dtInstance = {};
-        vm.dtOptions = {
-            dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            pagingType  : 'simple',
-            lengthMenu  : [10, 20, 30, 50, 100],
-            pageLength  : 20,
-            scrollY     : 'auto',
-            responsive  : true,
-            language: standardizer.getDatatableLanguages()
-        };
         vm.profil = $stateParams.profil;
+
+        var producteurHtml = '<div class="ui-grid-cell-contents">';
+        producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
+        producteurHtml += '</div>';
+        var semaineHtml = '<div class="ui-grid-cell-contents">';
+        semaineHtml += '{{row.entity.semaine}} / {{row.entity.startAt | date : "yyyy"}}';
+        semaineHtml += '</div>';
+        var qteHtml = '<div class="ui-grid-cell-contents">';
+        qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
+        qteHtml += '</div>';
+        var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '</div>';
+        vm.gridParcsOptions = standardizer.getGridOptionsStd();
+        vm.gridParcsOptions.columnDefs = [
+            { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
+            { field: 'surface', sort:{priority:0}, displayName: 'Surface' },
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
+            vm.gridParcsOptions.totalItems = 100;        
+        vm.gridParcsOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                alert(newPage);
+            });
+        }
+        //
+        vm.gridProducteursOptions = standardizer.getGridOptionsStd();
+        vm.gridProducteursOptions.columnDefs = [
+            { field: 'name', sort:{priority:0}, displayName: 'Nom' },
+            { field: 'surn', sort:{priority:0}, displayName: 'Prénom' },
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
+            vm.gridParcsOptions.totalItems = 100;        
+        vm.gridProducteursOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                //alert(newPage);
+            });
+        }
+        //
         $scope.head = {
             ico:"icon-account-box",
             title:"Mise à jour utilisateur"
@@ -42,6 +93,11 @@
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         if (!$scope.item.parcellesToRem) {$scope.item.parcellesToRem= [];}
+
+        //vm.gridOptions.totalItems = $scope.item.parcelles.length;
+        vm.gridParcsOptions.data = $scope.item.parcelles;
+        
+
         $scope.currentNavItem = "infos";
         //
         $scope.valid = function(frm){
@@ -175,11 +231,10 @@
                 // Success
                 function (response)
                 {
-                    /*$scope.maxSize = 5;
+                    $scope.maxSize = 5;
                     $scope.totalItems = response.count;
-                    $scope.gridOptions.totalItems = response.count;
-                    $scope.gridOptions.data = response.items;*/
-                    //  console.log(response.items);
+                    vm.gridProducteursOptions.totalItems = response.count;
+                    vm.gridProducteursOptions.data = response.items;
                     vm.producteurs = response.items;
                     //$rootScope.loadingProgress = false;
                 },

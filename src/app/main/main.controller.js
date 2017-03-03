@@ -7,9 +7,10 @@
         .controller('MainController', MainController);
 
     /** @ngInject */
-    function MainController($scope, $rootScope, $interval,$cookies, api,$http,$mdDialog)
+    function MainController($scope, $rootScope, $interval,$cookies, api,$http,$mdDialog,i18nService)
     {
         // Data
+        i18nService.setCurrentLang('fr');
         //CHECK TOKEN EXPIRATION
         var checkDateDiff = function() {
             if ($rootScope.lastValidCall)
