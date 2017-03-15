@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.users.list', ['ui.grid.pagination','datatables','bw.paging'])
+        .module('app.users.list', ['ui.grid.pagination'])
         .config(config);
 
     /** @ngInject */

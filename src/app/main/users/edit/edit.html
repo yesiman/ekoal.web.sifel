@@ -118,104 +118,36 @@
         <md-tab  layout-fill ng-if="item.type == 4">
             <md-tab-label>
                 <span style="margin-right:25px;">Parcelles</span>
-                <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{item.parcelles.length}}</span>   
+                <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{vm.gridParcsOptions.data.length}}</span>   
             </md-tab-label>
         <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-            <md-content flex layout-fill style="overflow:hidden;">
+            <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;">
+                    <md-button class="md-icon-button md-primary" ng-click="addParcelle($event)" aria-label="Settings">
+                      <md-icon md-font-icon="icon-plus"></md-icon>
+                    </md-button>
+
+                    <input type="text"  ng-model="vm.parcelleTxtFilter" ng-change="getParcelles(1,vm.parcellePsize)" placeholder="Filtrer..."/>
+                    
+                  </div>
                 <div id="grid1"  ui-grid-pagination layout-fill ui-grid="vm.gridParcsOptions"  class="grid"></div>
             </md-content>
             <!--<md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
                 <md-icon md-font-icon="icon-plus"></md-icon>
             </md-button>
-            <datatable-wrapper>
-                <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                        dt-options="vm.dtOptions">
-                    <thead>
-                        <tr>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Libellé</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Surface (hectares)</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Actions</span>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody  ms-scroll>
-                        <tr ng-repeat="il in item.parcelles track by $index">
-                            <td>{{il.lib}}</td>
-                            <td>{{il.surface}}</td>
-                            <td>
-                                <md-button class="md-icon-button" aria-label="Settings" ng-click="editParc(il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                <md-button class="md-icon-button" aria-label="Settings" ng-click="removeParc(il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </datatable-wrapper>-->
+            -->
             </md-tab-body>
         </md-tab>
-       
         <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
-
             <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-            <md-content flex layout-fill style="overflow:hidden;">
-                <div id="grid2"  ui-grid-pagination layout-fill ui-grid="vm.gridProducteursOptions"  class="grid"></div>
-            </md-content>
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;height:40px;">         
+                         
+                    <input type="text"  ng-model="vm.producteurTxtFilter" style="padding: 15px;" ng-change="loadProducteurs(1,vm.producteurPsize)" placeholder="Filtrer..."/>
+                    </div>
+                    <div id="grid2"  ui-grid-pagination layout-fill ui-grid="vm.gridProducteursOptions"  class="grid"></div>
+                </md-content>
             </md-tab-body>
-
-           <!-- <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-
-                <table class="dataTable row-border hover"  style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                        dt-options="vm.dtOptions">
-                    <thead>
-                        <tr>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">ID</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Nom</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Prénom</span>
-                                </div>
-                            </th>
-                            <th class="secondary-text">
-                                <div class="table-header">
-                                    <span class="column-title">Actions</span>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody  ms-scroll>
-                        <tr ng-repeat="p in ::vm.producteurs">
-                            <td>{{p._id}}</td>
-                            <td>{{p.name}} {{p.surn}}</td>
-                            <td>{{p.surn}}</td>
-                            <td>
-                                <md-checkbox ng-checked="contactExists(p)"
-                                    ng-click="contactChecked(p)"
-                                    aria-label="{{contactExists(p) ? 'Deselect' : 'Select'}}">
-                    </md-checkbox>
-                            </md-checkbox>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </md-tab-content> -->
         </md-tab>
     </md-tabs>
 </form></div>

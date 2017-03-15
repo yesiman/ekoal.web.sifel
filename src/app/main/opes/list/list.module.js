@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.opes.list', ['ui.grid.pagination','bw.paging'])
+        .module('app.opes.list', ['ui.grid.pagination'])
         .config(config);
 
     /** @ngInject */

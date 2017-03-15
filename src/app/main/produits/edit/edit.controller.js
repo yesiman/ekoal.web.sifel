@@ -8,27 +8,45 @@
         .directive('objectifLine', objectifLine);
 
     /** @ngInject */
-    function ProduitsEditController($scope,$rootScope,$state, api,$stateParams,prodResolv,standardizer,rulesResolv,monthsResolv,$mdDialog,$document)
+    function ProduitsEditController($scope,$rootScope,$state, api,$stateParams,prodResolv,standardizer,monthsResolv,$mdDialog,$document)
     {
         var vm = this;
-        vm.dtInstance = {};
-        vm.dtOptions = {
-            dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            pagingType  : 'simple',
-            lengthMenu  : [10, 20, 30, 50, 100],
-            pageLength  : 20,
-            scrollY     : 'auto',
-            responsive  : true,
-            language: standardizer.getDatatableLanguages()
-        };
         
-        vm.rules = rulesResolv.items;
-        $scope.item = prodResolv;
-        
+        vm.item = prodResolv;
+        vm.ruleTxtFilter = "";
+        vm.rulePsize = 10;
 
-        if ($scope.item.objectif)
+        var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.addRule($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removeRule($event,row.entity)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
+        actionsHtml += '</div>';
+        vm.gridRulesOptions = standardizer.getGridOptionsStd();
+        vm.gridRulesOptions.columnDefs = [
+            { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
+            { field: 'delai', sort:{priority:0}, displayName: 'Délai avant récolte' },
+            { field: 'nbWeek', sort:{priority:0}, displayName: 'Semaines de récolte' },
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
+               
+        vm.gridRulesOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.rulePsize = pageSize;
+                vm.loadRulesPage(newPage,pageSize);
+            });
+        }
+
+
+        if (vm.item.objectif)
         {
-            vm.mois = $scope.item.objectif.lines;
+            vm.mois = vm.item.objectif.lines;
         }
         else {
             vm.mois = monthsResolv;
@@ -39,8 +57,7 @@
         }
         function setParent(it)
         {
-            console.log(it);
-            $scope.item.parent = it;
+            vm.item.parent = it;
         }
         function ParentsDialogController($scope, $mdDialog) {
             $scope.select = function(it) {
@@ -57,6 +74,25 @@
             $mdDialog.hide(answer);
             };
         }
+
+        
+        vm.loadRulesPage = function (id, psize)
+        {
+            api.rules.getAllByProduit.post({ pid:id, nbp:psize, id: vm.item._id,req:vm.ruleTxtFilter } ,
+                // Success
+                function (response)
+                {
+                    vm.gridRulesOptions.totalItems = response.count;
+                    vm.gridRulesOptions.data = response.items;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                }
+            );
+        }
+
         vm.showParentsDialog = function(ev) {
             $mdDialog.show({
                 controller         : ParentsDialogController,
@@ -79,14 +115,13 @@
         };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
-            $scope.item.objectif = vm.mois;
-            console.log($scope.item.objectif);
-            api.products.add.post({ id:$scope.id, product: $scope.item } ,
+            vm.item.objectif = vm.mois;
+            api.products.add.post({ id:$scope.id, product: vm.item } ,
                 // Success
                 function (response)
                 {
                     $state.go("app.produits_list");
-                    //$scope.item = response;
+                    
                 },
                 // Error
                 function (response)
@@ -119,6 +154,7 @@
                             break;
                         }
                     }
+                    vm.loadRulesPage(1,10);
                     $rootScope.loadingProgress = false;
                     //$scope.item = response;
                 },
@@ -156,6 +192,7 @@
                         break;
                     }
                 }
+                vm.loadRulesPage(1,10);
             }, function () {
                 //$scope.status = 'You cancelled the dialog.';
             });;
@@ -163,7 +200,10 @@
 
             //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
-        
+        if (vm.item._id)
+        {
+            vm.loadRulesPage(1,10);
+        }
     }
 
     /** @ngInject */

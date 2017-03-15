@@ -14,32 +14,6 @@
             ico:"icon-account-box",
             title:"Liste utilisateurs"
         };
-        
-        vm.dtInstance = {};
-        vm.dtOptions = {
-            dom       : 'rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            initComplete: function ()
-            {
-                //alert("comp");
-                /*var api = this.api(),
-                    searchBox = angular.element('body').find('#e-commerce-products-search');
-
-                // Bind an external input as a table wide search box
-                if ( searchBox.length > 0 )
-                {
-                    searchBox.on('keyup', function (event)
-                    {
-                        api.search(event.target.value).draw();
-                    });
-                }*/
-            },
-            pagingType  : 'simple',
-            lengthMenu  : [10, 20, 30, 50, 100],
-            pageLength  : 10,
-            scrollY     : 'auto',
-            responsive  : true,
-            language: standardizer.getDatatableLanguages()
-        };
         vm.filters = { 
             levels: [
                 {lib:"Administrateur",checked:true,level:1},
@@ -98,6 +72,7 @@
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
+                { field: 'codeAdh', displayName: 'Code adhérent' },
                 { field: 'name', displayName: 'Nom' },
                 { field: 'surn', displayName: 'Prénom' },
                 { field: 'type', displayName: 'Type', cellTemplate:typeHtml },
@@ -176,19 +151,19 @@
             $mdDialog.show(confirm).then(function() {
                 $rootScope.loadingProgress = true;
                 api.users.delete.delete({ id:id } ,
-                // Success
-                function (response)
-                {
-                    $scope.loadPage();
-                    //$scope.item = response;
-                },
-                // Error
-                function (response)
-                {
-                    console.error(response);
-                    $rootScope.loadingProgress = false;
-                }
-            );
+                    // Success
+                    function (response)
+                    {
+                        $scope.loadPage();
+                        //$scope.item = response;
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        $rootScope.loadingProgress = false;
+                    }
+                );
             }, function() {
                 
             });

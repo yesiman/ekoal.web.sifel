@@ -10,16 +10,6 @@
     function ProduitsGroupsEditController($scope,$rootScope,$state, api,$stateParams,groupResolv,standardizer)
     {
         var vm = this;
-        vm.dtInstance = {};
-        vm.dtOptions = {
-            dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            pagingType  : 'simple',
-            lengthMenu  : [10, 20, 30, 50, 100],
-            pageLength  : 20,
-            scrollY     : 'auto',
-            responsive  : true,
-            language: standardizer.getDatatableLanguages()
-        };
         
         vm.item = groupResolv;
         

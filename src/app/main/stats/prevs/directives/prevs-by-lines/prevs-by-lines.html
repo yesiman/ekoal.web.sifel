@@ -1,9 +1,13 @@
-<div id="grid1"  layout="column"  ui-grid="gridPlanifOptions"  class="grid"></div>
-<div class="footer" layout="column" layout-align="space-between">
-    <div paging class="pager" 
-        page="paginationOptions.pageNumber" 
-        page-size="paginationOptions.pageSize" 
-        paging-action="loadPageAction(page)" 
-        total="gridOptions.totalItems">
-    </div> 
-</div>
+<md-content flex layout-fill layout="column" style="overflow:hidden;">
+    <div style="display:block;height:40px;padding-top:8px;">         
+        <button class="md-icon-button md-primary" ng-click="showPopPercent($event)" type="button" aria-label="Percent">
+            <md-tooltip>Appliquer un pourcentage à la sélection</md-tooltip>
+            <md-icon md-font-icon="icon-percent"></md-icon>
+        </button>
+        <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
+            <md-tooltip>Exporter vers excel</md-tooltip>
+            <md-icon md-font-icon="icon-export"></md-icon>
+        </button>
+    </div>
+    <div id="grid1"  ui-grid-pagination layout-fill ui-grid="gridPlanifOptions"  class="grid"></div>
+</md-content>

@@ -18,87 +18,57 @@
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Libellé</label>
-                        <input required ng-model="item.lib">
+                        <input required ng-model="vm.item.lib">
                       </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Code produit</label>
-                        <input required ng-model="item.codeProd">
+                        <input required ng-model="vm.item.codeProd">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Produit parent</label>
-                        <input required ng-model="item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
+                        <input ng-model="vm.item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
                       </md-input-container>
-                       <div class="md-inline" qte-input inprequired="true"  ng-model="item.rendement" flex="50"></div>
+                       <div class="md-inline" qte-input inprequired="true"  ng-model="vm.item.rendement" flex="50"></div>
                       
                     </div>
                     <div layout-gt-sm="row">
                      
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Couleur du produit</label>
-                        <color-picker style="display:inline;" options="vm.cpOptions" ng-model="item.color"></color-picker>
+                        <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Decription</label>
-                        <textarea ng-model="item.desc" rows="5"></textarea>
+                        <textarea ng-model="vm.item.desc" rows="5"></textarea>
                       </md-input-container>
                     </div>
                 </div>
               </md-tab-content>
             </md-tab>
-            <md-tab label="Règles" layout-fill  ng-if="item._id && item.rendement" >
-              <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-                <md-button class="md-icon-button md-primary" ng-click="addRule()" style="position:absolute;z-index:8;" aria-label="Settings">
-                    <md-icon md-font-icon="icon-plus"></md-icon>
-                </md-button>
-                    <datatable-wrapper>
-                        <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                                dt-options="vm.dtOptions">
-                            <thead>
-                                <tr>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Libellé</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Délai avant récolte</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Semaines de récolte</span>
-                                        </div>
-                                    </th>
-                                    
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Actions</span>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="il in vm.rules track by $index">
-                                    <td>{{il.lib}}</td>
-                                    <td>{{il.delai}}</td>
-                                    <td>{{il.nbWeek}}</td>
-                                    <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="addRule($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removeRule($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                      </datatable-wrapper>
-              </md-tab-content>
+            <md-tab layout-fill  ng-if="vm.item._id && vm.item.rendement" >
+              <md-tab-label>
+                <span style="margin-right:25px;">Règles</span>
+                <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{vm.gridRulesOptions.data.length}}</span>   
+              </md-tab-label>
+              <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;">
+                    <md-button class="md-icon-button md-primary" ng-click="addRule()" aria-label="Settings">
+                      <md-icon md-font-icon="icon-plus"></md-icon>
+                    </md-button>
+
+                    <input type="text" ng-model="vm.ruleTxtFilter" ng-change="vm.loadRulesPage(1,vm.rulePsize)" placeholder="Filtrer..."/>
+                    
+                  </div>
+                  <div id="grid1"  style="display:block;" ui-grid-pagination layout-fill ui-grid="vm.gridRulesOptions"  class="grid"></div>
+                </md-content>
+              </md-tab-body>
             </md-tab>
-           
-            <md-tab layout-fill label="Objectif" ng-if="item._id">
+            <md-tab layout-fill label="Objectif" ng-if="vm.item._id">
               <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
                 <div style="width:100%;">
                     <objectif-line  ng-repeat="m in vm.mois" >

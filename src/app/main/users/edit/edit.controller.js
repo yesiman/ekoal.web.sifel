@@ -16,6 +16,11 @@
         //vm.products = Products.data;
         vm.producteurs;
         vm.profil = $stateParams.profil;
+        vm.producteurTxtFilter = "";
+        vm.producteurPsize = 10;
+
+        vm.parcelleTxtFilter = "";
+        vm.parcellePsize = 10;
 
         var producteurHtml = '<div class="ui-grid-cell-contents">';
         producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
@@ -27,14 +32,14 @@
         qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
         qteHtml += '</div>';
         var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
-        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.editParc(row.entity,$event)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removeParc(row.entity,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
         actionsHtml += '</div>';
         vm.gridParcsOptions = standardizer.getGridOptionsStd();
         vm.gridParcsOptions.columnDefs = [
             { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
             { field: 'surface', sort:{priority:0}, displayName: 'Surface' },
-            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
-            vm.gridParcsOptions.totalItems = 100;        
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridParcsOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -49,16 +54,17 @@
                 //paginationOptions.pageNumber = newPage;
                 //paginationOptions.pageSize = pageSize;
                 //getPage();
-                alert(newPage);
+                vm.parcellePsize = pageSize;
+                $scope.getParcelles(newPage,pageSize);
             });
         }
         //
         vm.gridProducteursOptions = standardizer.getGridOptionsStd();
         vm.gridProducteursOptions.columnDefs = [
+            { field: 'selected', name: '',cellEditableContition: false, width:"40",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-click="grid.appScope.addProducteur(row.entity._id)" ng-model="row.entity.selected" ng-checked="grid.appScope.isProducteurForMe(row.entity)" class="md-warn"></md-checkbox></div>' },
             { field: 'name', sort:{priority:0}, displayName: 'Nom' },
-            { field: 'surn', sort:{priority:0}, displayName: 'Prénom' },
-            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
-            vm.gridParcsOptions.totalItems = 100;        
+            { field: 'surn', sort:{priority:0}, displayName: 'Prénom' }];
+        vm.gridProducteursOptions.totalItems = 100;        
         vm.gridProducteursOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -72,8 +78,8 @@
             gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 //paginationOptions.pageNumber = newPage;
                 //paginationOptions.pageSize = pageSize;
-                //getPage();
-                //alert(newPage);
+                vm.producteurPsize = pageSize;
+                $scope.loadProducteurs(newPage,pageSize);
             });
         }
         //
@@ -94,8 +100,57 @@
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         if (!$scope.item.parcellesToRem) {$scope.item.parcellesToRem= [];}
 
+        $scope.isProducteurForMe = function(it) {
+            for (var i = 0;i < $scope.item.producteurs.length;i++)
+            {
+                if ($scope.item.producteurs[i] == it._id)
+                {
+                    console.log("itis-" + it._id)
+                    it.selected = true;
+                    return true;
+                }
+            }
+            it.selected = false;
+            console.log("itisnot-" + it._id)
+            return false;
+        }
+        $scope.addProducteur = function(id) {
+            for (var i = 0;i < $scope.item.producteurs.length;i++)
+            {
+                if ($scope.item.producteurs[i] == id)
+                {
+                    $scope.item.producteurs.splice(i,1);
+                    return;
+                }
+            }
+            $scope.item.producteurs.push(id);
+        }
+        
+        $scope.getParcelles = function(pid,psize) {
+            if ($scope.item.type == 4)
+            {
+                api.users.getParcelles.post({ pid:pid,nbp:psize,id:$scope.item._id,req:vm.parcelleTxtFilter },
+                    function (response)
+                    {
+                        vm.gridParcsOptions.totalItems = response.count;     
+                        vm.gridParcsOptions.data = response.items;
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        //return null;
+                    }
+                );
+            }
+        }
+        if ($scope.item.type == 4)
+        {
+            $scope.getParcelles(1, vm.parcellePsize);
+        }
+
         //vm.gridOptions.totalItems = $scope.item.parcelles.length;
-        vm.gridParcsOptions.data = $scope.item.parcelles;
+
         
 
         $scope.currentNavItem = "infos";
@@ -127,32 +182,19 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
-            var found = false;
-            if (item.id)
-            {
-                for (var i = 0;i < $scope.item.parcelles.length;i++)
+            item.producteur = $scope.item._id;
+            api.users.addParcelle.post({ id:(item._id?item._id:"-1"), parcelle: item } ,
+                function (response)
                 {
-                    if (item.id == $scope.item.parcelles[i].id)
-                    {
-                        $scope.item.parcelles[i] = item;
-                        found = true;
-                    }
-                }
-            }
-            else {
-                for (var i = 0;i < $scope.item.parcelles.length;i++)
+                    $scope.getParcelles(1,vm.parcellePsize);
+                },
+                function (response)
                 {
-                    if (item._id == $scope.item.parcelles[i]._id)
-                    {
-                        $scope.item.parcelles[i] = item;
-                        found = true;
-                    }
+                    console.error(response);
                 }
-            }
-            if (!found)
-            {
-                $scope.item.parcelles.push(item);
-            }
+            );
+            
+            //$scope.getParcelles(newPage,vm.parcellePsize);
             $mdDialog.hide();
         }
         $scope.editParc = function(i,ev) {
@@ -176,26 +218,28 @@
         $scope.removeParc = function(item,ev) {
             var confirm = $mdDialog.confirm()
                 .title('Êtes vous sur de vouloir supprimer cette ligne?')
-                .textContent('(Cette action sera prise en compte après sauvegarde)')
+                .textContent('(Cette action est irréversible))')
                 .ariaLabel('Supprimer')
                 .targetEvent(ev)
                 .ok('Valider')
                 .cancel('Annuler');
 
             $mdDialog.show(confirm).then(function() {
-                for (var i = 0;i < $scope.item.parcelles.length;i++)
-                {
-                    if ((item._id == $scope.item.parcelles[i]._id) || 
-                    ((item.id) && (item.id == $scope.item.parcelles[i].id)))
+                $rootScope.loadingProgress = true;
+                api.users.deleteParcelle.delete({ id:item._id } ,
+                    // Success
+                    function (response)
                     {
-                        if (item._id)
-                        {
-                            $scope.item.parcellesToRem.push($scope.item.parcelles[i]._id);
-                        }
-                        $scope.item.parcelles.splice(i,1);
-                        break;
+                        $scope.getParcelles(1, vm.parcellePsize);
+                        $rootScope.loadingProgress = false;
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        $rootScope.loadingProgress = false;
                     }
-                }
+                );
             }, function() {
                 
             });
@@ -226,17 +270,15 @@
         }
 
         //TODO ID NEED
-        $scope.loadProducteurs = function() {
-            api.users.getAllByOrga.get({ pid:1,nbp:100, ido:$scope.item.orga },
+        $scope.loadProducteurs = function(pid,nbp) {
+            api.users.getAllByOrga.post({ pid:pid,nbp:nbp, ido:$scope.item.orga, req:vm.producteurTxtFilter },
                 // Success
                 function (response)
                 {
-                    $scope.maxSize = 5;
-                    $scope.totalItems = response.count;
                     vm.gridProducteursOptions.totalItems = response.count;
                     vm.gridProducteursOptions.data = response.items;
-                    vm.producteurs = response.items;
-                    //$rootScope.loadingProgress = false;
+
+                    $rootScope.loadingProgress = false;
                 },
                 // Error
                 function (response)
@@ -255,7 +297,7 @@
         if ($scope.item.orga)
         {
 
-            $scope.loadProducteurs();
+            $scope.loadProducteurs(1,10);
         }
         
         $scope.contactChecked = function(contact) {

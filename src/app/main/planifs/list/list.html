@@ -18,11 +18,11 @@
                     <md-subheader class="md-no-sticky">Dates</md-subheader>
                     <md-list-item>
                         <p>Du</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
+                        <md-datepicker class="md-secondary" ng-model="vm.filters.dateFrom" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-list-item>
                         <p>Au</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
+                        <md-datepicker class="md-secondary" ng-model="vm.filters.dateTo" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Produits</md-subheader>
@@ -79,19 +79,19 @@
                             </md-button>
                             <md-menu-content width="4">
                                 <md-menu-item>
-                                <md-button ng-disabled="(vm.filters.produits.selectedItems.length>1) || (items.length <= 0)">
+                                <md-button ng-click="vm.groupChangeRule()" ng-disabled="(vm.filters.produits.selectedItems.length!=1) || (items.length <= 0)">
                                     <md-icon md-font-icon="icon-ruler" md-menu-align-target></md-icon>
                                     Modifier règle
                                 </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                <md-button ng-disabled="(items.length <= 0)" ng-click="ctrl.checkVoicemail()">
+                                <md-button ng-click="vm.groupDupDec('dec')" ng-disabled="(items.length <= 0)">
                                     <md-icon md-font-icon="icon-arrow-all" md-menu-align-target></md-icon>
                                     Décaler dates
                                 </md-button>
                                 </md-menu-item>
                                 <md-menu-item>
-                                <md-button ng-disabled="(items.length <= 0)" ng-click="ctrl.checkVoicemail()">
+                                <md-button ng-click="vm.groupDupDec('dup')" ng-disabled="(items.length <= 0)" >
                                     <md-icon md-font-icon="icon-content-copy" md-menu-align-target></md-icon>
                                     Dupliquer
                                 </md-button>

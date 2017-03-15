@@ -11,7 +11,7 @@
     {
         var vm = this;
         // Data
-        var monday = new Date;
+        var monday = new Date();
         monday.setHours(0);
         monday.setMinutes(0);
         monday.setSeconds(0);
@@ -91,7 +91,25 @@
                 { field: 'producteurLib', displayName: 'Producteur' },
                 { field: 'produitRend', displayName: 'Rendement/hectare', cellTemplate:produitRendHtml },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
-
+        $scope.gridOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                $scope.loadPageAction(newPage);
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                //vm.parcellePsize = pageSize;
+                //$scope.getParcelles(newPage,pageSize);
+            });
+        }
         var originatorEv;
 
         vm.openMenu = function($mdOpenMenu,ev) {
@@ -110,6 +128,210 @@
             $scope.loadPage();
         }
         // Methods
+
+        var mdDialogCtrl = function ($scope, title,mode,onCancel,onValid) { 
+            $scope.nbDays=0;
+            $scope.mode=mode;
+            $scope.title = title;
+            $scope.onCancel = onCancel;
+            $scope.onValid = onValid;   
+        }
+        var mdDialogCtrlRules = function ($scope,onCancel,onValid) { 
+            $scope.selectedRule = {};
+            $scope.onCancel = onCancel;
+            $scope.onValid = onValid;
+            api.rules.getAllByProduit.post({ pid:1,nbp:100, id:vm.filters.produits.selectedItems[0]._id,req:""},
+                function (response)
+                {
+                    $scope.rules = response.items;
+                    console.log($scope.rules);
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    //return null;
+                }
+            );   
+        }
+
+        $scope.closeMe = function()
+        {
+            $mdDialog.hide();
+        }
+        //VALI NB JOURS POPUP
+        $scope.validLine = function(val,mode)
+        {    
+
+            var produitsTmp = [];
+            angular.forEach(vm.filters.produits.selectedItems, function(value) {
+                produitsTmp.push(value._id);
+            });
+            var producteursTmp = [];
+            angular.forEach(vm.filters.producteurs.selectedItems, function(value) {
+                producteursTmp.push(value._id);
+            });
+            //TODO GET SELECTION SERVER SIDE
+            var methodBase;
+            var methodArgs = { produits:produitsTmp,producteurs:producteursTmp,dateFrom:vm.filters.dateFrom,dateTo:vm.filters.dateTo,decalIn:val };
+           
+            switch (mode)
+            {
+                case "dup":
+                    methodBase = api.planifs.groupDup;
+                    break;
+                case "dec":
+                    methodBase = api.planifs.groupDec;
+                    break;
+            }
+            methodBase.post(methodArgs,
+                // Success
+                function (response)
+                {
+                    $scope.loadPageAction(1);
+                    $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );
+            $mdDialog.hide();
+        }
+
+        $scope.closeMeRule = function()
+        {
+            $mdDialog.hide();
+        }
+        //VALI NB JOURS POPUP
+        $scope.validLineRule = function(rule)
+        {    
+
+            var produitsTmp = [];
+            angular.forEach(vm.filters.produits.selectedItems, function(value) {
+                produitsTmp.push(value._id);
+            });
+            var producteursTmp = [];
+            angular.forEach(vm.filters.producteurs.selectedItems, function(value) {
+                producteursTmp.push(value._id);
+            });
+            //TODO GET SELECTION SERVER SIDE
+            var methodBase;
+            var methodArgs = { produits:produitsTmp,producteurs:producteursTmp,dateFrom:vm.filters.dateFrom,dateTo:vm.filters.dateTo,newRule:rule };
+            methodBase = api.planifs.groupChangeRule; 
+            methodBase.post(methodArgs,
+                // Success
+                function (response)
+                {
+                    $scope.loadPageAction(1);
+                    $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );
+            $mdDialog.hide();
+        }
+
+        vm.groupDupDec = function(mode,ev)
+        {
+            var title = "";
+            switch (mode)
+            {
+                case "dup":
+                    title = "Dans combien de jours souhaitez vous dupliquer cette sélection ?";
+                    break;
+                case "dec":
+                    title = "Dans combien de jours souhaitez vous décaler cette sélection ?";
+                    break;
+            }
+            
+            var locals = {title: title,mode:mode, onCancel: $scope.closeMe, onValid: $scope.validLine };
+            $mdDialog.show({
+                templateUrl: 'app/main/planifs/list/dialogs/nbDays.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: locals,
+                controller: mdDialogCtrl,
+                controllerAs: 'ctrl',
+                clickOutsideToClose:true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                }, function() {
+                
+            });      
+
+            
+
+            /*var tmpA = [];
+            for (var i = 0;i < $scope.items.length;i++)
+            {
+                tmpA.push($scope.items[i]._id);
+            }
+            api.planifs.groupDupDec.post({ pids:tmpA,decalIn:30,mode:mode },
+                // Success
+                function (response)
+                {
+                   
+                    $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );*/
+        }
+
+        vm.groupChangeRule = function(ev)
+        {
+            
+            var locals = {onCancel: $scope.closeMeRule, onValid: $scope.validLineRule };
+            $mdDialog.show({
+                templateUrl: 'app/main/planifs/list/dialogs/rules.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: locals,
+                controller: mdDialogCtrlRules,
+                controllerAs: 'ctrl',
+                clickOutsideToClose:true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+                })
+                .then(function(answer) {
+                }, function() {
+                
+            });      
+
+            
+
+            /*var tmpA = [];
+            for (var i = 0;i < $scope.items.length;i++)
+            {
+                tmpA.push($scope.items[i]._id);
+            }
+            api.planifs.groupDupDec.post({ pids:tmpA,decalIn:30,mode:mode },
+                // Success
+                function (response)
+                {
+                   
+                    $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );*/
+        }
+
         $scope.loadPage = function() {
             var produitsTmp = [];
             angular.forEach(vm.filters.produits.selectedItems, function(value) {
@@ -119,7 +341,7 @@
             angular.forEach(vm.filters.producteurs.selectedItems, function(value) {
                 producteursTmp.push(value._id);
             });
-            api.planifs.getAll.post({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize,produits:produitsTmp,producteurs:producteursTmp },
+            api.planifs.getAll.post({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize,produits:produitsTmp,producteurs:producteursTmp,dateFrom:vm.filters.dateFrom,dateTo:vm.filters.dateTo },
                 // Success
                 function (response)
                 {
@@ -157,7 +379,7 @@
                     break;
                 case 3:
                     methodBase = api.users.getParcelles;
-                    methodArgs = { id:$scope.item.producteur._id };
+                    methodArgs = { pid:1,nbp:100,id:$scope.item.producteur._id,req:"" };
                     break;
             }
             methodBase.get(methodArgs,

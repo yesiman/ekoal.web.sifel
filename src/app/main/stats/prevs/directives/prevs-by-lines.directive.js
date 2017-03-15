@@ -28,7 +28,6 @@
                 actionsHtml += '</div>';
                 scope.gridPlanifOptions = standardizer.getGridOptionsStd();
                 scope.gridPlanifOptions.columnDefs = [
-                    { field: 'selected', name: '',cellEditableContition: false, width:"40",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-model="row.entity.selected" class="md-warn"></md-checkbox></div>' },
                     { field: 'semaine', sort:{priority:0}, displayName: 'Semaine', cellTemplate:semaineHtml },
                     { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
                     { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml },
@@ -139,6 +138,60 @@
                         scope.status = 'You cancelled the dialog.';
                     });            
                 }
+                //
+                //PERCENT DEFALQ
+                var mdDialogCtrl = function (scope,onCancel,onValid) { 
+                    scope.percent=0;
+                    scope.onCancel = onCancel;
+                    scope.onValid = onValid;   
+                }
+
+                scope.closeMe = function()
+                {
+                    $mdDialog.hide();
+                }
+                //VALI NB JOURS POPUP
+                scope.validLine = function(val,mode)
+                {    
+
+                    var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,
+                        dateTo:scope.filters.dateTo, dateFormat:scope.groupMode}
+                    api.stats.prevsPlanifsLinesApplyPercent.post( args ,
+                        // Success
+                        function (response)
+                        {
+                            scope.refreshPrevsByLines();
+                            $mdDialog.hide();
+                        },
+                        // Error
+                        function (response)
+                        {
+                            
+                            //$rootScope.loadingProgress = false;
+                        }
+                    );
+                }
+
+                scope.showPopPercent = function(ev)
+                {
+                    var locals = {onCancel: scope.closeMe, onValid: scope.validLine };
+                    $mdDialog.show({
+                        templateUrl: 'app/main/stats/prevs/directives/prevs-by-lines/dialogs/percent.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        locals: locals,
+                        controller: mdDialogCtrl,
+                        controllerAs: 'ctrl',
+                        clickOutsideToClose:true,
+                        fullscreen: true // Only for -xs, -sm breakpoints.
+                        })
+                        .then(function(answer) {
+                        }, function() {
+                        
+                    });      
+
+                }
+                //
                 scope.refreshPrevsByLines();             
             }
         };

@@ -11,19 +11,40 @@
     {
         $scope.current =  {userForm : {}};
         var vm = this;
-        vm.dtInstance = {};
-        vm.dtOptions = {
-            dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            pagingType  : 'simple',
-            lengthMenu  : [10, 20, 30, 50, 100],
-            pageLength  : 20,
-            scrollY     : 'auto',
-            responsive  : true,
-            language: standardizer.getDatatableLanguages()
-        };
+        
         vm.rules = [];
         vm.selectedRule = {};
         
+        var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removePlanifLine($event,row.entity)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
+        actionsHtml += '</div>';
+        vm.gridRecoltsOptions = standardizer.getGridOptionsStd();
+        vm.gridRecoltsOptions.useExternalPagination = false;
+        vm.gridRecoltsOptions.useExternalSorting = false;
+        vm.gridRecoltsOptions.columnDefs = [
+            { field: 'semaine', sort:{priority:0}, displayName: 'Semaine récolte' },
+            { field: 'qte.val', displayName: 'Quantité' },
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
+        vm.gridRecoltsOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                //vm.parcellePsize = pageSize;
+                //$scope.getParcelles(newPage,pageSize);
+            });
+        }
+
         //
         vm.ruleChanged = function() {
             for (var i = 0;i< vm.rules.length;i++)
@@ -58,10 +79,12 @@
             }
         }
         vm.productChange = function() {
-            if ($scope.item.produit)
-            {
+
+//console.log($scope.item.produit);
+        if ($scope.item.produit)
+        {
                 //LOAD PRODUCTS RULES
-                api.rules.getAllByProduit.get({ id:$scope.item.produit._id},
+                api.rules.getAllByProduit.post({ pid:1,nbp:100, id:$scope.item.produit._id,req:""},
                     function (response)
                     {
                         vm.rules = response.items;
@@ -73,7 +96,8 @@
                         //return null;
                     }
                 );
-            }   
+                
+        }
         }
         vm.producteurChange = function(it) {
             if ($scope.item.producteur)
@@ -88,6 +112,8 @@
         };
         $scope.id = $stateParams.id;
         $scope.item  = planifResolv;
+
+        
         vm.productChange();
         if ($rootScope.user.type == 4)
         {
@@ -107,6 +133,8 @@
         $scope.searchText = "";
 
 
+        vm.gridRecoltsOptions.totalItems = $scope.item.lines.length;
+        vm.gridRecoltsOptions.data = $scope.item.lines;
 
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
@@ -118,37 +146,55 @@
                 case 1:
                     methodBase = api.products.getAllByLib;
                     methodArgs = { pid:1,nbp:20,req:$scope.item.produitSearch };
+                    methodBase.get(methodArgs,
+                        function (response)
+                        {
+                            deferred.resolve( response.items );
+                        },
+                        // Error
+                        function (response)
+                        {
+                            console.error(response);
+                            //return null;
+                        }
+                    );
                     break;
                 case 2:
                     methodBase = api.users.getAllByType;
                     methodArgs = { pid:1,nbp:1000, idt:4,req:$scope.item.producteurSearch };
+                    methodBase.get(methodArgs,
+                        function (response)
+                        {
+                            deferred.resolve( response.items );
+                        },
+                        // Error
+                        function (response)
+                        {
+                            console.error(response);
+                            //return null;
+                        }
+                    );
                     break;
                 case 3:
                     methodBase = api.users.getParcelles;
-                    methodArgs = { id:$scope.item.producteur._id };
+                    methodArgs = { pid:1,nbp:100,id:$scope.item.producteur._id,req:"" };
+                    methodBase.post(methodArgs,
+                        function (response)
+                        {
+                            deferred.resolve( response.items );
+                        },
+                        // Error
+                        function (response)
+                        {
+                            console.error(response);
+                            //return null;
+                        }
+                    );
                     break;
             }
-            methodBase.get(methodArgs,
-                function (response)
-                {
-                    deferred.resolve( response.items );
-                },
-                // Error
-                function (response)
-                {
-                    console.error(response);
-                    //return null;
-                }
-            );
+           
             return deferred.promise;
         }
-
-
-        $scope.closeMe = function()
-        {
-            $mdDialog.hide();
-        }
-
         vm.getDateOfISOWeek = function(weekNo, y) {
             var d1 = new Date();
             d1.setFullYear(y);
@@ -163,7 +209,11 @@
             //var rangeIsTo = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + y ;
             //return rangeIsFrom + " to "+rangeIsTo;
         }
-
+        //
+        $scope.closeMe = function()
+        {
+            $mdDialog.hide();
+        }
         $scope.validLine = function(item,fromrule){
             
             if (!fromrule)
@@ -191,6 +241,9 @@
                     increm++;
                 });
             }
+            
+            vm.gridRecoltsOptions.totalItems = $scope.item.lines.length;
+            vm.gridRecoltsOptions.data = $scope.item.lines;
             $mdDialog.hide();
         }
         
@@ -259,7 +312,7 @@
                 producteur: $scope.item.producteur._id,
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),
                 rule: ($scope.item.rule?$scope.item.rule:null),
-                rendement:$scope.item.produit.rendement.val,
+                rendement:$scope.item.produit.rendement,
                 surface:$scope.item.surface,
                 datePlant:$scope.item.datePlant,
                 dateRecStart:startDate,

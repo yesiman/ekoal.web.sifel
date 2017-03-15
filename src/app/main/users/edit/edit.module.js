@@ -30,7 +30,7 @@
                 {
                     if ($stateParams.id && ($stateParams.id != -1))
                     {
-                        return apiResolver.resolve('users.get@get', {'id': $stateParams.id });
+                        return apiResolver.resolve('users.get@get', {'id': $stateParams.id,'withParc':false });
                     }
                     else {
                         return {};

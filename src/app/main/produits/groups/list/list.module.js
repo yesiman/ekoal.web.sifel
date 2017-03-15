@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.produits.groups.list', ['ui.grid.pagination','bw.paging'])
+        .module('app.produits.groups.list', ['ui.grid.pagination'])
         .config(config);
 
     /** @ngInject */

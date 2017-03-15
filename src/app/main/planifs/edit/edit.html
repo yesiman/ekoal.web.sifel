@@ -22,7 +22,7 @@
                                         <md-autocomplete flex required ng-disabled="$root.user.type == 4"
                                             md-input-name="autocompleteField"
                                             md-input-minlength="2"
-                                            md-input-maxlength="18"
+                                            md-input-maxlength="100"
                                             md-no-cache="ctrl.noCache"
                                             md-selected-item="item.producteur"
                                             md-search-text="item.producteurSearch"
@@ -32,7 +32,7 @@
                                             md-floating-label="Sélection producteur"
                                             md-selected-item-change="vm.producteurChange(item)">
                                         <md-item-template>
-                                            <span md-highlight-text="item.producteurSearch">{{item.name}} {{item.surn}}</span>
+                                            <span md-highlight-text="item.producteurSearch">{{item.codeAdh}} - {{item.name}} {{item.surn}}</span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>
@@ -44,7 +44,7 @@
                                         <md-autocomplete flex required
                                             md-input-name="autocompleteField"
                                             md-input-minlength="2"
-                                            md-input-maxlength="18"
+                                            md-input-maxlength="100"
                                             md-no-cache="ctrl.noCache"
                                             md-selected-item="item.produit"
                                             md-search-text="item.produitSearch"
@@ -54,7 +54,7 @@
                                             md-floating-label="Sélection produit"
                                             md-selected-item-change="vm.productChange()">
                                         <md-item-template>
-                                            <span md-highlight-text="item.produitSearch">{{item.lib}}</span>
+                                            <span md-highlight-text="item.produitSearch">{{item.codeProd}} - {{item.lib}}</span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>
@@ -68,7 +68,7 @@
                                         <md-autocomplete flex 
                                             md-input-name="autocompleteField"
                                             md-input-minlength="2"
-                                            md-input-maxlength="18"
+                                            md-input-maxlength="100"
                                             md-no-cache="ctrl.noCache"
                                             md-selected-item="item.parcelle"
                                             md-search-text="item.parcelleSearch"
@@ -102,6 +102,7 @@
                     </md-tab-content>
                 </md-tab>
                 <md-tab label="Récoltes" layout-fill>
+     <!--               
                     <md-tab-content  md-theme="docs-dark"   flex layout-fill>
                         <md-button class="md-icon-button md-primary" style="position:absolute;z-index:9;" aria-label="Settings"  ng-click="showPlanif()">
                             <md-tooltip>Nouvelle ligne</md-tooltip>
@@ -119,13 +120,7 @@
                             <input type="number"   ng-change="vm.ruleChanged()" ng-if="vm.selectedRule" class="rule-sel" ng-model="item.produit.rendement.val">
                                 <md-tooltip>Rendement par defaut</md-tooltip>
                             </input>
-                             <!--<md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="vm.selectedRule" class="rule-sel">
-                                <md-option ng-repeat="r in vm.rules" ng-value="r">
-                                    {{r.lib}}
-                                </md-option>
-                            </md-select>-->
                         </div>
-                        
                         <datatable-wrapper>
                         <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
                                 dt-options="vm.dtOptions">
@@ -161,7 +156,7 @@
                             </tbody>
                         </table>
                         </datatable-wrapper>
-     <!--       <div layout-gt-sm="row">
+            <div layout-gt-sm="row">
                 
 
 
@@ -187,8 +182,26 @@
                                     </md-list-item>
                                 </md-list>
                             </md-input-container>
-                        </div>-->
-        </md-tab-content>
+                        </div>
+        </md-tab-content>-->
+        <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+            <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;">
+                      <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
+                        <md-tooltip>Nouvelle ligne</md-tooltip>
+                      <md-icon md-font-icon="icon-plus"></md-icon>
+                    </md-button>
+                    <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
+                        <md-option ng-repeat="r in vm.rules" ng-value="r._id">
+                            {{r.lib}}
+                        </md-option>
+                    </md-select>
+                    <!--<div style="display:inline-block;margin:0;" class="md-inline" qte-input inprequired="true"  ng-model="item.produit.rendement"></div>
+                    --><input type="text"  ng-model="vm.parcelleTxtFilter" ng-change="getParcelles(1,vm.parcellePsize)" placeholder="Filtrer..."/>
+                  </div>
+                <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
+            </md-content>
+        </md-tab-body>
       </md-tab>
         </md-tabs>
         </form>

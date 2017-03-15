@@ -46,7 +46,7 @@
                 {
                     if (vm.rule._id === -1)
                     {
-                        Rules.push(vm.rule);
+                        //Rules.push(vm.rule);
                         vm.rule._id = response.nid;
                     }
                 

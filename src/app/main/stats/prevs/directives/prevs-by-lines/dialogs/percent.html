@@ -1,0 +1,40 @@
+<md-dialog class="rule-dialog" style="width:500px;">
+  <form ng-cloak>
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <h2>Decombien de  souhaitez réduires ces planifications ?</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="onCancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout-gt-sm="row">
+        <md-input-container class="md-inline" flex>
+          <md-select ng-model="value.unit" required ng-change="dataChange()">
+            <md-option selected value="1">
+                Diminution
+            </md-option>
+            <md-option value="2">
+                Majoration
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <input type="number" placeholder="Pourcentage" required ng-model="nbPer">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="onCancel()">
+        Annuler
+      </md-button>
+      <md-button ng-click="onValid(nbDays,mode)">
+        Valider
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

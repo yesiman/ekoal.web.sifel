@@ -32,17 +32,6 @@
                         return {};
                     }  
                 },
-                rulesResolv: function (apiResolver,$stateParams)
-                {
-                    if ($stateParams.id && ($stateParams.id != -1))
-                    {
-                        return apiResolver.resolve('rules.getAllByProduit@get', {'id': $stateParams.id });
-                    }
-                    else {
-                        return [];
-                    }
-                    
-                },
                 monthsResolv: function (apiResolver,$stateParams)
                 {
                     var months = [

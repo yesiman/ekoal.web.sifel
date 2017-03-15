@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.stats.prevs', ['chart.js','nvd3','ngCsv'])
+        .module('app.stats.prevs', ['chart.js','ngCsv'])
         .config(config);
 
     /** @ngInject */

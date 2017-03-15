@@ -201,14 +201,24 @@
                     method: 'POST'
                 }
             }),
-            get: $resource(api.baseUrl + 'users/get/:id', {id:'@id'} , {
+            addParcelle: $resource(api.baseUrl + 'users/addParcelle/:id', {id:'@id',parcelle:'@parcelle'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            deleteParcelle: $resource(api.baseUrl + 'users/deleteParcelle/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            get: $resource(api.baseUrl + 'users/get/:id', {id:'@id',withParc:'@withParc'} , {
                 get: {
                     method: 'GET'
                 }
             }),
-            getParcelles: $resource(api.baseUrl + 'users/getParcelles/:id', {id:'@id'} , {
-                get: {
-                    method: 'GET'
+            getParcelles: $resource(api.baseUrl + 'users/getParcelles/:pid/:nbp/:id', {pid:'@pid',nbp:'@nbp',id:'@id',req:'@req'} , {
+                post: {
+                    method: 'POST'
                 }
             }),
             delete: $resource(api.baseUrl + 'users/delete/:id', {id:'@id'} , {
@@ -226,9 +236,9 @@
                     method: 'GET'
                 }
             }),
-            getAllByOrga: $resource(api.baseUrl + 'users/getAllByOrga/:pid/:nbp/:ido', {pid:'@pid',nbp:'@nbp',ido:'@ido'} , {
-                get: {
-                    method: 'GET'
+            getAllByOrga: $resource(api.baseUrl + 'users/getAllByOrga/:pid/:nbp/:ido', {pid:'@pid',nbp:'@nbp',ido:'@ido',req:'@req'} , {
+                post: {
+                    method: 'POST'
                 }
             })
         }
@@ -345,7 +355,7 @@
                     method: 'POST'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'planifs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',produits:'@produits',producteurs:'@producteurs'} , {
+            getAll: $resource(api.baseUrl + 'planifs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
                 post: {
                     method: 'POST'
                 }
@@ -353,6 +363,21 @@
             delete: $resource(api.baseUrl + 'planifs/delete/:id', {id:'@id'} , {
                 delete: {
                     method: 'DELETE'
+                }
+            }),
+            groupDec: $resource(api.baseUrl + 'planifs/groupDec', {produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo',decalIn:'@decalIn'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            groupDup: $resource(api.baseUrl + 'planifs/groupDup', {produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo',decalIn:'@decalIn'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            groupChangeRule: $resource(api.baseUrl + 'planifs/groupChangeRule', {produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo',newRule:'@newRule'} , {
+                post: {
+                    method: 'POST'
                 }
             })
         }
@@ -367,9 +392,9 @@
                     method: 'POST'
                 }
             }),
-            getAllByProduit: $resource(api.baseUrl + 'rules/getAllByProduit/:id', {id:'@id'} , {
-                get: {
-                    method: 'GET'
+            getAllByProduit: $resource(api.baseUrl + 'rules/getAllByProduit/:pid/:nbp/:id', {pid:'@pid',nbp:'@nbp',id:'@id',req:'@req'} , {
+                post: {
+                    method: 'POST'
                 }
             }),
             delete: $resource(api.baseUrl + 'rules/delete/:id', {id:'@id'} , {
@@ -390,6 +415,11 @@
                 }
             }),
             prevsPlanifsLines: $resource(api.baseUrl + 'stats/prevsPlanifsLines/:pid/:nbp', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat',pid:'@pid',nbp:'@nbp', unit:'@unit' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            prevsPlanifsLinesApplyPercent: $resource(api.baseUrl + 'stats/prevsPlanifsLinesApplyPercent/', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat',percent:'@percent' } , {
                 post: {
                     method: 'POST'
                 }

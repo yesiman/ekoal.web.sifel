@@ -101,6 +101,15 @@ input.rule-sel
         left: 0;
         padding-top: 0;
 
+        div[md-tabs-template] {
+            min-height: 100% !important;
+            height:100%;
+        }
+
+        #grid1{
+            height: calc((100% - 50px)) !important;
+        }
+
         .dataTables_wrapper .top{
             padding-top: 2px;
             padding-bottom: 2px;

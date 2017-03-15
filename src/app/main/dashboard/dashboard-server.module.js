@@ -6,8 +6,6 @@
         .module('app.dashboards.server',
             [
                 // 3rd Party Dependencies
-                'nvd3',
-                'datatables'
             ]
         )
         .config(config);
