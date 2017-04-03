@@ -1,11 +1,13 @@
 <md-content flex layout-fill layout="column" style="overflow:hidden;">
-    <div style="display:block;height:40px;padding-top:8px;">         
-        <button class="md-icon-button md-primary" ng-click="showPopPercent($event)" type="button" aria-label="Percent">
+    <div style="display:block;height:50px;padding-top:8px;">         
+        <button style="float:right;" class="md-button md-primary" ng-click="showPopPercent($event)" type="button" aria-label="Percent">
+            Appliquer +/-
             <md-tooltip>Appliquer un pourcentage à la sélection</md-tooltip>
             <md-icon md-font-icon="icon-percent"></md-icon>
         </button>
-        <button class="md-icon-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
-            <md-tooltip>Exporter vers excel</md-tooltip>
+        <button style="float:right;" class="md-button md-primary"  type="button" ng-csv="export(1)" filename="test.csv" aria-label="Export">
+                        Exporter
+                <md-tooltip>Exporter vers excel</md-tooltip>
             <md-icon md-font-icon="icon-export"></md-icon>
         </button>
     </div>
