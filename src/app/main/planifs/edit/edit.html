@@ -15,7 +15,7 @@
                                     <div layout-gt-sm="row">
                                         <md-input-container class="md-inline" flex>
                                             <h4>Date de plantation</h4>
-                                            <md-datepicker ng-model="item.datePlant"></md-datepicker>
+                                            <md-datepicker ng-change="vm.ruleChanged()" ng-model="item.datePlant"></md-datepicker>
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
@@ -196,9 +196,8 @@
                             {{r.lib}}
                         </md-option>
                     </md-select>
-                    <!--<div style="display:inline-block;margin:0;" class="md-inline" qte-input inprequired="true"  ng-model="item.produit.rendement"></div>
-                    --><input type="text"  ng-model="vm.parcelleTxtFilter" ng-change="getParcelles(1,vm.parcellePsize)" placeholder="Filtrer..."/>
-                  </div>
+                    <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
+                    </div>
                 <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
             </md-content>
         </md-tab-body>

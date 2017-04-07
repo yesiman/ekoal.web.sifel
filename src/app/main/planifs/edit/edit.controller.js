@@ -52,31 +52,33 @@
                 if (vm.rules[i]._id == $scope.item.rule)
                 {
                     vm.selectedRule = vm.rules[i];
-                }
-            }
-            $scope.item.lines = [];
-            var startDate = new Date($scope.item.datePlant);
-            startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
-            var wStart = startDate.getWeek();
-            var surfacePercent = ((100/1)*$scope.item.surface) / 100;
-            //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-            for (var i = 0;i < vm.selectedRule.nbWeek;i++)
-            { 
-                var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.item.produit.rendement.val; //PRODUCT DEFAULT RENDEMENT
-                var oIt = { 
-                    semaine:startDate.getWeek(),
-                    mois:startDate.getMonth() + 1,
-                    anne:startDate.getFullYear(),
-                    startAt:new Date(startDate),
-                    percent:vm.selectedRule.weeks[i].percent,
-                    qte:{
-                        val: parseFloat((valueQte*surfacePercent).toFixed(2)),
-                        unit:$scope.item.produit.rendement.unit
+                    $scope.item.lines = [];
+                    var startDate = new Date($scope.item.datePlant);
+                    startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
+                    var wStart = startDate.getWeek();
+                    var surfacePercent = ((100/1)*$scope.item.surface) / 100;
+                    //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+                    for (var i = 0;i < vm.selectedRule.nbWeek;i++)
+                    { 
+                        var valueQte = (vm.selectedRule.weeks[i].percent/100) * $scope.rendementUpdatable.val; //PRODUCT DEFAULT RENDEMENT
+                        var oIt = { 
+                            semaine:startDate.getWeek(),
+                            mois:startDate.getMonth() + 1,
+                            anne:startDate.getFullYear(),
+                            startAt:new Date(startDate),
+                            percent:vm.selectedRule.weeks[i].percent,
+                            qte:{
+                                val: parseFloat((valueQte*surfacePercent).toFixed(2)),
+                                unit:$scope.rendementUpdatable.unit
+                            }
+                        }
+                        $scope.validLine(oIt,true);
+                        startDate.setDate(startDate.getDate() + 7);
                     }
+                    break;
                 }
-                $scope.validLine(oIt,true);
-                startDate.setDate(startDate.getDate() + 7);
             }
+            
         }
         vm.productChange = function() {
 
@@ -96,8 +98,8 @@
                         //return null;
                     }
                 );
-                
-        }
+                $scope.rendementUpdatable = angular.copy($scope.item.produit.rendement);    
+            }
         }
         vm.producteurChange = function(it) {
             if ($scope.item.producteur)
