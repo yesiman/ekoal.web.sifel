@@ -7,7 +7,7 @@
         .controller('PlanifsEditController',PlanifsEditController);
 
     /** @ngInject */
-    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope,standardizer)
+    function PlanifsEditController($scope,$state, api,$stateParams,$mdDialog,$q,planifResolv,$rootScope,standardizer,$mdSidenav)
     {
         $scope.current =  {userForm : {}};
         var vm = this;
@@ -27,6 +27,49 @@
             { field: 'qte.val', displayName: 'Quantité' },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridRecoltsOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                //vm.parcellePsize = pageSize;
+                //$scope.getParcelles(newPage,pageSize);
+            });
+        }
+
+        var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
+        actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showMessage(row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
+        actionsHtml += '</div>';
+
+        var statusHtml = '<div class="ui-grid-cell-contents">';
+        statusHtml += '<span class="status {{grid.appScope.getStatusBg(row.entity)}}">{{grid.appScope.getStatusLib(row.entity)}}</span>';
+        statusHtml += '</div>';
+
+        var anoHtml = '<div class="ui-grid-cell-contents text-center">';
+        anoHtml += '<md-tooltip>{{grid.appScope.getAnoIcoTooltip(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getAnoIcoColor(row.entity)}}" md-font-icon="icon-message"></md-icon>';
+        anoHtml += '</div>';
+
+        var anoHtml = '<div class="ui-grid-cell-contents text-center">';
+        anoHtml += '<md-tooltip>{{grid.appScope.getMsgStaIcoTooltip(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getMsgStaIcoColor(row.entity)}}" md-font-icon="{{grid.appScope.getMsgStaIco(row.entity)}}"></md-icon>';
+        anoHtml += '</div>';
+        
+        vm.gridAlertsOptions = standardizer.getGridOptionsStd();
+        vm.gridAlertsOptions.useExternalPagination = false;
+        vm.gridAlertsOptions.useExternalSorting = false;
+        vm.gridAlertsOptions.columnDefs = [
+            { field: 'dateAlert', sort:{priority:0}, displayName: "Date d'envoi" },
+            { field: 'Status', displayName: 'Status', cellTemplate:statusHtml },
+            { field: 'Ano', displayName: '', cellTemplate:anoHtml },
+            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
+        vm.gridAlertsOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
                 if (sortColumns.length == 0) {
@@ -81,7 +124,7 @@
             
         }
         vm.productChange = function() {
-
+        
 //console.log($scope.item.produit);
         if ($scope.item.produit)
         {
@@ -115,7 +158,127 @@
         $scope.id = $stateParams.id;
         $scope.item  = planifResolv;
 
-        
+
+        $scope.getStatusBg = function(alert)
+        {
+            if (alert.sent)
+            {
+                return "md-light-green-200-bg"
+            }
+            else {
+                return "md-orange-200-bg"
+            }
+            //STATUS EXPIRE
+        }
+
+         
+        $scope.showMessage = function(alert)
+        {
+            $scope.curMessage = alert;
+            // Component lookup should always be available since we are not using `ng-if`
+            $mdSidenav("right")
+            .toggle()
+            .then(function () {
+                //$log.debug("toggle " + navID + " is done");
+            });
+        }
+
+        $scope.getStatusLib = function(alert) {
+
+            if (alert.sent)
+            {
+                return "Envoyé";
+            }
+            else {
+                return "Non envoyé";
+            }
+            //STATUS EXPIRE
+            //return alert.reply;
+        }
+        $scope.getAnoIcoColor = function(alert)
+        {
+            if (alert.sent)
+            {
+                if (alert.reply)
+                {
+                    return "green-200-fg"
+                }
+                else {
+                    return "orange-200-fg"
+                }
+            }
+            else {
+                return "grey-400-fg"
+            }
+            //STATUS EXPIRE
+        }
+        $scope.getAnoIcoTooltip = function(alert)
+        {
+            if (alert.sent)
+            {
+                if (alert.reply)
+                {
+                    return "Une réponse à été reçue"
+                }
+                else {
+                    return "En attente d'une réponse"
+                }
+            }
+            else {
+                return "Non envoyé"
+            }
+            //STATUS EXPIRE
+        }
+        $scope.getMsgStaIcoTooltip = function(alert)
+        {
+            if (alert.reply)
+            {
+                if (alert.reply.toUpperCase().startsWith("OUI"))
+                {
+                    return "Livraison confirmée";
+                }
+                else {
+                    return "Livraison non confirmée";
+                }
+            }
+            else {
+                return "";
+            }
+        }
+        $scope.getMsgStaIco = function(alert)
+        {
+            if (alert.reply)
+            {
+                if (alert.reply.toUpperCase().startsWith("OUI"))
+                {
+                    return "icon-check";
+                }
+                else {
+                    return "icon-message-alert";
+                }
+            }
+            else {
+                return "";
+            }
+        }
+        $scope.getMsgStaIcoColor = function(alert)
+        {
+            if (alert.reply)
+            {
+                if (alert.reply.toUpperCase().startsWith("OUI"))
+                {
+                    return "icon-check";
+                }
+                else {
+                    return "icon-message-alert";
+                }
+            }
+            else {
+                return "";
+            }
+        }
+
+
         vm.productChange();
         if ($rootScope.user.type == 4)
         {
@@ -125,6 +288,7 @@
         if (!$scope.item.lines)
         {
             $scope.item.lines = [];
+            $scope.item.alerts = [];
             $scope.item.linesToRem = [];
             $scope.item.datePlant = new Date();
         }
@@ -137,6 +301,10 @@
 
         vm.gridRecoltsOptions.totalItems = $scope.item.lines.length;
         vm.gridRecoltsOptions.data = $scope.item.lines;
+
+        vm.gridAlertsOptions.totalItems = $scope.item.alerts.length;
+        vm.gridAlertsOptions.data = $scope.item.alerts;
+
 
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();

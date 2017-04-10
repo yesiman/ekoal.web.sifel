@@ -102,108 +102,93 @@
                     </md-tab-content>
                 </md-tab>
                 <md-tab label="Récoltes" layout-fill>
-     <!--               
-                    <md-tab-content  md-theme="docs-dark"   flex layout-fill>
-                        <md-button class="md-icon-button md-primary" style="position:absolute;z-index:9;" aria-label="Settings"  ng-click="showPlanif()">
-                            <md-tooltip>Nouvelle ligne</md-tooltip>
-                            <md-icon md-font-icon="icon-plus"></md-icon>
-                        </md-button>
-                        <div style="position:absolute;z-index:8;" >
-                            <md-tooltip>Vous devez sélectionner un produit et une parcelle, ou saisir une surface</md-tooltip>
-                            <md-select  ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule" class="rule-sel">
-                                <md-option ng-repeat="r in vm.rules" ng-value="r._id">
-                                    {{r.lib}}
-                                </md-option>
-                            </md-select>
-                            </div>
-                        <div style="position:absolute;z-index:7;" >
-                            <input type="number"   ng-change="vm.ruleChanged()" ng-if="vm.selectedRule" class="rule-sel" ng-model="item.produit.rendement.val">
-                                <md-tooltip>Rendement par defaut</md-tooltip>
-                            </input>
-                        </div>
-                        <datatable-wrapper>
-                        <table class="dataTable row-border hover" style="height:100%;" flex layout-fill  datatable="ng" dt-instance="vm.dtInstance"
-                                dt-options="vm.dtOptions">
-                            <thead>
-                                <tr>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Semaine récolte</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Quantité</span>
-                                        </div>
-                                    </th>
-                                    <th class="secondary-text">
-                                        <div class="table-header">
-                                            <span class="column-title">Actions</span>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="il in item.lines track by $index">
-                                    <td><h3>{{il.semaine}}</h3> 
-                                    <p>{{il.mois}} {{il.startAt}}</p></td>
-                                    <td>{{il.qte.val}}</td>
-                                    <td>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="showPlanif($event,il)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>
-                                        <md-button class="md-icon-button" aria-label="Settings" ng-click="removePlanifLine($event,il)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </datatable-wrapper>
-            <div layout-gt-sm="row">
-                
-
-
-
-                            <md-input-container class="md-inline" flex>
-                                
-                                
-                                <md-list ng-cloak>
-                                    <md-divider>
-                                        Récoltes 
-                                        
-                                        <md-button class="md-icon-button md-accent" aria-label="Favorite" style="float:right;" ng-click="showPlanif()">
-                                    <md-icon md-font-icon="icon-plus"></md-icon>
-                                </md-button></md-divider>
-                                    <md-list-item class="md-2-line" ng-repeat="il in item.lines track by $index" ng-click="onSelect(it)">
-                                        <div class="md-list-item-text">
-                                            <h3> {{il.qte}} </h3>
-                                            <p> p </p>
-                                        </div>
-                                        <button class="md-secondary">
-                                            <md-icon md-font-icon="icon-delete" class="red-600-fg"></md-icon>
-                                        </button>
-                                    </md-list-item>
-                                </md-list>
-                            </md-input-container>
-                        </div>
-        </md-tab-content>-->
-        <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-            <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                  <div style="display:block;">
-                      <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
-                        <md-tooltip>Nouvelle ligne</md-tooltip>
-                      <md-icon md-font-icon="icon-plus"></md-icon>
-                    </md-button>
-                    <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
-                        <md-option ng-repeat="r in vm.rules" ng-value="r._id">
-                            {{r.lib}}
-                        </md-option>
-                    </md-select>
-                    <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
-                    </div>
-                <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
-            </md-content>
-        </md-tab-body>
-      </md-tab>
-        </md-tabs>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div style="display:block;">
+                                <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
+                                    <md-tooltip>Nouvelle ligne</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                </md-button>
+                                <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
+                                    <md-option ng-repeat="r in vm.rules" ng-value="r._id">
+                                        {{r.lib}}
+                                    </md-option>
+                                </md-select>
+                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
+                                </div>
+                            <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab label="Alertes" layout-fill>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div style="display:block;">
+                                <!--<md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
+                                    <md-tooltip>Nouvelle ligne</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                </md-button>
+                                <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
+                                    <md-option ng-repeat="r in vm.rules" ng-value="r._id">
+                                        {{r.lib}}
+                                    </md-option>
+                                </md-select>
+                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
+                                </div>-->
+                            <div id="gridAlerts" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridAlertsOptions"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
         </form>
     </div>
     <!-- / CONTENT -->
+
+    <md-sidenav id="chat-app" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+        <!-- CHAT CONTENT -->
+                <md-content id="chat-content" flex ms-scroll>
+
+                    <!-- CHAT MESSAGES -->
+                    <div class="chat-messages">
+
+                        <!-- MESSAGE -->
+                        <div layout="row" class="md-padding message-row contact"
+                             ng-class="dialog.who">
+
+                            <img ng-if="dialog.who ==='contact'"
+                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
+                                 class="avatar"
+                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
+
+                            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{vm.user.avatar}}">
+
+                            <div class="bubble">
+                                <div class="message">{{curMessage.message}}</div>
+                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
+                            </div>
+
+                        </div>
+                        <div layout="row" class="md-padding message-row user"
+                             ng-class="dialog.who">
+
+                            <img ng-if="dialog.who ==='contact'"
+                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
+                                 class="avatar"
+                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
+
+                            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{vm.user.avatar}}">
+
+                            <div class="bubble">
+                                <div class="message">{{curMessage.reply}}</div>
+                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
+                            </div>
+
+                        </div>
+                        <!-- / MESSAGE -->
+
+                    </div>
+                    <!-- CHAT MESSAGES -->
+
+                </md-content>
+    </md-sidenav>
 </div>
