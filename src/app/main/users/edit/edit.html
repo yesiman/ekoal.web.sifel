@@ -28,7 +28,7 @@
             
             <div style="width:100%;background-color:#ffffff;" layout-padding>      
                 <div layout="row"  ng-if="$root.user.type < 4" >
-                    <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                    <md-input-container  class="md-input-invalid" ng-if="profil == false" class="md-inline" flex-gt-sm>
                     <label>Type</label>
                     <md-select  ng-disabled="(vm.profil == true)" required ng-model="item.type" style="min-width:200px;">
                     <md-option><em>None</em></md-option>
@@ -49,7 +49,7 @@
                     </md-option>
                     </md-select>
                 </md-input-container>
-                    <md-input-container  ng-if="item.type >= 2" class="md-inline" flex-gt-sm>
+                <md-input-container  ng-if="item.type >= 2" class="md-inline" flex-gt-sm>
                     <label>Organisation de producteurs</label>
                     <md-select ng-disabled="($root.user.type > 1) || (vm.profil)" required ng-model="item.orga" style="min-width:200px;">
                     <md-option ng-repeat="o in orgas" ng-value="o._id">
@@ -115,7 +115,7 @@
         </md-tab-body>
         </md-tab>
         <!---->
-        <md-tab  layout-fill ng-if="item.type == 4">
+        <md-tab  layout-fill ng-if="(item.type == 4) and (profil == false)">
             <md-tab-label>
                 <span style="margin-right:25px;">Parcelles</span>
                 <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{vm.gridParcsOptions.data.length}}</span>   
@@ -138,7 +138,7 @@
             -->
             </md-tab-body>
         </md-tab>
-        <md-tab label="Producteurs" layout-fill  ng-if="item.type == 3" >
+        <md-tab label="Producteurs" layout-fill  ng-if="(item.type == 3) and (profil == false)" >
             <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                 <md-content flex layout-fill layout="column" style="overflow:hidden;">
                   <div style="display:block;height:40px;">         

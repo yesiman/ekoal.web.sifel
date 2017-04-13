@@ -13,7 +13,8 @@
         $stateProvider.state('app.users_edit', {
             url      : '/users/edit',
             params : {
-                id:null
+                id:null,
+                profil:false
             },
             views    : {
                 'content@app': {

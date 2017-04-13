@@ -12,6 +12,8 @@
         
         var vm = this;
 
+
+
         // Data
         //vm.products = Products.data;
         vm.producteurs;
@@ -88,14 +90,12 @@
             title:"Mise à jour utilisateur"
         };
 
-        
-
-
         $scope.current =  {userForm : {}};
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
         $scope.item = userResolv;
-        
+        $scope.profil = $stateParams.profil;
+
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         if (!$scope.item.parcellesToRem) {$scope.item.parcellesToRem= [];}
@@ -162,10 +162,12 @@
                 api.users.add.post({ id:$scope.id, user: $scope.item } ,
                     function (response)
                     {
+                        console.log("1",response);
                         $state.go("app.users_list");
                     },
                     function (response)
                     {
+                        console.log("2",response);
                         console.error(response);
                     }
                 );
