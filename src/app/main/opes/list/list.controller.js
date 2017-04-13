@@ -27,6 +27,7 @@
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
                 { field: 'lib', displayName: 'Libellé' },
+                { field: 'nbOrgas', displayName: 'Nombre de producteurs' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         
         $scope.loadPageAction = function(id)
@@ -41,6 +42,7 @@
                 // Success
                 function (response)
                 {
+                    console.log(response);
                     $scope.maxSize = 5;
                     $scope.totalItems = response.count;
                     $scope.gridOptions.totalItems = response.count;
@@ -52,7 +54,6 @@
                 // Error
                 function (response)
                 {
-                    console.error(response);
                     $rootScope.loadingProgress = false;
                 }
             );

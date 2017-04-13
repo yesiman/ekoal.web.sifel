@@ -7,7 +7,7 @@
         .controller('UsersEditController',UsersEditController);
 
     /** @ngInject */
-    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer,$rootScope)
+    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer,$rootScope,$mdToast)
     {
         
         var vm = this;
@@ -162,12 +162,26 @@
                 api.users.add.post({ id:$scope.id, user: $scope.item } ,
                     function (response)
                     {
-                        console.log("1",response);
-                        $state.go("app.users_list");
+                        if (response.res == false)
+                        {
+                            var toast = $mdToast.simple()
+                                .textContent('Email ou login déja utilisés !')
+                                .action('FERMER')
+                                .highlightAction(true)
+                                .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                                .position('bottom right');
+
+                            $mdToast.show(toast).then(function(response) {
+                                if ( response == 'ok' ) {
+                                    
+                                }
+                            });
+                        }
+                        else {
+                        $state.go("app.users_list");}
                     },
                     function (response)
                     {
-                        console.log("2",response);
                         console.error(response);
                     }
                 );
@@ -332,4 +346,5 @@
             return -1;
         }
     }
+   
 })();

@@ -15,13 +15,22 @@
             title:"Liste utilisateurs"
         };
         vm.filters = { 
-            levels: [
-                {lib:"Administrateur",checked:true,level:1},
-                {lib:"Administrateur OP",checked:true,level:2},
-                {lib:"Technicien",checked:true,level:3},
-                {lib:"Producteur",checked:true,level:4},
-                {lib:"Commercial",checked:true,level:5}
-            ]
+                levels: []
+            };
+        switch ($rootScope.user.type)
+        {
+            case 1:
+                vm.filters.levels.push({lib:"Administrateur",checked:true,level:1});
+                vm.filters.levels.push({lib:"Administrateur OP",checked:true,level:2});
+                break;
+            case 2:
+                vm.filters.levels.push({lib:"Technicien",checked:true,level:3});
+                vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
+                vm.filters.levels.push({lib:"Commercial",checked:true,level:5});
+                break;
+            case 3:
+                vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
+                break;
         }
         // Data
         $scope.getUserType = function(it)
@@ -71,12 +80,15 @@
         
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
-        $scope.gridOptions.columnDefs = [
-                { field: 'codeAdh', displayName: 'Code adhérent' },
-                { field: 'name', displayName: 'Nom' },
-                { field: 'surn', displayName: 'Prénom' },
-                { field: 'type', displayName: 'Type', cellTemplate:typeHtml },
-                { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
+        $scope.gridOptions.columnDefs = [];
+        if ($rootScope.user.type > 1)
+        {
+            $scope.gridOptions.columnDefs.push({ field: 'codeAdh', displayName: 'Code adhérent' });
+        }
+        $scope.gridOptions.columnDefs.push({ field: 'name', displayName: 'Nom' });
+        $scope.gridOptions.columnDefs.push({ field: 'surn', displayName: 'Prénom' });
+        $scope.gridOptions.columnDefs.push({ field: 'type', displayName: 'Type', cellTemplate:typeHtml });
+        $scope.gridOptions.columnDefs.push({ name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" });
         $scope.gridOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {

@@ -24,24 +24,7 @@
                 init: function init()
                 {
 
-                    msNavigationService.saveItem('planifs', {
-                        title : 'PLANIFICATIONS',
-                        group : true,
-                        weight: 2
-                    });
                     
-                    msNavigationService.saveItem('planifs.list', {
-                        title : 'Liste',
-                        icon  : 'icon-view-list',
-                        state    : 'app.planifs_list',
-                        weight: 2,
-                    });
-                    msNavigationService.saveItem('planifs.edit', {
-                        title : 'Nouveau',
-                        icon  : 'icon-plus-circle-outline',
-                        state    : 'app.planifs_edit',
-                        weight: 2
-                    });
                     msNavigationService.saveItem('stats', {
                         title : 'STATISTIQUES',
                         group : true,
@@ -81,13 +64,34 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                        msNavigationService.deleteItem('planifs');
+                        msNavigationService.deleteItem('planifs.list'); 
+                        msNavigationService.deleteItem('planifs.new');
                     }
                     else {
+                        msNavigationService.saveItem('planifs', {
+                            title : 'PLANIFICATIONS',
+                            group : true,
+                            weight: 2
+                        });
+                        
+                        msNavigationService.saveItem('planifs.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.planifs_list',
+                            weight: 2,
+                        });
+                        msNavigationService.saveItem('planifs.edit', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.planifs_edit',
+                            weight: 2
+                        });
                         msNavigationService.deleteItem('opes');
                         msNavigationService.deleteItem('opes.list'); 
                         msNavigationService.deleteItem('opes.new');
                     }
-                    if ($rootScope.user.type < 3)
+                    if (($rootScope.user.type < 3) && !($rootScope.user.type == 1))
                     {
                         // Navigation
                         msNavigationService.saveItem('produits', {
