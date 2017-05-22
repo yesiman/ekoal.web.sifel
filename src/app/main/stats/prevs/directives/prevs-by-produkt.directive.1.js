@@ -49,7 +49,6 @@
                         dateFormat:scope.filters.groupMode,
                         unit:scope.filters.unitMode 
                     }
-                    console.log("args",args);
                     api.stats.prevsByDay.post( args ,
                         // Success
                         function (response)
@@ -60,10 +59,9 @@
                             scope.cDonutProdutks.labels = scope.getSeries(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
                             scope.cDonutProdutks.series = scope.getSeries(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
                             scope.cDonutProdutks.colors = scope.getColors(scope.cPrevsByProdukt.series,scope.cPrevsByProdukt.colors);
-                            
-                            var dataTmp = [];
                             for (var iprods = 0;iprods<scope.filters.selectedItems.length;iprods++)
                             {
+                                var dataTmp = [];
                                 var sumP = 0;
                                 var prod = scope.filters.selectedItems[iprods];
                                 for (var ilabs = 0;ilabs<scope.cPrevsByProdukt.labels.length;ilabs++)
@@ -95,7 +93,8 @@
                                         }
                                     }
                                     if (!found) { dataTmp.push(0); }
-                                }
+                                };
+                                console.log("dataTmp",dataTmp);
                                 scope.cPrevsByProdukt.data.push(dataTmp);
                                 scope.cPrevsByProdukt.datasetOverride.push({type: 'bar'})
                                 scope.cDonutProdutks.data.push(sumP)
@@ -114,6 +113,8 @@
                                     scope.cPrevsByProdukt.data.push(objs);
                                 }
                             }
+
+                            console.log(scope.cPrevsByProdukt.data);
                         },
                         function (response)
                         {

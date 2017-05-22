@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.produits.groups.edit')
-        .controller('ProduitsGroupsEditController',ProduitsGroupsEditController);
+        .module('app.users.groups.edit')
+        .controller('UsersGroupsEditController',UsersGroupsEditController);
 
     /** @ngInject */
-    function ProduitsGroupsEditController($scope,$rootScope,$state, api,$stateParams,groupResolv,standardizer)
+    function UsersGroupsEditController($scope,$rootScope,$state, api,$stateParams,groupResolv,standardizer)
     {
         var vm = this;
         
         vm.item = groupResolv;
-        if (!vm.item.produits)
+        if (!vm.item.users)
         {
-            vm.item.produits = [];
+            vm.item.users = [];
         }
 
         vm.cpOptions = {
@@ -42,20 +42,20 @@
             gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 //paginationOptions.pageNumber = newPage;
                 //paginationOptions.pageSize = pageSize;
-                vm.produitsPsize = pageSize;
+                vm.usersPsize = pageSize;
                 $scope.loadPage(newPage,pageSize);
             });
         }
-        vm.produitsTxtFilter = "";
-        vm.reloadProduits = function()
+        vm.usersTxtFilter = "";
+        vm.reloadUsers = function()
         {
             $scope.loadPage(1,10);
         }
         // Methods
         $scope.isItemForMe = function(it) {
-            for (var i = 0;i < vm.item.produits.length;i++)
+            for (var i = 0;i < vm.item.users.length;i++)
             {
-                if (vm.item.produits[i] == it._id)
+                if (vm.item.users[i] == it._id)
                 {
                     it.selected = true;
                     return true;
@@ -65,22 +65,22 @@
             return false;
         }
         $scope.addProduit = function(id) {
-            for (var i = 0;i < vm.item.produits.length;i++)
+            for (var i = 0;i < vm.item.users.length;i++)
             {
-                if (vm.item.produits[i] == id)
+                if (vm.item.users[i] == id)
                 {
-                    vm.item.produits.splice(i,1);
+                    vm.item.users.splice(i,1);
                     return;
                 }
             }
-            vm.item.produits.push(id);
+            vm.item.users.push(id);
         }
         $scope.loadPage = function(newPage,pageSize) {
 
             var methodBase;
             var methodArgs;
             
-            if (vm.produitsTxtFilter.trim() == "")
+            if (vm.usersTxtFilter.trim() == "")
             {
                 methodBase = api.products.getAll;
                 methodArgs = { pid:newPage,
@@ -89,7 +89,7 @@
             else {
                 methodBase = api.products.getAllByLib;
                 methodArgs = { pid:newPage,
-                nbp:pageSize,req:vm.produitsTxtFilter };
+                nbp:pageSize,req:vm.usersTxtFilter };
             }
             methodBase.get(methodArgs,
                 // Success
@@ -119,11 +119,11 @@
         };
         vm.id = $stateParams.id;
         $scope.valid = function(){
-            api.productsGroups.add.post({ id:vm.id, group: vm.item } ,
+            api.usersGroups.add.post({ id:vm.id, group: vm.item } ,
                 // Success
                 function (response)
                 {
-                    $state.go("app.produits_groups_list");
+                    $state.go("app.users_groups_list");
                     //$scope.item = response;
                 },
                 // Error

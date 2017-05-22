@@ -25,6 +25,7 @@
                     if (response.success)
                     {
                         $rootScope.user = response;
+                        $rootScope.filters = [];
                         dynamicMenu.init();
                         $cookies.putObject("appAuth",response);
                         $http.defaults.headers.common['x-access-token'] = response.token;

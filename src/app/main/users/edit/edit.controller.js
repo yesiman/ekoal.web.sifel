@@ -105,13 +105,11 @@
             {
                 if ($scope.item.producteurs[i] == it._id)
                 {
-                    console.log("itis-" + it._id)
                     it.selected = true;
                     return true;
                 }
             }
             it.selected = false;
-            console.log("itisnot-" + it._id)
             return false;
         }
         $scope.addProducteur = function(id) {

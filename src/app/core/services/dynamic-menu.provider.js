@@ -177,14 +177,14 @@
                         msNavigationService.saveItem('users.groups.list', {
                             title : 'Liste',
                             icon  : 'icon-view-list',
-                            //state    : 'app.produits_list',
+                            state    : 'app.users_groups_list',
                             weight: 1
                         });
                         msNavigationService.saveItem('users.groups.new', {
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
-                            //state    : 'app.produits_edit',
-                            //stateParams: {id:-1},
+                            state    : 'app.users_groups_edit',
+                            stateParams: {id:-1},
                             weight: 1
                         });
                     }

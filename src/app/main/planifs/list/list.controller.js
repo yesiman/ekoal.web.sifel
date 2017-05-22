@@ -32,7 +32,16 @@
             totalItems: 0,
             sort: null
         };
-        vm.filters = {
+
+        var filters = $rootScope.filters.PlanifsListController;
+        if (filters)
+        {
+            filters.dateFrom = new Date(filters.dateFrom);
+            filters.dateTo = new Date(filters.dateTo);
+            vm.filters = filters;
+        }
+        else {
+            vm.filters = {
             produits: {
                 selectedItem:null,
                 searchText: "",
@@ -80,6 +89,9 @@
             groupMode:"w",
             unitMode:1
         }
+        }
+
+        
         var produitRendHtml = '<div class="ui-grid-cell-contents">';
             produitRendHtml += '{{grid.appScope.getProduitRend(row.entity.produitRend)}}';
             produitRendHtml += '</div>';
@@ -123,6 +135,7 @@
         }
         $scope.loadPageAction = function(id)
         {
+            $rootScope.filters.PlanifsListController = vm.filters;
             $rootScope.loadingProgress = true;
             $scope.paginationOptions.pageNumber = id;
             $scope.loadPage();

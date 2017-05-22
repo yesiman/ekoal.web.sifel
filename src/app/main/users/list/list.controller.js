@@ -14,24 +14,33 @@
             ico:"icon-account-box",
             title:"Liste utilisateurs"
         };
-        vm.filters = { 
+
+        var filters = $rootScope.filters.UsersListController;
+        if (filters)
+        {
+            vm.filters = filters;
+        }
+        else {
+            vm.filters = { 
                 levels: []
             };
-        switch ($rootScope.user.type)
-        {
-            case 1:
-                vm.filters.levels.push({lib:"Administrateur",checked:true,level:1});
-                vm.filters.levels.push({lib:"Administrateur OP",checked:true,level:2});
-                break;
-            case 2:
-                vm.filters.levels.push({lib:"Technicien",checked:true,level:3});
-                vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
-                vm.filters.levels.push({lib:"Commercial",checked:true,level:5});
-                break;
-            case 3:
-                vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
-                break;
+            switch ($rootScope.user.type)
+            {
+                case 1:
+                    vm.filters.levels.push({lib:"Administrateur",checked:true,level:1});
+                    vm.filters.levels.push({lib:"Administrateur OP",checked:true,level:2});
+                    break;
+                case 2:
+                    vm.filters.levels.push({lib:"Technicien",checked:true,level:3});
+                    vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
+                    vm.filters.levels.push({lib:"Commercial",checked:true,level:5});
+                    break;
+                case 3:
+                    vm.filters.levels.push({lib:"Producteur",checked:true,level:4});
+                    break;
+            }
         }
+        
         // Data
         $scope.getUserType = function(it)
         {
@@ -88,6 +97,7 @@
         $scope.gridOptions.columnDefs.push({ field: 'name', displayName: 'Nom' });
         $scope.gridOptions.columnDefs.push({ field: 'surn', displayName: 'Prénom' });
         $scope.gridOptions.columnDefs.push({ field: 'type', displayName: 'Type', cellTemplate:typeHtml });
+        $scope.gridOptions.columnDefs.push({ field: 'lastLog', displayName: 'Dernière connexion' });
         $scope.gridOptions.columnDefs.push({ name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" });
         $scope.gridOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
@@ -114,7 +124,7 @@
         }
         // Methods
         $scope.loadPage = function() {
-            
+            $rootScope.filters.UsersListController = vm.filters;
             var levels = [];
             $rootScope.loadingProgress = true;
             angular.forEach(vm.filters.levels, function(value) {

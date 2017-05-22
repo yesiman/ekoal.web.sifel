@@ -288,6 +288,7 @@
         if (!$scope.item.lines)
         {
             $scope.item.lines = [];
+            $scope.item.alertsParams = {};
             $scope.item.alerts = [];
             $scope.item.linesToRem = [];
             $scope.item.datePlant = new Date();
@@ -478,6 +479,7 @@
             var startDate = new Date($scope.item.datePlant);
             startDate.setDate(startDate.getDate() + vm.selectedRule.delai)
             var toSave = {
+                alertsParams:$scope.item.alertsParams,
                 produit: $scope.item.produit._id,
                 producteur: $scope.item.producteur._id,
                 parcelle: ($scope.item.parcelle?$scope.item.parcelle._id:null),

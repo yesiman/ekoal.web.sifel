@@ -11,6 +11,8 @@
     {
         // Data
         i18nService.setCurrentLang('fr');
+
+        $rootScope.filters = [];
         //CHECK TOKEN EXPIRATION
         var checkDateDiff = function() {
             if ($rootScope.lastValidCall)

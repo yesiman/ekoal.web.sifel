@@ -13,7 +13,7 @@
         diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
         return new Date(d.setDate(diff));
     }
-    function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$mdSidenav,$rootScope,$filter,standardizer)
+    function StatsPrevsController($scope,$state, api,$stateParams,$mdDialog,$q,$rootScope,$filter,standardizer)
     {
         var vm = this;
         vm.groupMode = "w";
@@ -34,19 +34,40 @@
         sunday.setMinutes(59);
         sunday.setSeconds(59);
         sunday.setMilliseconds(59);
-        $scope.filters = {
-            tags: [],
-            searchText: "",
-            autocompleteDemoRequireMatch:true,
-            selectedItem:null,
-            selectedItems:[],
-            dateFrom: new Date(),
-            dateTo: sunday,
-            showObjectifs:true,
-            groupMode:"w",
-            unitMode:1
+        var filters = $rootScope.filters.StatsPrevsController;
+        if (filters)
+        {
+            filters.dateFrom = new Date(filters.dateFrom);
+            filters.dateTo = new Date(filters.dateTo);
+            $scope.filters = filters;
+            console.log("filters",$scope.filters);
         }
-             
+        else {
+            $scope.filters = {
+                tags: [],
+                searchText: "",
+                autocompleteDemoRequireMatch:true,
+                selectedItem:null,
+                selectedItems:[],
+                dateFrom: new Date(),
+                dateTo: sunday,
+                showObjectifs:true,
+                groupMode:"w",
+                unitMode:1
+            }
+        }
+        
+        $scope.removeProduit = function(it) {
+            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
+            {
+                if ($scope.filters.selectedItems[i]._id == it)
+                {
+                    $scope.filters.selectedItems.splice(i,1);
+                    break;
+                }
+            }
+            $scope.refresh();
+        }
 
         $scope.filters.produitChange = function(it) {
             if (!it) { return; }
@@ -62,10 +83,7 @@
             if (!found) { $scope.filters.selectedItems.push(it);$scope.refresh(); }
             $scope.filters.searchText = "";
         }
-        $scope.toggleSidenav = function(sidenavId)
-        {
-            $mdSidenav(sidenavId).toggle();
-        }
+        
         $scope.export = function(chartId) {
             
             var exp = [];
@@ -261,6 +279,8 @@
         $scope.refresh = function(clearSeries) {
             $rootScope.loadingProgress = true;
             $scope.clearSeries = true;
+            $rootScope.filters.StatsPrevsController = $scope.filters;
+            //console.log("$scope.filters",filters);
             $scope.refreshPrevsByProdukt();
             $scope.refreshPrevsByProdukteur();
             $scope.refreshPrevsByLines();

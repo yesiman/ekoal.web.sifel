@@ -244,7 +244,7 @@
         }
         // USERS GROUPS
         api.usersGroups = {
-            add: $resource(api.baseUrl + 'usersGroups/add/:id', {id:'@id',orga:'@orga'} , {
+            add: $resource(api.baseUrl + 'usersGroups/add/:id', {id:'@id',group:'@group'} , {
                 post: {
                     method: 'POST'
                 }

@@ -3,17 +3,17 @@
     'use strict';
 
     angular
-        .module('app.produits.list')
-        .controller('ProduitsListController',ProduitsListController);
+        .module('app.users.groups.list')
+        .controller('UsersGroupsListController',UsersGroupsListController);
 
     /** @ngInject */
-    function ProduitsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
+    function UsersGroupsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
     {
         var vm = this;
         // Data
         $scope.head = {
             ico:"icon-account-box",
-            title:"Liste produits"
+            title:"Liste groupes producteurs"
         };
         $scope.paginationOptions = {
             pageNumber: 1,
@@ -22,52 +22,13 @@
             totalItems: 0,
             sort: null
         };
-
-        var filters = $rootScope.filters.ProduitsListController;
-        if (filters)
-        {
-            vm.filters = filters;
-        }
-        else {
-            vm.filters = {
-                text:""
-            };
-        }
-
-        
-        vm.filterTextOnChange = function() {
-            $rootScope.filters.ProduitsListController = vm.filters;
-            $scope.loadPageAction(1);
-            
-        }
         var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
                     
         var actionsHtml = standardizer.getHtmlActions(customBts);
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
-                { field: 'codeProd', displayName: 'Code', width: "150" },
                 { field: 'lib', displayName: 'Libellé' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
-        $scope.gridOptions.onRegisterApi =  function(gridApi) {
-            $scope.gridApi = gridApi;
-            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
-                if (sortColumns.length == 0) {
-                //paginationOptions.sort = null;
-                } else {
-                //paginationOptions.sort = sortColumns[0].sort.direction;
-                }
-                //getPage();
-            });
-            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                $scope.loadPageAction(newPage);
-                //paginationOptions.pageNumber = newPage;
-                //paginationOptions.pageSize = pageSize;
-                //getPage();
-                //vm.parcellePsize = pageSize;
-                //$scope.getParcelles(newPage,pageSize);
-            });
-        }
-        
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;
@@ -76,22 +37,7 @@
         }
         // Methods
         $scope.loadPage = function() {
-
-            var methodBase;
-            var methodArgs;
-            
-            if (vm.filters.text.trim() == "")
-            {
-                methodBase = api.products.getAll;
-                methodArgs = { pid:$scope.paginationOptions.pageNumber,
-                nbp:$scope.paginationOptions.pageSize };
-            }
-            else {
-                methodBase = api.products.getAllByLib;
-                methodArgs = { pid:$scope.paginationOptions.pageNumber,
-                nbp:$scope.paginationOptions.pageSize,req:vm.filters.text };
-            }
-            methodBase.get(methodArgs,
+            api.usersGroups.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
                 // Success
                 function (response)
                 {
@@ -112,10 +58,10 @@
             );
         };
         $scope.add = function() {
-            $state.go("app.produits_edit", { id:-1 });
+            $state.go("app.users_groups_edit", { id:-1 });
         };
         $scope.edit = function(id) {
-            $state.go("app.produits_edit", { id:id });
+            $state.go("app.users_groups_edit", { id:id });
         };
         $scope.showStats = function(it) {
             $state.go("app.stats_prevs", { selectedItems:[it] });
@@ -132,7 +78,7 @@
 
             $mdDialog.show(confirm).then(function() {
                 $rootScope.loadingProgress = true;
-                api.products.delete.delete({ id:id } ,
+                api.usersGroups.delete.delete({ id:id } ,
                 // Success
                 function (response)
                 {

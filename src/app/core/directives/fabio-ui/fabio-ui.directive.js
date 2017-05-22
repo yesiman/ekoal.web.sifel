@@ -6,6 +6,7 @@
         .module('app.core')
         .directive('editFormHeadsButtons', editFormButtonsDirective)
         .directive('formHeadIcoTitle', formHeadIcoTitleDirective)
+        .directive('formHeadIcoTitleWithSideb', formHeadIcoTitleWithSidebDirective)
         .directive('listHeadButtons', listHeadButtonsDirective)
         .directive('datatableWrapper', datatableWrapperDirective)
         .directive('qteInput', qteInputDirective)
@@ -60,6 +61,22 @@
             transclude : true,
             templateUrl: 'app/core/directives/fabio-ui/templates/form-head-ico-title/form-head-ico-title.html'
         };
+    }
+    function formHeadIcoTitleWithSidebDirective($mdSidenav)
+    {
+        return {
+            restrict   : 'A',
+            transclude : true,
+            templateUrl: 'app/core/directives/fabio-ui/templates/form-head-ico-title-with-sideb/form-head-ico-title-with-sideb.html',
+            link:link
+        };
+        
+        function link(scope, element) {
+            scope.toggleSidenav = function(sidenavId)
+            {
+                $mdSidenav(sidenavId).toggle();
+            }
+        }
     }
     /** @ngInject */
     function datatableWrapperDirective($timeout, $compile) {

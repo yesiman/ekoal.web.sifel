@@ -93,6 +93,109 @@
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
+                                        <md-input-container flex>
+                                            <md-list ng-cloak>
+                                                <md-list-item style="height:38px;">
+                                                    <p>Activer les alertes</p>
+                                                    <md-checkbox class="md-secondary" ng-model="item.alertsParams.actif"></md-checkbox>
+                                                </md-list-item>
+                                                <md-divider ng-if="item.alertsParams.actif"></md-divider>
+                                                <md-list-item ng-if="item.alertsParams.actif" style="height:38px;">
+                                                    <p>Heure d'envois</p>
+                                                        <md-select ng-model="item.alertsParams.sendHour">
+                                                            <md-option  value="1">
+                                                                01:00
+                                                            </md-option>
+                                                            <md-option  value="2">
+                                                                02:00
+                                                            </md-option>
+                                                            <md-option  value="3">
+                                                                03:00
+                                                            </md-option>
+                                                            <md-option  value="4">
+                                                                04:00
+                                                            </md-option>
+                                                            <md-option  value="5">
+                                                                05:00
+                                                            </md-option>
+                                                            <md-option  value="6">
+                                                                06:00
+                                                            </md-option>
+                                                            <md-option  value="7">
+                                                                07:00
+                                                            </md-option>
+                                                            <md-option  value="8" selected>
+                                                                08:00
+                                                            </md-option>
+                                                            <md-option  value="9">
+                                                                09:00
+                                                            </md-option>
+                                                            <md-option  value="10">
+                                                                10:00
+                                                            </md-option>
+                                                            <md-option  value="11">
+                                                                11:00
+                                                            </md-option>
+                                                            <md-option  value="12">
+                                                                12:00
+                                                            </md-option>
+                                                            <md-option  value="13">
+                                                                13:00
+                                                            </md-option>
+                                                            <md-option  value="14">
+                                                                14:00
+                                                            </md-option>
+                                                            <md-option  value="15">
+                                                                15:00
+                                                            </md-option>
+                                                            <md-option  value="16">
+                                                                16:00
+                                                            </md-option>
+                                                            <md-option  value="17">
+                                                                17:00
+                                                            </md-option>
+                                                            <md-option  value="18">
+                                                                18:00
+                                                            </md-option>
+                                                            <md-option  value="19">
+                                                                19:00
+                                                            </md-option>
+                                                            <md-option  value="20">
+                                                                20:00
+                                                            </md-option>
+                                                            <md-option  value="21">
+                                                                21:00
+                                                            </md-option>
+                                                            <md-option  value="22">
+                                                                22:00
+                                                            </md-option>
+                                                            <md-option  value="23">
+                                                                23:00
+                                                            </md-option>
+                                                            <md-option  value="24">
+                                                                24:00
+                                                            </md-option>
+                                                        </md-select>
+                                                </md-list-item>
+                                                <md-divider></md-divider>
+                                                <md-list-item ng-if="item.alertsParams.actif" style="height:38px;">
+                                                    <p>30 jours avant livraison</p>
+                                                    <md-checkbox class="md-secondary" ng-model="item.alertsParams.d30"></md-checkbox>
+                                                </md-list-item>
+                                                <md-list-item ng-if="item.alertsParams.actif" style="height:38px;">
+                                                    <p>15 jours avant livraison</p>
+                                                    <md-checkbox class="md-secondary" ng-model="item.alertsParams.d15"></md-checkbox>
+                                                </md-list-item>
+                                                <md-list-item ng-if="item.alertsParams.actif" style="height:38px;">
+                                                    <p>7 jours avant livraison</p>
+                                                    <md-checkbox class="md-secondary" ng-model="item.alertsParams.d7"></md-checkbox>
+                                                </md-list-item>
+                                                <md-list-item ng-if="item.alertsParams.actif" style="height:38px;">
+                                                    <p>1 jours avant livraison</p>
+                                                    <md-checkbox class="md-secondary" ng-model="item.alertsParams.d1"></md-checkbox>
+                                                </md-list-item>
+                                            </md-list>
+                                        </md-input-container>
                                         <md-input-container class="md-inline" flex-gt-sm>
                                             <label>Commentaires</label>
                                             <textarea ng-model="item.comments" rows="5"></textarea>

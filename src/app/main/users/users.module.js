@@ -4,7 +4,7 @@
 
     angular
         .module('app.users', [
-            'app.users.list','app.users.edit'
+            'app.users.list','app.users.edit','app.users.groups.list','app.users.groups.edit'
         ])
         .config(config);
 

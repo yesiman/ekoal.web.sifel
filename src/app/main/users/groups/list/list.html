@@ -1,7 +1,10 @@
 <div id="listProduits" class="page-layout simple left-sidenav inner-sidenav">
+
+            
+
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between center">
-        <div form-head-ico-title-with-sideb layout="row" layout-align="start center"></div> 
+        <div form-head-ico-title layout="row" layout-align="start center"></div> 
         <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
     </div>
     <!-- / HEADER -->
@@ -12,7 +15,7 @@
                 <md-list ng-cloak>
                     <md-subheader class="md-no-sticky">Filtre texte</md-subheader>
                     <md-list-item>
-                        <input type="text" ng-model="vm.filters.text" ng-change="vm.filterTextOnChange()" placeholder="Premiers charactères..."/>
+                        <input type="text" ng-model="filters.text" placeholder="Premiers charactères..."/>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>
@@ -20,7 +23,7 @@
         </md-sidenav>
         <md-content class="content" style="width:100%;overflow:hidden;" flex>   
             <div id="grid1"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridOptions"  class="grid"></div>
-            
+           
         </md-content> 
     </div>
     </div>
