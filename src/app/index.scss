@@ -17,6 +17,8 @@ body {
 
 md-tab-content.inputs {background-color: #fff;}
 
+.italicRow{font-style: italic;color: #aeacac;}
+
 md-icon.edit{
     color:#66BB6A!important;
 }
@@ -31,6 +33,9 @@ form {
 }
 md-input-container .md-errors-spacer {
     min-height: 0;
+}
+md-input-container md-checkbox {
+    margin-bottom: 0;
 }
 
 .md-tab{font-size: 12px;}

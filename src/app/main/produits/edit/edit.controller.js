@@ -23,8 +23,8 @@
         vm.gridRulesOptions = standardizer.getGridOptionsStd();
         vm.gridRulesOptions.columnDefs = [
             { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
-            { field: 'delai', sort:{priority:0}, displayName: 'Délai avant récolte' },
-            { field: 'nbWeek', sort:{priority:0}, displayName: 'Semaines de récolte' },
+            { field: 'delai', sort:{priority:0}, displayName: 'Délai avant récolte (jours)' },
+            { field: 'nbWeek', sort:{priority:0}, displayName: 'Numéro semaine de récolte' },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
                
         vm.gridRulesOptions.onRegisterApi =  function(gridApi) {
@@ -78,19 +78,26 @@
         
         vm.loadRulesPage = function (id, psize)
         {
+            $rootScope.loadingProgress = true;
             api.rules.getAllByProduit.post({ pid:id, nbp:psize, id: vm.item._id,req:vm.ruleTxtFilter } ,
                 // Success
                 function (response)
                 {
                     vm.gridRulesOptions.totalItems = response.count;
                     vm.gridRulesOptions.data = response.items;
+                    $rootScope.loadingProgress = false;
                 },
                 // Error
                 function (response)
                 {
                     console.error(response);
+                    $rootScope.loadingProgress = false;
                 }
             );
+        }
+
+        vm.clearParentProduct = function() {
+            vm.item.parent = null;
         }
 
         vm.showParentsDialog = function(ev) {
@@ -145,15 +152,6 @@
                 // Success
                 function (response)
                 {
-                    //$scope.loadPage();
-                    for (var i = 0;i < vm.rules.length;i++)
-                    {
-                        if (vm.rules[i]._id.toString() == rule._id.toString())
-                        {
-                            vm.rules.splice(i,1);
-                            break;
-                        }
-                    }
                     vm.loadRulesPage(1,10);
                     $rootScope.loadingProgress = false;
                     //$scope.item = response;
@@ -183,21 +181,10 @@
                     event: ev
                 }
             }).then(function (rule) {
-                
-                for (var i = 0;i < vm.rules.length;i++)
-                {
-                    if (vm.rules[i]._id.toString() == rule._id.toString())
-                    {
-                        vm.rules[i] = rule;
-                        break;
-                    }
-                }
                 vm.loadRulesPage(1,10);
             }, function () {
                 //$scope.status = 'You cancelled the dialog.';
             });;
-
-
             //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
         }
         if (vm.item._id)

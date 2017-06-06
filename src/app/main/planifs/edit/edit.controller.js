@@ -15,6 +15,9 @@
         vm.rules = [];
         vm.selectedRule = {};
         
+        var qteHtml = '<div class="ui-grid-cell-contents">';
+        qteHtml += "{{row.entity.qte.val}} {{(row.entity.qte.unit == 1?'kilos':'tonnes')}}";
+        qteHtml += '</div>'
         var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removePlanifLine($event,row.entity)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
@@ -24,7 +27,7 @@
         vm.gridRecoltsOptions.useExternalSorting = false;
         vm.gridRecoltsOptions.columnDefs = [
             { field: 'semaine', sort:{priority:0}, displayName: 'Semaine récolte' },
-            { field: 'qte.val', displayName: 'Quantité' },
+            { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridRecoltsOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
@@ -147,8 +150,24 @@
         vm.producteurChange = function(it) {
             if ($scope.item.producteur)
             {
-                it.textShow =it.name + " " + it.surn;
-            }   
+                it.textShow = it.codeAhd + "-" + it.name + " " + it.surn;
+                var methodArgs = { pid:1,nbp:100,id:$scope.item.producteur._id,req:"" };
+                api.users.getParcelles.post(methodArgs,
+                    function (response)
+                    {
+                        vm.parcelles = response.items;
+                    },
+                    function (response)
+                    {
+                        console.error(response);
+                    }
+                );
+            }
+            else
+            {
+                $scope.item.parcelle = null;
+                $scope.item.surface = "";
+            }
         }
 
         $scope.head = {
@@ -305,8 +324,7 @@
 
         vm.gridAlertsOptions.totalItems = $scope.item.alerts.length;
         vm.gridAlertsOptions.data = $scope.item.alerts;
-
-
+        //
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
             //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
@@ -347,25 +365,16 @@
                     );
                     break;
                 case 3:
-                    methodBase = api.users.getParcelles;
-                    methodArgs = { pid:1,nbp:100,id:$scope.item.producteur._id,req:"" };
-                    methodBase.post(methodArgs,
-                        function (response)
-                        {
-                            deferred.resolve( response.items );
-                        },
-                        // Error
-                        function (response)
-                        {
-                            console.error(response);
-                            //return null;
-                        }
-                    );
-                    break;
+                    //console.log(vm.parcelles);
+                    return(vm.parcelles);
+                    
+                    //break;
             }
            
             return deferred.promise;
         }
+        //vm.parcelles = $scope.querySearch("",3);
+        //
         vm.getDateOfISOWeek = function(weekNo, y) {
             var d1 = new Date();
             d1.setFullYear(y);

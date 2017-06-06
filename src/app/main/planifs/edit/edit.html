@@ -27,7 +27,7 @@
                                             md-selected-item="item.producteur"
                                             md-search-text="item.producteurSearch"
                                             md-items="item in querySearch(item.producteurSearch,2)"
-                                            md-item-text="item.name"
+                                            md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn"
                                             md-require-match
                                             md-floating-label="Sélection producteur"
                                             md-selected-item-change="vm.producteurChange(item)">
@@ -49,10 +49,11 @@
                                             md-selected-item="item.produit"
                                             md-search-text="item.produitSearch"
                                             md-items="item in querySearch(item.produitSearch,1)"
-                                            md-item-text="item.lib"
+                                            md-item-text="item.codeProd + ' - ' + item.lib"
                                             md-require-match
                                             md-floating-label="Sélection produit"
                                             md-selected-item-change="vm.productChange()">
+                                            
                                         <md-item-template>
                                             <span md-highlight-text="item.produitSearch">{{item.codeProd}} - {{item.lib}}</span>
                                         </md-item-template>
@@ -67,14 +68,14 @@
                                     <div layout-gt-sm="row">
                                         <md-autocomplete flex 
                                             md-input-name="autocompleteField"
-                                            md-input-minlength="2"
-                                            md-input-maxlength="100"
+                                            md-min-length="0" 
                                             md-no-cache="ctrl.noCache"
                                             md-selected-item="item.parcelle"
                                             md-search-text="item.parcelleSearch"
-                                            md-items="item in querySearch(item.produitSearch,3)"
+                                            md-items="item in querySearch(item.parcelleSearch,3)"
                                             md-item-text="item.lib"
-                                            md-require-match
+                                            md-require-match="false" 
+                                            md-select-on-focus="true" 
                                             md-floating-label="Sélection parcelle" 
                                             md-selected-item-change="parcelleChange()">
                                         <md-item-template>

@@ -94,6 +94,8 @@
         {
             $scope.gridOptions.columnDefs.push({ field: 'codeAdh', displayName: 'Code adhérent' });
         }
+        $scope.gridOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+        
         $scope.gridOptions.columnDefs.push({ field: 'name', displayName: 'Nom' });
         $scope.gridOptions.columnDefs.push({ field: 'surn', displayName: 'Prénom' });
         $scope.gridOptions.columnDefs.push({ field: 'type', displayName: 'Type', cellTemplate:typeHtml });

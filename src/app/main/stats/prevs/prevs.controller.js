@@ -40,7 +40,8 @@
             filters.dateFrom = new Date(filters.dateFrom);
             filters.dateTo = new Date(filters.dateTo);
             $scope.filters = filters;
-            console.log("filters",$scope.filters);
+            console.log($rootScope.filters.StatsPrevsControllerObjectifs);
+            vm.objectifs  = $rootScope.filters.StatsPrevsControllerObjectifs;
         }
         else {
             $scope.filters = {
@@ -84,38 +85,14 @@
             $scope.filters.searchText = "";
         }
         
-        $scope.export = function(chartId) {
-            
-            var exp = [];
-            var o;
+        $scope.export = function(chartId) { 
             switch (chartId)
             {
                 case 1:
-                    o = {};
-                    o["label"] = "Periode";
-                    for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-                    {
-                        o[$scope.filters.selectedItems[i].lib] = $scope.filters.selectedItems[i].lib;
-                    }
-                    exp.push(o);
-                    for (var ilab = 0;ilab < $scope.clines.labels.length;ilab++)
-                    {
-                        o = {};
-                        o["label"] = $scope.clines.labels[ilab];
-                        for (var i = 0;i < $scope.filters.selectedItems.length;i++)
-                        {
-                            o[$scope.filters.selectedItems[i].lib] = $scope.clines.data[i][ilab];
-                        }
-                        exp.push(o);
-                        //exp.push({ label:vm.cLines.labels[ilab], "tomates":vm.cLines.data[0][ilab] });
-                    }
+                    
                     break;
             }
-           // alasql("CREATE TABLE cities (city string, population number)");
-            //alasql("INSERT INTO cities VALUES ('Rome',2863223),('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
-            
             return exp;
-            //alasql('SELECT label,tomates INTO XLSX("john.xlsx",{headers:false}) FROM ?',exp);
         }
         
         $scope.getProdsIds = function()
@@ -280,6 +257,7 @@
             $rootScope.loadingProgress = true;
             $scope.clearSeries = true;
             $rootScope.filters.StatsPrevsController = $scope.filters;
+            $rootScope.filters.StatsPrevsControllerObjectifs = vm.objectifs;
             //console.log("$scope.filters",filters);
             $scope.refreshPrevsByProdukt();
             $scope.refreshPrevsByProdukteur();

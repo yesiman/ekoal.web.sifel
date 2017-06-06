@@ -24,23 +24,22 @@
         vm.parcelleTxtFilter = "";
         vm.parcellePsize = 10;
 
-        var producteurHtml = '<div class="ui-grid-cell-contents">';
-        producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
-        producteurHtml += '</div>';
-        var semaineHtml = '<div class="ui-grid-cell-contents">';
-        semaineHtml += '{{row.entity.semaine}} / {{row.entity.startAt | date : "yyyy"}}';
-        semaineHtml += '</div>';
-        var qteHtml = '<div class="ui-grid-cell-contents">';
-        qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
-        qteHtml += '</div>';
+        var surfaceHtml = '<div class="ui-grid-cell-contents">';
+        surfaceHtml += '{{row.entity.surface}}';
+        surfaceHtml += '</div>';
         var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.editParc(row.entity,$event)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removeParc(row.entity,$event)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
         actionsHtml += '</div>';
         vm.gridParcsOptions = standardizer.getGridOptionsStd();
+
+        vm.gridParcsOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+  
+         
+
         vm.gridParcsOptions.columnDefs = [
             { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
-            { field: 'surface', sort:{priority:0}, displayName: 'Surface' },
+            { field: 'surface', sort:{priority:0}, displayName: 'Surface (hectares)', cellTemplate:surfaceHtml },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridParcsOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
@@ -99,6 +98,8 @@
         if (!$scope.item.producteurs) {$scope.item.producteurs= [];}
         if (!$scope.item.parcelles) {$scope.item.parcelles= [];}
         if (!$scope.item.parcellesToRem) {$scope.item.parcellesToRem= [];}
+
+        
 
         $scope.isProducteurForMe = function(it) {
             for (var i = 0;i < $scope.item.producteurs.length;i++)
@@ -196,15 +197,18 @@
             $mdDialog.hide();
         }
         $scope.validLine = function(item){
+            $rootScope.loadingProgress = true;
             item.producteur = $scope.item._id;
             api.users.addParcelle.post({ id:(item._id?item._id:"-1"), parcelle: item } ,
                 function (response)
                 {
                     $scope.getParcelles(1,vm.parcellePsize);
+                    $rootScope.loadingProgress = false;
                 },
                 function (response)
                 {
                     console.error(response);
+                    $rootScope.loadingProgress = false;
                 }
             );
             

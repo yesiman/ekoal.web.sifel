@@ -27,14 +27,22 @@
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Produit parent</label>
-                        <input ng-model="vm.item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
+                        <label>Produit douanier parent</label>
+                          <input ng-model="vm.item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
+                        <md-icon ng-if="vm.item.parent" ng-click="vm.clearParentProduct()" md-font-icon="icon-close" style="display:inline-block;color:rgb(213,0,0);margin-right:10px;"><md-tooltip>Vider produit douanier parent</md-tooltip></md-icon>
+                        
                       </md-input-container>
                        <div class="md-inline" qte-input inprequired="true"  ng-model="vm.item.rendement" flex="50"></div>
                       
                     </div>
                     <div layout-gt-sm="row">
                      
+                      
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
+                          Actif
+                        </md-checkbox>
+                      </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>

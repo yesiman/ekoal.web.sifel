@@ -26,7 +26,14 @@
 
         <md-tab-body class="inputs" md-background-bg md-theme="docs-dark" ms-scroll>
             
-            <div style="width:100%;background-color:#ffffff;" layout-padding>      
+            <div style="width:100%;background-color:#ffffff;" layout-padding>
+                <div layout-gt-sm="row">  
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <md-checkbox ng-model="item.actif" aria-label="Actif">
+                        Actif
+                    </md-checkbox>
+                    </md-input-container>
+                </div>
                 <div layout="row"  ng-if="$root.user.type < 4" >
                     <md-input-container  class="md-input-invalid" ng-if="profil == false" class="md-inline" flex-gt-sm>
                     <label>Type</label>
@@ -69,6 +76,7 @@
                     <input ng-model="item.surn">
                     </md-input-container>
                 </div>
+                
                 <div layout-gt-sm="row" ng-if="item.type == 4" >
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Code Adhérent</label>

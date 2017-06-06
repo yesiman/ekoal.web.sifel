@@ -423,6 +423,11 @@
                 post: {
                     method: 'POST'
                 }
+            }),
+            export: $resource(api.baseUrl + 'stats/getDataFile/:numFile', { prodsIds:'@prodsIds',dateFrom:'@dateFrom',dateTo:'@dateTo', dateFormat:'@dateFormat', unit:'@unit',numFile:'@numFile' } , {
+                post: {
+                    method: 'POST'
+                }
             })
         }
         api.mailing = {
@@ -444,7 +449,6 @@
                 }
             })
         }
-        
         return api;
     }
 

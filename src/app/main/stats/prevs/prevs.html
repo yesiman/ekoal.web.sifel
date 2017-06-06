@@ -36,16 +36,14 @@
                                 <span class="item-title">
                                     <!--icon-cube-unfolded-->
                                     <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
-                                    <span> {{item.lib}} </span>
+                                    <span> {{item.codeProd}} - {{item.lib}} </span>
                                 </span>
                             </md-item-template>
-
-
                             <span md-highlight-text="filters.searchText"> </span>
                         </md-autocomplete>
                     </md-list-item>
                     <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
+                        <p> {{ p.codeProd }} - {{ p.lib }} </p>
                         <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
