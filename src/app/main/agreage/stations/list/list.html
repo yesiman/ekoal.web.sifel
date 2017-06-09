@@ -1,5 +1,5 @@
-<div id="listUsers" class="page-layout simple left-sidenav inner-sidenav">
-<!-- HEADER -->
+<div id="listStations" class="page-layout simple left-sidenav inner-sidenav">
+    <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between center">
         <div form-head-ico-title-with-sideb layout="row" layout-align="start center"></div> 
         <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
@@ -12,20 +12,16 @@
                 <md-list ng-cloak>
                     <md-subheader class="md-no-sticky">Filtre texte</md-subheader>
                     <md-list-item>
-                        <input type="text" ng-model="vm.filters.text" ng-change="loadPage()" placeholder="Premiers charactères..."/>
+                        <input type="text" ng-model="vm.filters.text" ng-change="vm.filterTextOnChange()" placeholder="Premiers charactères..."/>
                     </md-list-item>
                     <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Niveaux de droits</md-subheader>
-                    <md-list-item ng-repeat="l in vm.filters.levels" tag-bg item="p">
-                        <span class="status {{getUserBg($index+1)}}">{{l.lib}}</span>
-                        <md-checkbox class="md-secondary" ng-model="l.checked" ng-change="loadPage()"></md-checkbox>
-                    </md-list-item>
                 </md-list>
             </md-content>
         </md-sidenav>
-        <md-content class="content" layout="column" style="overflow:hidden;" flex>   
+        <md-content class="content" layout="column" flex style="overflow:hidden;">   
             <div id="grid1"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridOptions"  class="grid"></div>
         </md-content> 
-        </div>
     </div>
+    <!-- / CONTENT -->
+
 </div>

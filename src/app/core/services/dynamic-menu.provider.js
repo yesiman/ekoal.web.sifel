@@ -196,7 +196,50 @@
                         msNavigationService.deleteItem('users.groups.list'); 
                         msNavigationService.deleteItem('users.groups.new'); 
                     }
-                    
+                    msNavigationService.saveItem('agreage', {
+                            title : 'AGREAGE',
+                            group : true,
+                            weight: 4
+                        });
+                        msNavigationService.saveItem('agreage.stations', {
+                            title : 'Stations',
+                            icon  : 'icon-truck',
+                            state    : 'app.stations_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('agreage.stations.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.stations_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('agreage.stations.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.stations_edit',
+                            stateParams: {id:-1,profil:false},
+                            weight: 1
+                        });
+                        //
+                        msNavigationService.saveItem('agreage.bons', {
+                            title : 'Bons',
+                            icon  : 'icon-cube-outline',
+                            state    : 'app.bons_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('agreage.bons.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.bons_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('agreage.bons.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.bons_edit',
+                            stateParams: {id:-1},
+                            weight: 1
+                        });
                 }
             };
             return service;

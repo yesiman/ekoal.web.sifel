@@ -19,10 +19,12 @@
             
             'app.pages', //To Remove
             'app.users',
-            'app.opes',
             'app.planifs',
             'app.stats',
             'app.produits',
+            'app.stations', 
+            'app.bons',
+            'app.opes',
             'app.dashboards.server'
         ]);
 })();

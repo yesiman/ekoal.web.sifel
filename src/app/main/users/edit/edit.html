@@ -112,6 +112,16 @@
                     <input type="text" required ng-model="item.pass">
                     </md-input-container>
                 </div>
+                <div layout-gt-sm="row" ng-if="item.type == 4" >
+                    <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Station d'agréage</label>
+                        <md-select ng-model="item.station" style="min-width:200px;">
+                        <md-option ng-repeat="o in stations" ng-value="o._id">
+                            {{o.lib}}
+                        </md-option>    
+                        </md-select>
+                    </md-input-container>
+                </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Decription</label>

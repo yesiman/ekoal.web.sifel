@@ -1,0 +1,143 @@
+<div id="editBon" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <form name="current.userForm"  layout-fill>
+            <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+                <md-tab label="Informations principales"  layout-fill>
+                    <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+                            <div style="width:100%;">
+                                    <div layout-gt-sm="row">
+                                        <md-input-container class="md-inline" flex>
+                                            <h4>Date document</h4>
+                                            <md-datepicker ng-change="vm.ruleChanged()" ng-model="item.datePlant"></md-datepicker>
+                                        </md-input-container>
+                                    </div>
+                                    <div layout-gt-sm="row">
+                                        <md-autocomplete flex required ng-disabled="$root.user.type == 4"
+                                            md-input-name="autocompleteField"
+                                            md-input-minlength="2"
+                                            md-input-maxlength="100"
+                                            md-no-cache="ctrl.noCache"
+                                            md-selected-item="item.producteur"
+                                            md-search-text="item.producteurSearch"
+                                            md-items="item in querySearch(item.producteurSearch,2)"
+                                            md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn"
+                                            md-require-match
+                                            md-floating-label="Sélection station"
+                                            md-selected-item-change="vm.producteurChange(item)">
+                                        <md-item-template>
+                                            <span md-highlight-text="item.producteurSearch">{{item.codeAdh}} - {{item.name}} {{item.surn}}</span>
+                                        </md-item-template>
+                                        <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                            <div ng-message="required">You <b>must</b> have a favorite state.</div>
+                                            <div ng-message="md-require-match">Please select an existing state.</div>
+                                            <div ng-message="minlength">Your entry is not long enough.</div>
+                                            <div ng-message="maxlength">Your entry is too long.</div>
+                                        </div>
+                                        </md-autocomplete>
+                                        <md-autocomplete flex required
+                                            md-input-name="autocompleteField"
+                                            md-input-minlength="2"
+                                            md-input-maxlength="100"
+                                            md-no-cache="ctrl.noCache"
+                                            md-selected-item="item.produit"
+                                            md-search-text="item.produitSearch"
+                                            md-items="item in querySearch(item.produitSearch,1)"
+                                            md-item-text="item.codeProd + ' - ' + item.lib"
+                                            md-require-match
+                                            md-floating-label="Sélection producteur"
+                                            md-selected-item-change="vm.productChange()">
+                                            
+                                        <md-item-template>
+                                            <span md-highlight-text="item.produitSearch">{{item.codeProd}} - {{item.lib}}</span>
+                                        </md-item-template>
+                                        <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                            <div ng-message="required">You <b>must</b> have a favorite state.</div>
+                                            <div ng-message="md-require-match">Please select an existing state.</div>
+                                            <div ng-message="minlength">Your entry is not long enough.</div>
+                                            <div ng-message="maxlength">Your entry is too long.</div>
+                                        </div>
+                                        </md-autocomplete>
+                                    </div>
+                                    
+                            </div>
+                    </md-tab-content>
+                </md-tab>
+                <md-tab label="produits" layout-fill>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div style="display:block;">
+                                <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
+                                    <md-tooltip>Nouvelle ligne</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                </md-button>
+                                <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
+                                    <md-option ng-repeat="r in vm.rules" ng-value="r._id">
+                                        {{r.lib}}
+                                    </md-option>
+                                </md-select>
+                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
+                                </div>
+                            <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </form>
+    </div>
+    <!-- / CONTENT -->
+
+    <md-sidenav id="chat-app" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+        <!-- CHAT CONTENT -->
+                <md-content id="chat-content" flex ms-scroll>
+
+                    <!-- CHAT MESSAGES -->
+                    <div class="chat-messages">
+
+                        <!-- MESSAGE -->
+                        <div layout="row" class="md-padding message-row contact"
+                             ng-class="dialog.who">
+
+                            <img ng-if="dialog.who ==='contact'"
+                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
+                                 class="avatar"
+                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
+
+                            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{vm.user.avatar}}">
+
+                            <div class="bubble">
+                                <div class="message">{{curMessage.message}}</div>
+                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
+                            </div>
+
+                        </div>
+                        <div layout="row" class="md-padding message-row user"
+                             ng-class="dialog.who">
+
+                            <img ng-if="dialog.who ==='contact'"
+                                 ng-src="{{vm.contacts.getById(vm.chatContactId).avatar}}"
+                                 class="avatar"
+                                 alt="{{vm.contacts.getById(vm.chatContactId).name}}"/>
+
+                            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{vm.user.avatar}}">
+
+                            <div class="bubble">
+                                <div class="message">{{curMessage.reply}}</div>
+                                <div class="time secondary-text">{{dialog.time | altDate}}</div>
+                            </div>
+
+                        </div>
+                        <!-- / MESSAGE -->
+
+                    </div>
+                    <!-- CHAT MESSAGES -->
+
+                </md-content>
+    </md-sidenav>
+</div>

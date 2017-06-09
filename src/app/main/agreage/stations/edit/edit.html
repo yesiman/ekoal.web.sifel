@@ -1,0 +1,43 @@
+<div id="opeedit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        
+        <div class="main scrollable"  ms-scroll>
+        
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <div style="width:100%;">
+      <form name="current.userForm">
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Libellé</label>
+            <input required ng-model="item.lib">
+          </md-input-container>
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Code</label>
+            <input required ng-model="item.code">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Decription</label>
+            <textarea ng-model="item.desc" rows="5"></textarea>
+          </md-input-container>
+        </div>
+        
+      </form>
+    </div>
+  </md-content>
+
+  
+</div>
+        </div>
+    <!-- / CONTENT -->
+
+</div>

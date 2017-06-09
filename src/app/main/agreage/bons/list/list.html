@@ -1,4 +1,4 @@
-<div id="listPlanifs" class="page-layout simple left-sidenav inner-sidenav">
+<div id="listBons" class="page-layout simple left-sidenav inner-sidenav">
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between center">
         <div form-head-ico-title-with-sideb layout="row" layout-align="start center"></div> 
@@ -67,34 +67,7 @@
                         <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
-                    <md-list-item style="padding-top:20px;padding-bottom:20px;">
-                        <md-menu>
-                            <md-button class="md-accent md-raised md-button grouped-actions" aria-label="" ng-click="vm.openMenu($mdOpenMenu,$event)">
-                                Actions groupées
-                                <md-icon md-font-icon="icon-ruler" md-menu-align-target></md-icon>
-                            </md-button>
-                            <md-menu-content width="4">
-                                <md-menu-item>
-                                <md-button ng-click="vm.groupChangeRule()" ng-disabled="(vm.filters.produits.selectedItems.length!=1) || (items.length <= 0)">
-                                    <md-icon md-font-icon="icon-ruler" md-menu-align-target></md-icon>
-                                    Modifier règle
-                                </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                <md-button ng-click="vm.groupDupDec('dec')" ng-disabled="(items.length <= 0)">
-                                    <md-icon md-font-icon="icon-arrow-all" md-menu-align-target></md-icon>
-                                    Décaler dates
-                                </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                <md-button ng-click="vm.groupDupDec('dup')" ng-disabled="(items.length <= 0)" >
-                                    <md-icon md-font-icon="icon-content-copy" md-menu-align-target></md-icon>
-                                    Dupliquer
-                                </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </md-list-item>
+                    
                 </md-list>
                 
             </md-content>

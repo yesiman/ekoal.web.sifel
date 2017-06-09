@@ -288,6 +288,29 @@
                 }
             })
         }
+        // STATIONS
+        api.stations = {
+            add: $resource(api.baseUrl + 'stations/add/:id', {id:'@id',orga:'@orga'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'stations/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'stations/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'stations/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
         // PRODUCTS GROUPS
         api.productsGroups = {
             add: $resource(api.baseUrl + 'productsGroups/add/:id', {id:'@id',group:'@group'} , {

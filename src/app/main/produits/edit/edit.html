@@ -21,9 +21,11 @@
                         <input required ng-model="vm.item.lib">
                       </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Code produit</label>
-                        <input required ng-model="vm.item.codeProd">
+                        <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
+                          Actif
+                        </md-checkbox>
                       </md-input-container>
+                      
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
@@ -37,12 +39,18 @@
                     </div>
                     <div layout-gt-sm="row">
                      
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Code produit</label>
+                        <input required ng-model="vm.item.codeProd">
+                      </md-input-container>
                       
                       <md-input-container class="md-inline" flex-gt-sm>
-                        <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
-                          Actif
-                        </md-checkbox>
+                        <label>Prix de vente HT</label>
+                        <input type="number" ng-model="vm.item.prixVente">
                       </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                     
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>
