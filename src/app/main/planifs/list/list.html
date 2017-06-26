@@ -34,14 +34,14 @@
                                 <span class="item-title">
                                     <!--icon-cube-unfolded-->
                                     <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
-                                    <span> {{item.lib}} </span>
+                                    <span> {{item.codeProd}} - {{item.lib}} </span>
                                 </span>
                             </md-item-template>
                         </md-autocomplete>
                     </md-list-item>
                     <md-list-item ng-repeat="p in vm.filters.produits.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                        <p> {{ p.codeProd }} - {{ p.lib }} </p>
+                        <md-icon class="md-secondary" ng-click="vm.removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Producteurs</md-subheader>
@@ -50,21 +50,21 @@
                             md-selected-item="vm.filters.producteurs.selectedItem" 
                             md-search-text="vm.filters.producteurs.searchText"
                             md-items="item in querySearch(vm.filters.producteurs.searchText,2)"
-                            md-item-text="item.name"
+                            md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn"
                             placeholder="Premiers charactères..."
                             md-selected-item-change="vm.filters.producteurs.change(item)">
                             <md-item-template>
                                 <span class="item-title">
                                     <!--icon-cube-unfolded-->
                                     <md-icon md-font-icon="icon-cube-outline"></md-icon>
-                                    <span> {{item.name}} </span>
+                                    <span>{{item.codeAdh}} - {{item.name}} {{item.surn}}</span>
                                 </span>
                             </md-item-template>
                         </md-autocomplete>
                     </md-list-item>
-                    <md-list-item ng-repeat="p in vm.filters.producteurs.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    <md-list-item ng-repeat="p in vm.filters.producteurs.selectedItems">
+                        <p> {{p.codeAdh}} - {{p.name}} {{p.surn}} </p>
+                        <md-icon class="md-secondary" ng-click="vm.removeProducteur(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-list-item style="padding-top:20px;padding-bottom:20px;">

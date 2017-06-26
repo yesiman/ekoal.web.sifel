@@ -49,8 +49,13 @@
     {
         return {
             restrict   : 'A',
+            templateUrl: 'app/core/directives/fabio-ui/templates/list-head-buttons/list-head-buttons.html',
             transclude : true,
-            templateUrl: 'app/core/directives/fabio-ui/templates/list-head-buttons/list-head-buttons.html'
+            link:function (scope, element, attrs) {
+                scope.upBtClicked = function() {
+                    angular.element(document.querySelector('#fileInput')).click();
+                }
+            }
         };
     }
     /** @ngInject */

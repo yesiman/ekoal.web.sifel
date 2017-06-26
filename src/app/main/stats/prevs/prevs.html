@@ -59,8 +59,8 @@
                             <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
                         </md-autocomplete>
                     </md-list-item>-->
-                    <md-list-item class="min-line" ng-repeat="p in producteurs" tag-bg item="p">
-                        <p> {{ p.name }} </p>
+                    <md-list-item class="min-line" ng-repeat="p in producteurs">
+                        <p> {{p.codeAdh}} - {{p.name}} {{p.surn}} </p>
                         <md-checkbox class="md-secondary" ng-model="p.checked"></md-checkbox>
                     </md-list-item>
                     <md-divider></md-divider>

@@ -21,7 +21,10 @@
         //
         $scope.head = {
             ico:"icon-account-box",
-            title:"Statistiques"
+            title:"Statistiques",
+            btadd:false,
+            btimport:false,
+            btexport:false
         };
         //
         var monday = new Date;
@@ -57,7 +60,21 @@
                 unitMode:1
             }
         }
-        
+        //On a passe prod en arg
+        if ($stateParams.selectedItems.length > 0)
+        {
+            var found = false;
+            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
+            {
+                if ($scope.filters.selectedItems[i]._id == $stateParams.selectedItems[0]._id)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) { $scope.filters.selectedItems.push($stateParams.selectedItems[0]); }
+        }
+        //
         $scope.removeProduit = function(it) {
             for (var i = 0;i< $scope.filters.selectedItems.length;i++)
             {
@@ -69,7 +86,7 @@
             }
             $scope.refresh();
         }
-
+        //
         $scope.filters.produitChange = function(it) {
             if (!it) { return; }
             var found = false;
@@ -84,7 +101,7 @@
             if (!found) { $scope.filters.selectedItems.push(it);$scope.refresh(); }
             $scope.filters.searchText = "";
         }
-        
+        //
         $scope.export = function(chartId) { 
             switch (chartId)
             {
@@ -253,6 +270,7 @@
             }
             return ret;
         }
+        
         $scope.refresh = function(clearSeries) {
             $rootScope.loadingProgress = true;
             $scope.clearSeries = true;
@@ -311,6 +329,8 @@
         //    d3.selectAll('.nvtooltip').remove();
         //});
         //$scope.refresh();
+
+        
         
     }
 })();

@@ -20,6 +20,12 @@
                     templateUrl: 'app/main/agreage/bons/edit/edit.html',
                     controller : 'BonsEditController as vm'
                 }
+            },
+            resolve  : {
+                stationsResolv: function (apiResolver)
+                {
+                    return apiResolver.resolve('stations.getAll@get', {pid:1,nbp:1000});
+                }
             }
         });
 

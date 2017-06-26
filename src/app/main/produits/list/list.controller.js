@@ -45,7 +45,7 @@
         var actionsHtml = standardizer.getHtmlActions(customBts);
         $scope.gridOptions = standardizer.getGridOptionsStd();
 
-        $scope.gridOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+        $scope.gridOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"  ng-mouseover="rowStyle={\'background-color\': \'#dcedc8\',\'cursor\': \'pointer\'};grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}"><div  ng-style="rowStyle" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"  ng-click="grid.appScope.edit(row.entity._id, col.colDef)" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
         
         $scope.gridOptions.columnDefs = [
                 { field: 'codeProd', displayName: 'Code', width: "150" },
@@ -62,6 +62,7 @@
                 //getPage();
             });
             gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                $scope.paginationOptions.pageSize = pageSize;
                 $scope.loadPageAction(newPage);
                 //paginationOptions.pageNumber = newPage;
                 //paginationOptions.pageSize = pageSize;
@@ -83,6 +84,8 @@
             var methodBase;
             var methodArgs;
             
+            
+
             if (vm.filters.text.trim() == "")
             {
                 methodBase = api.products.getAll;
@@ -117,7 +120,15 @@
         $scope.add = function() {
             $state.go("app.produits_edit", { id:-1 });
         };
-        $scope.edit = function(id) {
+        $scope.edit = function(id, col) {
+            console.log("col",col);
+            if(col)
+            {
+                if (col.name == "actions")
+                {
+                    return;
+                }
+            }
             $state.go("app.produits_edit", { id:id });
         };
         $scope.showStats = function(it) {

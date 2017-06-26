@@ -13,9 +13,21 @@
                     <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
                             <div style="width:100%;">
                                     <div layout-gt-sm="row">
-                                        <md-input-container class="md-inline" flex>
+                                        <md-input-container class="md-inline formDateInput" flex>
                                             <h4>Date document</h4>
                                             <md-datepicker ng-change="vm.ruleChanged()" ng-model="item.datePlant"></md-datepicker>
+                                        </md-input-container>
+                                        <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                                            <label>Type</label>
+                                            <md-select  required ng-model="item.type" style="min-width:200px;">
+                                                <md-option><em>None</em></md-option>
+                                                <md-option ng-value="1">
+                                                    Local
+                                                </md-option>
+                                                <md-option ng-value="2">
+                                                    Export
+                                                </md-option>
+                                            </md-select>
                                         </md-input-container>
                                     </div>
                                     <div layout-gt-sm="row">
@@ -24,15 +36,15 @@
                                             md-input-minlength="2"
                                             md-input-maxlength="100"
                                             md-no-cache="ctrl.noCache"
-                                            md-selected-item="item.producteur"
-                                            md-search-text="item.producteurSearch"
-                                            md-items="item in querySearch(item.producteurSearch,2)"
-                                            md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn"
+                                            md-selected-item="item.station"
+                                            md-search-text="item.stationSearch"
+                                            md-items="item in querySearch(item.stationSearch,1)"
+                                            md-item-text="item.code + ' - ' + item.lib"
                                             md-require-match
                                             md-floating-label="Sélection station"
-                                            md-selected-item-change="vm.producteurChange(item)">
+                                            md-selected-item-change="vm.stationChange(item)">
                                         <md-item-template>
-                                            <span md-highlight-text="item.producteurSearch">{{item.codeAdh}} - {{item.name}} {{item.surn}}</span>
+                                            <span md-highlight-text="item.stationSearch">{{item.code}} - {{item.lib}}</span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>
@@ -46,16 +58,16 @@
                                             md-input-minlength="2"
                                             md-input-maxlength="100"
                                             md-no-cache="ctrl.noCache"
-                                            md-selected-item="item.produit"
-                                            md-search-text="item.produitSearch"
-                                            md-items="item in querySearch(item.produitSearch,1)"
-                                            md-item-text="item.codeProd + ' - ' + item.lib"
+                                            md-selected-item="item.producteur"
+                                            md-search-text="item.producteurSearch"
+                                            md-items="item in querySearch(item.producteurSearch,2)"
+                                            md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn"
                                             md-require-match
                                             md-floating-label="Sélection producteur"
-                                            md-selected-item-change="vm.productChange()">
+                                            md-selected-item-change="vm.producteurChange()">
                                             
                                         <md-item-template>
-                                            <span md-highlight-text="item.produitSearch">{{item.codeProd}} - {{item.lib}}</span>
+                                            <span md-highlight-text="item.producteurSearch">{{item.codeAdh}} - {{item.name}} {{item.surn}}</span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>

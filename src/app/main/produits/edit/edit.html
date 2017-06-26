@@ -55,6 +55,17 @@
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>
                       </md-input-container>
+                      <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                        <label>Gabarit calibre</label>
+                        <md-select  ng-disabled="(vm.profil == true)" required ng-model="item.type" style="min-width:200px;">
+                        <md-option ng-value="4">
+                            Producteur
+                        </md-option>
+                        <md-option ng-value="5">
+                            Commercial
+                        </md-option>
+                        </md-select>
+                      </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>

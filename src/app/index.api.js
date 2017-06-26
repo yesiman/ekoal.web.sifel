@@ -290,7 +290,7 @@
         }
         // STATIONS
         api.stations = {
-            add: $resource(api.baseUrl + 'stations/add/:id', {id:'@id',orga:'@orga'} , {
+            add: $resource(api.baseUrl + 'stations/add/:id', {id:'@id',station:'@station'} , {
                 post: {
                     method: 'POST'
                 }
@@ -306,6 +306,29 @@
                 }
             }),
             getAll: $resource(api.baseUrl + 'stations/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
+        // STATIONS
+        api.bons = {
+            add: $resource(api.baseUrl + 'bons/add/:id', {id:'@id',bon:'@bon'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'bons/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'bons/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
                 get: {
                     method: 'GET'
                 }

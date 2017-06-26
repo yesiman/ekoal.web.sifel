@@ -15,6 +15,9 @@
         vm.rules = [];
         vm.selectedRule = {};
         
+        var semaineHtml = '<div class="ui-grid-cell-contents">';
+        semaineHtml += "S{{row.entity.semaine}} / {{row.entity.anne}}";
+        semaineHtml += '</div>'
         var qteHtml = '<div class="ui-grid-cell-contents">';
         qteHtml += "{{row.entity.qte.val}} {{(row.entity.qte.unit == 1?'kilos':'tonnes')}}";
         qteHtml += '</div>'
@@ -26,7 +29,7 @@
         vm.gridRecoltsOptions.useExternalPagination = false;
         vm.gridRecoltsOptions.useExternalSorting = false;
         vm.gridRecoltsOptions.columnDefs = [
-            { field: 'semaine', sort:{priority:0}, displayName: 'Semaine récolte' },
+            { field: 'semaine', sort:{priority:0}, displayName: 'Semaine récolte', cellTemplate:semaineHtml },
             { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridRecoltsOptions.onRegisterApi =  function(gridApi) {

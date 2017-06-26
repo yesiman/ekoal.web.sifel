@@ -18,10 +18,10 @@
                 producteurHtml += '{{grid.appScope.getProducteurName(row.entity.producteur)}}';
                 producteurHtml += '</div>';
                 var semaineHtml = '<div class="ui-grid-cell-contents">';
-                semaineHtml += '{{row.entity.semaine}} / {{row.entity.startAt | date : "yyyy"}}';
+                semaineHtml += 'S{{row.entity.semaine}} / {{row.entity.startAt | date : "yyyy"}}';
                 semaineHtml += '</div>';
                 var qteHtml = '<div class="ui-grid-cell-contents">';
-                qteHtml += '{{grid.appScope.getGoodQte(row.entity)}}';
+                qteHtml += "{{grid.appScope.getGoodQte(row.entity)}} {{(grid.appScope.filters.unitMode == '1'?'Kilos':'Tonnes')}}";
                 qteHtml += '</div>';
                 var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
                 actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';

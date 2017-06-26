@@ -7,7 +7,8 @@
         .controller('UsersEditController',UsersEditController);
 
     /** @ngInject */
-    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,userResolv,$mdDialog,standardizer,$rootScope,$mdToast)
+    function UsersEditController($scope,$state, api,$stateParams,orgasResolv,stationsResolv,userResolv,
+        $mdDialog,standardizer,$rootScope,$mdToast)
     {
         
         var vm = this;
@@ -92,6 +93,7 @@
         $scope.current =  {userForm : {}};
         $scope.id = $stateParams.id;
         $scope.orgas = orgasResolv.items;
+        $scope.stations = stationsResolv.items;
         $scope.item = userResolv;
         $scope.profil = $stateParams.profil;
 

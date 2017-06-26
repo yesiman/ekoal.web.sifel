@@ -13,7 +13,7 @@
                     <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
                             <div style="width:100%;">
                                     <div layout-gt-sm="row">
-                                        <md-input-container class="md-inline" flex>
+                                        <md-input-container class="md-inline formDateInput" flex>
                                             <h4>Date de plantation</h4>
                                             <md-datepicker ng-change="vm.ruleChanged()" ng-model="item.datePlant"></md-datepicker>
                                         </md-input-container>
@@ -55,7 +55,11 @@
                                             md-selected-item-change="vm.productChange()">
                                             
                                         <md-item-template>
-                                            <span md-highlight-text="item.produitSearch">{{item.codeProd}} - {{item.lib}}</span>
+                                            <span class="item-title">
+                                                <!--icon-cube-unfolded-->
+                                                <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
+                                                <span> {{item.codeProd}} - {{item.lib}} </span>
+                                            </span>
                                         </md-item-template>
                                         <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
                                             <div ng-message="required">You <b>must</b> have a favorite state.</div>

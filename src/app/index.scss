@@ -17,6 +17,12 @@ body {
 
 md-tab-content.inputs {background-color: #fff;}
 
+
+md-input-container.md-inline.formDateInput{
+    margin-top: 0;
+    h4{margin: 0;}
+}
+
 .italicRow{font-style: italic;color: #aeacac;}
 
 md-icon.edit{

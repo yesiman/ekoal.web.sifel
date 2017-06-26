@@ -28,7 +28,8 @@
                     msNavigationService.saveItem('stats', {
                         title : 'STATISTIQUES',
                         group : true,
-                        weight: 2
+                        weight: 2,
+                        state    : 'app.stats_prevs',
                     });
                     msNavigationService.saveItem('stats.prevs', {
                         title : 'Prévisions',
@@ -49,6 +50,7 @@
                         msNavigationService.saveItem('opes', {
                             title : 'OP',
                             group : true,
+                            state    : 'app.opes_list',
                             weight: 1
                         });
                         msNavigationService.saveItem('opes.list', {
@@ -72,7 +74,8 @@
                         msNavigationService.saveItem('planifs', {
                             title : 'PLANIFICATIONS',
                             group : true,
-                            weight: 2
+                            weight: 2,
+                            state    : 'app.planifs_list',
                         });
                         
                         msNavigationService.saveItem('planifs.list', {
@@ -97,7 +100,8 @@
                         msNavigationService.saveItem('produits', {
                             title : 'PRODUITS',
                             group : true,
-                            weight: 1
+                            weight: 1,
+                            state    : 'app.produits_list',
                         });
                         msNavigationService.saveItem('produits.list', {
                             title : 'Liste',
@@ -116,6 +120,7 @@
                             title : 'Groupes',
                             icon  : 'icon-group',
                             group : true,
+                            state    : 'app.produits_groups_list',
                             weight: 1
                         });
                         msNavigationService.saveItem('produits.groups.list', {
@@ -128,6 +133,26 @@
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
                             state    : 'app.produits_groups_edit',
+                            stateParams: {id:-1},
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.calibres', {
+                            title : 'Calibres',
+                            icon  : 'icon-arrange-send-to-back',
+                            group : true,
+                            state    : 'app.produits_calibres_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.calibres.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.produits_calibres_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.calibres.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.produits_calibres_edit',
                             stateParams: {id:-1},
                             weight: 1
                         });
@@ -146,6 +171,7 @@
                             title : 'UTILISATEURS',
                             group : true,
                             weight: 1,
+                            state    : 'app.users_list',
                             hidden: function()
                             {
                                 return ($rootScope.user.type > 3);
@@ -196,8 +222,11 @@
                         msNavigationService.deleteItem('users.groups.list'); 
                         msNavigationService.deleteItem('users.groups.new'); 
                     }
-                    msNavigationService.saveItem('agreage', {
-                            title : 'AGREAGE',
+                    //AGREAGE
+                    if ($rootScope.user.type < 4 && !($rootScope.user.type == 1))
+                    {
+                        msNavigationService.saveItem('agreage', {
+                            title : 'AGREAGE (TEST)',
                             group : true,
                             weight: 4
                         });
@@ -240,6 +269,17 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                    }
+                    else {
+                        msNavigationService.deleteItem('agreage');
+                        msNavigationService.deleteItem('agreage.stations'); 
+                        msNavigationService.deleteItem('agreage.stations.list'); 
+                        msNavigationService.deleteItem('agreage.stations.new'); 
+                        msNavigationService.deleteItem('agreage.bons'); 
+                        msNavigationService.deleteItem('agreage.bons.list'); 
+                        msNavigationService.deleteItem('agreage.bons.new'); 
+                    }
+                    
                 }
             };
             return service;

@@ -22,9 +22,8 @@
             totalItems: 0,
             sort: null
         };
-        var customBts = '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showStats(row.entity)"><md-tooltip>Prévisions</md-tooltip><md-icon class="prevs" md-font-icon="icon-chart-line"></md-icon></md-button>';
                     
-        var actionsHtml = standardizer.getHtmlActions(customBts);
+        var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
                 { field: 'lib', displayName: 'Libellé' },

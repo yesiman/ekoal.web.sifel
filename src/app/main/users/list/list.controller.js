@@ -7,7 +7,7 @@
         .controller('UsersListController',UsersListController);
 
     /** @ngInject */
-    function UsersListController($scope,$state, api,$rootScope,$mdDialog,standardizer)
+    function UsersListController($scope,$state, api,$rootScope,$mdDialog,standardizer,$http)
     {
         var vm = this;
         $scope.head = {
@@ -94,8 +94,9 @@
         {
             $scope.gridOptions.columnDefs.push({ field: 'codeAdh', displayName: 'Code adhérent' });
         }
-        $scope.gridOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
-        
+
+        $scope.gridOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"  ng-mouseover="rowStyle={\'background-color\': \'#dcedc8\',\'cursor\': \'pointer\'};grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}"><div  ng-style="rowStyle" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"  ng-click="grid.appScope.edit(row.entity._id, col.colDef)" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+         
         $scope.gridOptions.columnDefs.push({ field: 'name', displayName: 'Nom' });
         $scope.gridOptions.columnDefs.push({ field: 'surn', displayName: 'Prénom' });
         $scope.gridOptions.columnDefs.push({ field: 'type', displayName: 'Type', cellTemplate:typeHtml });
@@ -159,7 +160,36 @@
         $scope.add = function() {
             $state.go("app.users_edit", { id:-1 });
         };
-        $scope.edit = function(id) {
+        $scope.import = function(element) {
+            var file = element.files[0];
+            console.log("file",file);
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("https://sifel-srv.herokuapp.com/importer/producteurs/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+            console.log("success!!");
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        };
+        $scope.export = function() {
+            alert("export");
+        };
+        $scope.edit = function(id, col) {
+            console.log("col",col);
+            if(col)
+            {
+                if (col.name == "actions")
+                {
+                    return;
+                }
+            }
             $state.go("app.users_edit", { id:id });
         };
         $scope.remove = function(id,ev) {

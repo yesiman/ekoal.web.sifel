@@ -114,6 +114,7 @@
                 //getPage();
             });
             gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                $scope.paginationOptions.pageSize = pageSize;
                 $scope.loadPageAction(newPage);
                 //paginationOptions.pageNumber = newPage;
                 //paginationOptions.pageSize = pageSize;
@@ -249,6 +250,29 @@
                 }
             );
             $mdDialog.hide();
+        }
+
+        vm.removeProduit = function(it) {
+            for (var i = 0;i< vm.filters.produits.selectedItems.length;i++)
+            {
+                if (vm.filters.produits.selectedItems[i]._id == it)
+                {
+                    vm.filters.produits.selectedItems.splice(i,1);
+                    break;
+                }
+            }
+            $scope.loadPageAction(1);
+        }
+        vm.removeProducteur = function(it) {
+            for (var i = 0;i< vm.filters.producteurs.selectedItems.length;i++)
+            {
+                if (vm.filters.producteurs.selectedItems[i]._id == it)
+                {
+                    vm.filters.producteurs.selectedItems.splice(i,1);
+                    break;
+                }
+            }
+            $scope.loadPageAction(1);
         }
 
         vm.groupDupDec = function(mode,ev)

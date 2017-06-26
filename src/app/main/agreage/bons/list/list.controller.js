@@ -38,7 +38,7 @@
         }
         // Methods
         $scope.loadPage = function() {
-            api.orgas.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
+            api.bons.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
                 // Success
                 function (response)
                 {

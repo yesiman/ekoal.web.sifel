@@ -27,6 +27,10 @@
                 {
                     return apiResolver.resolve('orgas.getAll@get', {pid:1,nbp:1000});
                 },
+                stationsResolv: function (apiResolver)
+                {
+                    return apiResolver.resolve('stations.getAll@get', {pid:1,nbp:1000});
+                },
                 userResolv: function (apiResolver,$stateParams)
                 {
                     if ($stateParams.id && ($stateParams.id != -1))
@@ -36,7 +40,6 @@
                     else {
                         return {};
                     }
-                    
                 }
             }
         });
