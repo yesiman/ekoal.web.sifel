@@ -115,7 +115,7 @@
         $scope.current =  {userForm : {}};
         $scope.head = {
             ico:"icon-account-box",
-            title:"Mise à jour groupe produit"
+            title:"Mise à jour groupe producteur"
         };
         vm.id = $stateParams.id;
         $scope.valid = function(){

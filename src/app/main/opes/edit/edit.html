@@ -6,36 +6,51 @@
     </div>
     <!-- / HEADER -->
     <!-- CONTENT -->
-    <div class="content" md-background-bg layout="row" layout-align="start start">
-        <!-- SIDENAV -->
-        
-        <!-- / SIDENAV -->
-        <div class="main scrollable"  ms-scroll>
-        
-            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-  <div style="width:100%;">
-      <form name="current.userForm">
-
-        <div layout-gt-sm="row">
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Libellé</label>
-            <input required ng-model="item.lib">
-          </md-input-container>
-        </div>
-        <div layout-gt-sm="row">
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Decription</label>
-            <textarea ng-model="item.desc" rows="5"></textarea>
-          </md-input-container>
-        </div>
-        
+    <div class="content" md-background-bg layout="row" layout-align="start start">    
+      <form name="current.userForm"  ng-submit="valid()" layout-fill  autocomplete="off">
+        <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+          <md-tab layout-fill label="Informations principales">
+            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
+              <div style="width:100%;">          
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-inline" flex-gt-sm>
+                    <label>code</label>
+                    <input type="text" ng-model="item.code">
+                  </md-input-container>
+                  <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Libellé</label>
+                    <input required type="text" ng-model="item.lib">
+                  </md-input-container>  
+                </div>
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Decription</label>
+                    <textarea ng-model="item.desc" rows="5"></textarea>
+                  </md-input-container>
+                </div>
+              </div>
+            </md-tab-content>
+          </md-tab>
+          <md-tab layout-fill label="Notifications">
+            <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
+              <div style="width:100%;">     
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Anomalie SMS planification</label>
+                    <input type="text" placeholder="mail1@mail.mail;mail2@mail.mail;" ng-model="item.notifs.sms_planif_ano">
+                  </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Réception nouveau bon</label>
+                    <input type="text" ng-model="item.notifs.bon_new">
+                  </md-input-container>
+                </div>
+              </div>
+            </md-tab-content>
+          </md-tab>
+        </md-tabs>
       </form>
-    </div>
-  </md-content>
-
-  
-</div>
-        </div>
+  </div>
     <!-- / CONTENT -->
-
 </div>

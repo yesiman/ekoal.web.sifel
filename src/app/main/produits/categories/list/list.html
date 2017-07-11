@@ -1,0 +1,31 @@
+<div id="listCategories" class="page-layout simple left-sidenav inner-sidenav">
+
+            
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+        <div form-head-ico-title layout="row" layout-align="start center"></div> 
+        <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
+    </div>
+    <!-- / HEADER -->
+    <div class="content" md-background-bg layout="row"  ms-scroll>
+        <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
+                    ms-sidenav-helper>
+            <md-content class="content" ms-scroll>
+                <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">Filtre texte</md-subheader>
+                    <md-list-item>
+                        <input type="text" ng-model="filters.text" placeholder="Premiers charactères..."/>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <md-content class="content" layout="column" flex style="overflow:hidden;">   
+            <div id="grid1"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridOptions"  class="grid"></div>
+        </md-content> 
+    </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

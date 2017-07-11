@@ -15,16 +15,16 @@
                                     <div layout-gt-sm="row">
                                         <md-input-container class="md-inline formDateInput" flex>
                                             <h4>Date document</h4>
-                                            <md-datepicker ng-change="vm.ruleChanged()" ng-model="item.datePlant"></md-datepicker>
+                                            <md-datepicker ng-model="item.dateDoc"></md-datepicker>
                                         </md-input-container>
                                         <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
                                             <label>Type</label>
                                             <md-select  required ng-model="item.type" style="min-width:200px;">
                                                 <md-option><em>None</em></md-option>
-                                                <md-option ng-value="1">
+                                                <md-option ng-value="export">
                                                     Local
                                                 </md-option>
-                                                <md-option ng-value="2">
+                                                <md-option ng-value="local">
                                                     Export
                                                 </md-option>
                                             </md-select>
@@ -84,19 +84,26 @@
                 <md-tab label="produits" layout-fill>
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                            <div style="display:block;">
-                                <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
-                                    <md-tooltip>Nouvelle ligne</md-tooltip>
+                            <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="gridProduits"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab label="Documents" layout-fill>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div id="exportthis">
+
+    </div>
+                            <md-button class="md-button md-primary" ng-click="doReport(1)">
+                                <md-tooltip>Nouvelle ligne</md-tooltip>
                                 <md-icon md-font-icon="icon-plus"></md-icon>
-                                </md-button>
-                                <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
-                                    <md-option ng-repeat="r in vm.rules" ng-value="r._id">
-                                        {{r.lib}}
-                                    </md-option>
-                                </md-select>
-                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
-                                </div>
-                            <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
+                                Bon d'apport
+                            </md-button>
+                            <md-button class="md-button md-primary" ng-click="doReport(1)">
+                                <md-tooltip>Nouvelle ligne</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                Bon de livraison
+                            </md-button>
                         </md-content>
                     </md-tab-body>
                 </md-tab>

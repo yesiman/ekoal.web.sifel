@@ -7,13 +7,67 @@
         .controller('DashboardServerController', DashboardServerController);
 
     /** @ngInject */
-    function DashboardServerController($scope, $interval, DashboardData, api,$http)
+    function DashboardServerController($scope, $interval, DashboardData, api,$http,$sce)
     {
         var vm = this;
 
         // Data
         vm.dashboardData = DashboardData;
         vm.chat = [];
+ 
+        var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.id = "googleMaps";
+                script.src = 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAKuOtLqUR5I6LaqCMNADzppolXaH8w2JE&libraries=geometry&callback=mapInit';
+
+                //script.src = 'http://maps.google.com/maps/api/js?key=AIzaSyAKuOtLqUR5I6LaqCMNADzppolXaH8w2JE&libraries=geometry&callback=mapInit';
+
+                document.body.appendChild(script);
+            //}
+            //else {
+                //$scope.mapInit();
+                //$scope.drawParc();
+            //}
+            window.mapInit = function () {
+                var map = new google.maps.Map(document.getElementById('map'), {center: {lat: -34.397, lng: 150.644},zoom: 8});
+            
+            var bounds = new google.maps.LatLngBounds();
+            api.users.getParcellesGeo.get({},
+                    function (response)
+                    {
+                        for (var i = 0;i< response.items.length;i++)
+                        {
+                            var triangleCoords = [];
+                            if (response.items[i].coordonnees)
+                            {
+                                angular.forEach(response.items[i].coordonnees.coordinates, function(value) {
+                                    triangleCoords.push({ lat: value[1], lng: value[0] });
+                                    console.log(value[1] + ":",value[0])
+                                    bounds.extend(new google.maps.LatLng(value[1], value[0]));
+                                });
+                                var parcelleDraw = new google.maps.Polygon({
+                                    paths: triangleCoords,
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 2,
+                                    fillColor: '#FF0000',
+                                    fillOpacity: 0.35
+                                });
+                                parcelleDraw.setMap(map);
+                                map.fitBounds(bounds);
+                            }
+                        }
+                        console.log(response.count);
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        //return null;
+                    }
+                );
+            };
+
 
 
         var socket = io.connect('http://sifel-srv.herokuapp.com');

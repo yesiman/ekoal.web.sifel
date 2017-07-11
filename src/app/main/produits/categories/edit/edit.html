@@ -1,0 +1,64 @@
+<div id="prodcategoriesdit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+      
+       <form name="current.userForm"  ng-submit="valid()" layout-fill  autocomplete="off">
+          <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+            <md-tab layout-fill label="Informations principales">
+              <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
+                <div style="width:100%;">
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Libellé</label>
+                        <input required ng-model="vm.item.lib">
+                      </md-input-container>
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Code</label>
+                        <input required type="text" ng-model="vm.item.code">
+                      </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Decription</label>
+                        <textarea ng-model="vm.item.desc" rows="5"></textarea>
+                      </md-input-container>
+                    </div>
+                </div>
+              </md-tab-content>
+            </md-tab>
+            <md-tab label="Produits" layout-fill >
+            <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;height:40px;">         
+                    <input type="text"  ng-model="vm.produitsTxtFilter" style="padding: 15px;" ng-change="vm.reloadProduits()" placeholder="Filtrer..."/>
+                    </div>
+                    <div id="grid2"  ui-grid-pagination layout-fill ui-grid="vm.gridOptions"  class="grid"></div>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+          </md-tabs>
+        </form>
+      </div>
+    </div>
+    <div style="visibility: hidden">
+      <div class="md-dialog-container" id="ParentsDialog">
+        <md-dialog layout-padding>
+          <h2>Pre-Rendered Dialog</h2>
+          <p>
+            This is a pre-rendered dialog, which means that <code>$mdDialog</code> doesn't compile its
+            template on each opening.
+            <br/><br/>
+            The Dialog Element is a static element in the DOM, which is just visually hidden.<br/>
+            Once the dialog opens, we just fetch the element from the DOM into our dialog and upon close
+            we restore the element back into its old DOM position.
+          </p>
+        </md-dialog>
+      </div>
+    </div>
+</div>

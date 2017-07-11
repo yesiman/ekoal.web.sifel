@@ -182,7 +182,6 @@
             alert("export");
         };
         $scope.edit = function(id, col) {
-            console.log("col",col);
             if(col)
             {
                 if (col.name == "actions")

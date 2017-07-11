@@ -56,33 +56,26 @@
                         </md-option>
                         </md-select>
                     </md-input-container>
-                <md-input-container  ng-if="item.type >= 2" class="md-inline" flex-gt-sm>
-                    <label>Organisation de producteurs</label>
-                    <md-select ng-disabled="($root.user.type > 1) || (vm.profil)" required ng-model="item.orga" style="min-width:200px;">
-                    <md-option ng-repeat="o in orgas" ng-value="o._id">
-                        {{o.lib}}
-                    </md-option>
-                    </md-select>
-                </md-input-container>
+                    <md-input-container  ng-if="item.type >= 2" class="md-inline" flex-gt-sm>
+                        <label>Organisation de producteurs</label>
+                        <md-select ng-disabled="($root.user.type > 1) || (vm.profil)" required ng-model="item.orga" style="min-width:200px;">
+                        <md-option ng-repeat="o in orgas" ng-value="o._id">
+                            {{o.lib}}
+                        </md-option>
+                        </md-select>
+                    </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Nom</label>
-                    <input required ng-model="item.name">
+                        <label>Nom</label>
+                        <input required ng-model="item.name">
                     </md-input-container>
 
                     <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Prénom</label>
-                    <input ng-model="item.surn">
+                        <label>Prénom</label>
+                        <input ng-model="item.surn">
                     </md-input-container>
                 </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Adresse</label>
-                    <input required ng-model="item.adresse">
-                    </md-input-container>
-                </div>
-                
                 <div layout-gt-sm="row" ng-if="item.type == 4" >
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Code Adhérent</label>
@@ -98,6 +91,24 @@
                     </md-select>
                 </md-input-container>
                 </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <label>Adresse</label>
+                    <input ng-model="item.adresse">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Code Postal</label>
+                        <input ng-model="item.adresse_cp">
+                    </md-input-container>
+
+                    <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Ville</label>
+                        <input ng-model="item.adresse_ville">
+                    </md-input-container>
+                </div>
+                
                 <div layout-gt-sm="row">
                     <md-input-container class="md-inline" flex-gt-sm>
                     <label>Email</label>
@@ -126,6 +137,11 @@
                             {{o.code}} - {{o.lib}}
                         </md-option>    
                         </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-inline" flex-gt-sm>
+                    <md-checkbox ng-model="item.tva" aria-label="Soumis à TVA">
+                        Soumis à TVA
+                    </md-checkbox>
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
@@ -162,6 +178,16 @@
             -->
             </md-tab-body>
         </md-tab>
+        <md-tab  layout-fill ng-if="(item.type == 4) && (profil == false)">
+            <md-tab-label>
+                <span style="margin-right:25px;">Parcelles GEO</span>
+            </md-tab-label>
+            <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                    <div id="map" style="width:100%;height:500px;">
+                </md-content>
+            </md-tab-body>
+        </md-tab>
         <md-tab label="Producteurs" layout-fill  ng-if="(item.type == 3) && (profil == false)" >
             <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                 <md-content flex layout-fill layout="column" style="overflow:hidden;">
@@ -186,7 +212,7 @@
     </md-tabs>
 </form></div>
 
-        
-    <!-- / CONTENT -->
+    
+    
 
 </div>

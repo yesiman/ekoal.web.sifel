@@ -22,6 +22,17 @@
                 }
             },
             resolve  : {
+                bonResolv: function (apiResolver,$stateParams)
+                {
+                    if ($stateParams.id && ($stateParams.id != -1))
+                    {
+                         return apiResolver.resolve('bons.get@get', {'id': $stateParams.id });
+                    }
+                    else {
+                        return {};
+                    }
+                   
+                },
                 stationsResolv: function (apiResolver)
                 {
                     return apiResolver.resolve('stations.getAll@get', {pid:1,nbp:1000});

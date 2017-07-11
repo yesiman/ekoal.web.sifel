@@ -25,18 +25,6 @@
                 {
 
                     
-                    msNavigationService.saveItem('stats', {
-                        title : 'STATISTIQUES',
-                        group : true,
-                        weight: 2,
-                        state    : 'app.stats_prevs',
-                    });
-                    msNavigationService.saveItem('stats.prevs', {
-                        title : 'Prévisions',
-                        icon  : 'icon-view-list',
-                        state    : 'app.stats_prevs',
-                        weight: 2
-                    });
 
                     msNavigationService.saveItem('dash', {
                         title : 'TABLEAU DE BOARD',
@@ -90,6 +78,12 @@
                             state    : 'app.planifs_edit',
                             weight: 2
                         });
+                        msNavigationService.saveItem('planifs.stats', {
+                            title : 'Statistiques',
+                            icon  : 'icon-chart-line',
+                            state    : 'app.stats_prevs',
+                            weight: 2
+                        });
                         msNavigationService.deleteItem('opes');
                         msNavigationService.deleteItem('opes.list'); 
                         msNavigationService.deleteItem('opes.new');
@@ -136,23 +130,43 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
-                        msNavigationService.saveItem('produits.calibres', {
-                            title : 'Calibres',
+                        msNavigationService.saveItem('produits.categories', {
+                            title : 'Catégories',
                             icon  : 'icon-arrange-send-to-back',
                             group : true,
-                            state    : 'app.produits_calibres_list',
+                            state    : 'app.produits_categories_list',
                             weight: 1
                         });
-                        msNavigationService.saveItem('produits.calibres.list', {
+                        msNavigationService.saveItem('produits.categories.list', {
                             title : 'Liste',
                             icon  : 'icon-view-list',
-                            state    : 'app.produits_calibres_list',
+                            state    : 'app.produits_categories_list',
                             weight: 1
                         });
-                        msNavigationService.saveItem('produits.calibres.new', {
+                        msNavigationService.saveItem('produits.categories.new', {
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
-                            state    : 'app.produits_calibres_edit',
+                            state    : 'app.produits_categories_edit',
+                            stateParams: {id:-1},
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.conditionnements', {
+                            title : 'Conditionnements',
+                            icon  : 'icon-cube-outline',
+                            group : true,
+                            state    : 'app.produits_condit_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.conditionnements.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.produits_condit_list',
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('produits.conditionnements.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.produits_condit_edit',
                             stateParams: {id:-1},
                             weight: 1
                         });
@@ -213,6 +227,7 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                        
                     }
                     else {
                         msNavigationService.deleteItem('users');
@@ -252,7 +267,7 @@
                         //
                         msNavigationService.saveItem('agreage.bons', {
                             title : 'Bons',
-                            icon  : 'icon-cube-outline',
+                            icon  : 'icon-file-hidden',
                             state    : 'app.bons_list',
                             weight: 1
                         });
@@ -269,6 +284,49 @@
                             stateParams: {id:-1},
                             weight: 1
                         });
+                        msNavigationService.saveItem('agreage.stats', {
+                            title : 'Statistiques',
+                            icon  : 'icon-chart-line',
+                            state    : 'app.stats_prevs',
+                            weight: 2
+                        });
+                        //
+                        msNavigationService.saveItem('facturation', {
+                            title : 'FACTURATION',
+                            group : true,
+                            weight: 5,
+                            hidden: function()
+                            {
+                                return ($rootScope.user.type > 3);
+                            }
+                        });
+                        msNavigationService.saveItem('facturation.clients', {
+                            title : 'Clients',
+                            icon:'icon-account-outline',
+                            state    : 'app.clients_list',
+                            weight: 1,
+                            hidden: function()
+                            {
+                                return ($rootScope.user.type > 3);
+                            }
+                        });
+                        msNavigationService.saveItem('facturation.clients.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.clients_list',
+                            weight: 1,
+                            hidden: function()
+                            {
+                                return ($rootScope.user.type > 3);
+                            }
+                        });
+                        msNavigationService.saveItem('facturation.clients.new', {
+                            title : 'Nouveau',
+                            icon  : 'icon-plus-circle-outline',
+                            state    : 'app.clients_edit',
+                            stateParams: {id:-1},
+                            weight: 1
+                        });
                     }
                     else {
                         msNavigationService.deleteItem('agreage');
@@ -278,6 +336,11 @@
                         msNavigationService.deleteItem('agreage.bons'); 
                         msNavigationService.deleteItem('agreage.bons.list'); 
                         msNavigationService.deleteItem('agreage.bons.new'); 
+                        msNavigationService.deleteItem('agreage.stats'); 
+                        msNavigationService.deleteItem('facturation');
+                        msNavigationService.deleteItem('facturation.clients');
+                        msNavigationService.deleteItem('facturation.clients.list'); 
+                        msNavigationService.deleteItem('facturation.clients.new'); 
                     }
                     
                 }

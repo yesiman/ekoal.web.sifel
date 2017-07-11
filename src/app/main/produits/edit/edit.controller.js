@@ -13,8 +13,12 @@
         var vm = this;
         
         vm.item = prodResolv;
+        //
         vm.ruleTxtFilter = "";
         vm.rulePsize = 10;
+//
+        vm.conditTxtFilter = "";
+        vm.conditPsize = 10;
 
         var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.addRule($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
@@ -43,6 +47,26 @@
             });
         }
 
+        vm.gridConditsOptions = standardizer.getGridOptionsStd();
+        vm.gridConditsOptions.columnDefs = [
+            { field: 'selected', name: '',cellEditableContition: false, width:"40",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-click="grid.appScope.addProducteur(row.entity._id)" ng-model="row.entity.selected" ng-checked="grid.appScope.isConditForMe(row.entity)" class="md-warn"></md-checkbox></div>' },
+            { field: 'lib', sort:{priority:0}, displayName: 'Libellé' }];   
+               
+        vm.gridConditsOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                vm.conditPsize = pageSize;
+                vm.loadConditsPage(newPage,pageSize);
+            });
+        }
 
         if (vm.item.objectif)
         {
@@ -85,6 +109,25 @@
                 {
                     vm.gridRulesOptions.totalItems = response.count;
                     vm.gridRulesOptions.data = response.items;
+                    $rootScope.loadingProgress = false;
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    $rootScope.loadingProgress = false;
+                }
+            );
+        }
+        vm.loadConditsPage = function (id, psize)
+        {
+            $rootScope.loadingProgress = true;
+            api.productsCondits.getAll.get({ pid:id, nbp:psize } ,
+                // Success
+                function (response)
+                {
+                    vm.gridConditsOptions.totalItems = response.count;
+                    vm.gridConditsOptions.data = response.items;
                     $rootScope.loadingProgress = false;
                 },
                 // Error
@@ -191,6 +234,7 @@
         {
             vm.loadRulesPage(1,10);
         }
+        vm.loadConditsPage(1,10);
     }
 
     /** @ngInject */

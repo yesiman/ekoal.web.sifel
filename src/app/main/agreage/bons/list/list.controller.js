@@ -13,7 +13,8 @@
         // Data
         $scope.head = {
             ico:"icon-account-box",
-            title:"Liste bons d'apports/livraisons"
+            title:"Liste bons d'apports/livraisons",
+            btimport:false
         };
         $scope.paginationOptions = {
             pageNumber: 1,
@@ -26,8 +27,10 @@
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
-                { field: 'lib', displayName: 'Libellé' },
-                { field: 'nbOrgas', displayName: 'Nombre de producteurs' },
+                { field: 'dateDoc', displayName: 'Date' },
+                { field: 'destination', displayName: 'Destination' },
+                { field: 'station', displayName: 'Station' },
+                { field: 'producteur', displayName: 'Producteur' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         
         $scope.loadPageAction = function(id)

@@ -16,6 +16,10 @@
             Actif
           </md-checkbox>
         </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <h4>Code parcelle</h4>
+          <input type="text" ng-model="item.code"></input>
+        </md-input-container>
       </div>
       <div layout-gt-sm="row">
         <md-input-container class="md-inline" flex>
@@ -23,19 +27,21 @@
           <input type="text" ng-model="item.lib"></input>
         </md-input-container>
         <md-input-container class="md-inline" flex>
-          <h4>Surface (hectares)</h4>
-          <input type="number" ng-model="item.surface"></input>
-        </md-input-container>
-      </div>
-      <div layout-gt-sm="row">
-        <md-input-container class="md-inline" flex>
-          <h4>Code parcelle</h4>
-          <input type="text" ng-model="item.code"></input>
-        </md-input-container>
-        <md-input-container class="md-inline" flex>
           <h4>N° cadastral</h4>
           <input type="text" ng-model="item.cadastre"></input>
         </md-input-container>
+        
+      </div>
+      <div layout-gt-sm="row">
+        <md-input-container class="md-inline" flex>
+          <h4>Surface (hectares)</h4>
+          <input type="number" ng-model="item.surface" ng-value="item.surface.replace(',','.') | number:2"></input>
+        </md-input-container>
+        <md-input-container class="md-inline" flex>
+          <h4>Altitude (mètres)</h4>
+          <input type="number" ng-model="item.altitude"  ng-value="item.surface | number:2"></input>
+        </md-input-container>
+        
       </div>
       
       <div layout-gt-sm="row">

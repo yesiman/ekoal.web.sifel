@@ -22,6 +22,7 @@
             templateUrl: 'app/core/directives/fabio-ui/templates/edit-form-heads-buttons/edit-form-heads-buttons.html',
             link: function(scope) {
                 scope.back = function() {
+                    //alert("back validation if no save");
                     window.history.back();
                 }
             }

@@ -1,0 +1,85 @@
+<div id="opeedit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <!-- SIDENAV -->
+        
+        <!-- / SIDENAV -->
+        <div class="main scrollable"  ms-scroll>
+        
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <div style="width:100%;">
+      <form name="current.userForm">
+
+        <div layout-gt-sm="row">  
+            <md-input-container class="md-inline" flex-gt-sm>
+            <md-checkbox ng-model="item.actif" aria-label="Actif">
+                Actif
+            </md-checkbox>
+            </md-input-container>
+            <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                <label>Marché</label>
+                <md-select  required ng-model="item.type" style="min-width:200px;">
+                    <md-option ng-value="1">
+                        Local
+                    </md-option>
+                    <md-option ng-value="2">
+                        Export
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Nom</label>
+                <input required ng-model="item.name">
+            </md-input-container>
+
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Prénom</label>
+                <input ng-model="item.surn">
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Adresse</label>
+                <input ng-model="item.adresse">
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Code Postal</label>
+                <input ng-model="item.adresse_cp">
+            </md-input-container>
+
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Ville</label>
+                <input ng-model="item.adresse_ville">
+            </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row">
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Email</label>
+                <input type="email" ng-model="item.email">
+            </md-input-container>
+            <md-input-container class="md-inline" flex-gt-sm>
+                <label>Téléphone portable</label>
+                <input type="text" ng-model="item.mobPhone">
+            </md-input-container>
+        </div>
+      </form>
+    </div>
+  </md-content>
+
+  
+</div>
+        </div>
+    <!-- / CONTENT -->
+
+</div>

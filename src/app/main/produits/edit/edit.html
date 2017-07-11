@@ -55,17 +55,6 @@
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>
                       </md-input-container>
-                      <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
-                        <label>Gabarit calibre</label>
-                        <md-select  ng-disabled="(vm.profil == true)" required ng-model="item.type" style="min-width:200px;">
-                        <md-option ng-value="4">
-                            Producteur
-                        </md-option>
-                        <md-option ng-value="5">
-                            Commercial
-                        </md-option>
-                        </md-select>
-                      </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-inline" flex-gt-sm>
@@ -102,6 +91,20 @@
                     </objectif-line>
                 </div>
               </md-tab-content>
+            </md-tab>
+
+            <md-tab layout-fill  ng-if="vm.item._id" >
+              <md-tab-label>
+                <span style="margin-right:25px;">Conditionnements</span>  
+              </md-tab-label>
+              <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                  <div style="display:block;">
+                    <input type="text" ng-model="vm.ruleTxtFilter" ng-change="vm.loadRulesPage(1,vm.rulePsize)" placeholder="Filtrer..."/>
+                  </div>
+                  <div id="gridCondits"  style="display:block;" ui-grid-pagination layout-fill ui-grid="vm.gridConditsOptions"  class="grid"></div>
+                </md-content>
+              </md-tab-body>
             </md-tab>
           </md-tabs>
         </form>

@@ -32,6 +32,7 @@
                     { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
                     { field: 'qte.val', displayName: 'Quantité', cellTemplate:qteHtml },
                     { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];
+                    //
                 scope.getGoodQte = function(el) {
                     return standardizer.getPoidsInAskVal(el.qte,scope.filters.unitMode);
                 }
@@ -91,7 +92,7 @@
                     $mdDialog.hide();
                 }
                 // MAJ PLANIF
-                var mdDialogCtrl = function (scope, item,onCancel,onValid) { 
+                var mdDialogPlCtrl = function (scope, item,onCancel,onValid) { 
                     scope.dialog = { 
                         weeks:[],
                         years:[]
@@ -127,7 +128,7 @@
                         parent: angular.element(document.body),
                         targetEvent: ev,
                         locals: locals,
-                        controller: mdDialogCtrl,
+                        controller: mdDialogPlCtrl,
                         controllerAs: 'ctrl',
                         clickOutsideToClose:true,
                         fullscreen: true // Only for -xs, -sm breakpoints.
@@ -140,10 +141,10 @@
                 }
                 //
                 //PERCENT DEFALQ
-                var mdDialogCtrl = function (scope,onCancel,onValid) { 
+                var mdDialogPcCtrl = function (scope,onCancel,onValid) { 
                     scope.percent=0;
                     scope.onCancel = onCancel;
-                    scope.onValid = onValid;   
+                    scope.onValid = onValid;
                 }
 
                 scope.closeMe = function()
@@ -151,7 +152,7 @@
                     $mdDialog.hide();
                 }
                 //VALI NB JOURS POPUP
-                scope.validLine = function(val,mode)
+                scope.validPercent = function(val,mode)
                 {    
 
                     var args = { prodsIds:scope.getProdsIds(),dateFrom:scope.filters.dateFrom,
@@ -174,13 +175,13 @@
 
                 scope.showPopPercent = function(ev)
                 {
-                    var locals = {onCancel: scope.closeMe, onValid: scope.validLine };
+                    var locals = {onCancel: scope.closeMe, onValid: scope.validPercent };
                     $mdDialog.show({
                         templateUrl: 'app/main/stats/prevs/directives/prevs-by-lines/dialogs/percent.html',
                         parent: angular.element(document.body),
                         targetEvent: ev,
                         locals: locals,
-                        controller: mdDialogCtrl,
+                        controller: mdDialogPcCtrl,
                         controllerAs: 'ctrl',
                         clickOutsideToClose:true,
                         fullscreen: true // Only for -xs, -sm breakpoints.

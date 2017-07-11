@@ -25,6 +25,7 @@
             'app.stations', 
             'app.bons',
             'app.opes',
+            'app.clients',
             'app.dashboards.server'
         ]);
 })();

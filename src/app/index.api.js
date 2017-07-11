@@ -221,6 +221,11 @@
                     method: 'POST'
                 }
             }),
+            getParcellesGeo: $resource(api.baseUrl + 'users/getParcellesGeo/', {} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             delete: $resource(api.baseUrl + 'users/delete/:id', {id:'@id'} , {
                 delete: {
                     method: 'DELETE'
@@ -283,6 +288,75 @@
                 }
             }),
             getAll: $resource(api.baseUrl + 'orgas/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
+        // ORGAS
+        api.clients = {
+            add: $resource(api.baseUrl + 'clients/add/:id', {id:'@id',client:'@client'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'clients/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'clients/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'clients/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
+        // ORGAS
+        api.productsCategories = {
+            add: $resource(api.baseUrl + 'productsCategs/add/:id', {id:'@id',categ:'@categ'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'productsCategs/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'productsCategs/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'productsCategs/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
+                get: {
+                    method: 'GET'
+                }
+            })
+        }
+        // ORGAS
+        api.productsCondits = {
+            add: $resource(api.baseUrl + 'productsCondits/add/:id', {id:'@id',condit:'@condit'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'productsCondits/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'productsCondits/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'productsCondits/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
                 get: {
                     method: 'GET'
                 }

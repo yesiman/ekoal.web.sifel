@@ -1,0 +1,55 @@
+<div id="conditedit" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <!-- SIDENAV -->
+        
+        <!-- / SIDENAV -->
+        <div class="main scrollable"  ms-scroll>
+        
+            <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+  <div style="width:100%;">
+      <form name="current.userForm">
+
+        <div  layout-gt-md="row" layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Code</label>
+            <input required type="text" ng-model="item.code">
+          </md-input-container>
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Libellé</label>
+            <input required type="text" ng-model="item.lib">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Poid (kilos)</label>
+            <input required type="number" ng-model="item.poid">
+          </md-input-container>
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Nombre sous éléments</label>
+            <input required type="number" ng-model="item.nbColis">
+          </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+          <md-input-container class="md-inline" flex-gt-sm>
+            <label>Decription</label>
+            <textarea ng-model="item.desc" rows="5"></textarea>
+          </md-input-container>
+        </div>
+        
+      </form>
+    </div>
+  </md-content>
+
+  
+</div>
+        </div>
+    <!-- / CONTENT -->
+
+</div>

@@ -13,7 +13,7 @@
         
         var vm = this;
 
-
+        
 
         // Data
         //vm.products = Products.data;
@@ -34,14 +34,17 @@
         actionsHtml += '</div>';
         vm.gridParcsOptions = standardizer.getGridOptionsStd();
 
-        vm.gridParcsOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
-  
-         
+        
 
+         
+        vm.gridParcsOptions.rowTemplate='<div ng-class="{\'italicRow\':(!row.entity.actif) }"  ng-mouseover="rowStyle={\'background-color\': \'#dcedc8\',\'cursor\': \'pointer\'};grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}"><div  ng-style="rowStyle" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"  ng-click="grid.appScope.editParc(row.entity,$event, col.colDef)" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+        
         vm.gridParcsOptions.columnDefs = [
             { field: 'lib', sort:{priority:0}, displayName: 'Libellé' },
+            { field: 'cadastre', sort:{priority:0}, displayName: 'Cadastre' },
             { field: 'surface', sort:{priority:0}, displayName: 'Surface (hectares)', cellTemplate:surfaceHtml },
-            { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
+            { field: 'altitude', sort:{priority:0}, displayName: 'Altiutde (mètres)' },
+            { name: 'actions', cellTemplate: actionsHtml, width: "150" }];   
         vm.gridParcsOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -145,9 +148,71 @@
                 );
             }
         }
+        var map;
+            var bounds;
+            
         if ($scope.item.type == 4)
         {
             $scope.getParcelles(1, vm.parcellePsize);
+            
+            //if (!$rootScope.mapInjected) {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.id = "googleMaps";
+                script.src = 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAKuOtLqUR5I6LaqCMNADzppolXaH8w2JE&libraries=geometry&callback=mapInit';
+
+                //script.src = 'http://maps.google.com/maps/api/js?key=AIzaSyAKuOtLqUR5I6LaqCMNADzppolXaH8w2JE&libraries=geometry&callback=mapInit';
+
+                document.body.appendChild(script);
+            //}
+            //else {
+                //$scope.mapInit();
+                //$scope.drawParc();
+            //}
+            window.mapInit = function () {
+                $rootScope.mapInjected = true;
+                map = new google.maps.Map(document.getElementById('map'), {center: {lat: -34.397, lng: 150.644},zoom: 8});
+            
+            bounds = new google.maps.LatLngBounds();
+            api.users.getParcelles.post({ pid:1,nbp:1000,id:$scope.item._id,req:"" },
+                    function (response)
+                    {
+                        for (var i = 0;i< response.items.length;i++)
+                        {
+                            var triangleCoords = [];
+                            if (response.items[i].coordonnees)
+                            {
+                                angular.forEach(response.items[i].coordonnees.coordinates, function(value) {
+                                    triangleCoords.push({ lat: value[1], lng: value[0] });
+                                    console.log(value[1] + ":",value[0])
+                                    bounds.extend(new google.maps.LatLng(value[1], value[0]));
+                                });
+                                var parcelleDraw = new google.maps.Polygon({
+                                    paths: triangleCoords,
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 2,
+                                    fillColor: '#FF0000',
+                                    fillOpacity: 0.35
+                                });
+                                parcelleDraw.setMap(map);
+                                map.fitBounds(bounds);
+                            }
+                        }
+                        console.log(response.count);
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                        //return null;
+                    }
+                );
+            };
+
+
+            
+            
         }
 
         //vm.gridOptions.totalItems = $scope.item.parcelles.length;
@@ -200,16 +265,19 @@
         }
         $scope.validLine = function(item){
             $rootScope.loadingProgress = true;
+            //Attribution producteur parcelle
             item.producteur = $scope.item._id;
+            //Sauvegarde parcelle
             api.users.addParcelle.post({ id:(item._id?item._id:"-1"), parcelle: item } ,
                 function (response)
                 {
+                    $mdDialog.hide();
                     $scope.getParcelles(1,vm.parcellePsize);
                     $rootScope.loadingProgress = false;
                 },
                 function (response)
                 {
-                    console.error(response);
+                    $mdDialog.hide();
                     $rootScope.loadingProgress = false;
                 }
             );
@@ -217,7 +285,14 @@
             //$scope.getParcelles(newPage,vm.parcellePsize);
             $mdDialog.hide();
         }
-        $scope.editParc = function(i,ev) {
+        $scope.editParc = function(i,ev,col) {
+            if(col)
+            {
+                if (col.name == "actions")
+                {
+                    return;
+                }
+            }
             var locals = {item: i, onCancel: $scope.closeMe, onValid: $scope.validLine };
             $mdDialog.show({
                 templateUrl: 'app/main/users/edit/dialogs/addParc.html',
