@@ -19,176 +19,176 @@
 <form name="current.userForm"   ng-submit="valid()" layout-fill  autocomplete="off">
     <md-tabs  layout-fill flex md-border-bottom  md-selected="$scope.data.selectedIndex">
         <md-tab layout-fill  md-background-bg  >
-
-<md-tab-label>
-   Informations principales
-</md-tab-label>
-
-        <md-tab-body class="inputs" md-background-bg md-theme="docs-dark" ms-scroll>
-            
-            <div style="width:100%;background-color:#ffffff;" layout-padding>
-                <div layout-gt-sm="row">  
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <md-checkbox ng-model="item.actif" aria-label="Actif">
-                        Actif
-                    </md-checkbox>
-                    </md-input-container>
-                </div>
-                <div layout="row"  ng-if="$root.user.type < 4" >
-                    <md-input-container  class="md-input-invalid" ng-if="profil == false" class="md-inline" flex-gt-sm>
-                        <label>Type</label>
-                        <md-select  ng-disabled="(vm.profil == true)" required ng-model="item.type" style="min-width:200px;">
-                        <md-option><em>None</em></md-option>
-                        <md-option ng-value="1" ng-if="$root.user.type == 1">
-                            Administrateur
-                        </md-option>
-                        <md-option ng-value="2" ng-if="$root.user.type < 2">
-                            Administrateur OP
-                        </md-option>
-                        <md-option ng-value="3" ng-if="$root.user.type < 3">
-                            Technicien
-                        </md-option>
-                        <md-option ng-value="4">
-                            Producteur
-                        </md-option>
-                        <md-option ng-value="5">
-                            Commercial
-                        </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container  ng-if="item.type >= 2" class="md-inline" flex-gt-sm>
-                        <label>Organisation de producteurs</label>
-                        <md-select ng-disabled="($root.user.type > 1) || (vm.profil)" required ng-model="item.orga" style="min-width:200px;">
-                        <md-option ng-repeat="o in orgas" ng-value="o._id">
-                            {{o.lib}}
-                        </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Nom</label>
-                        <input required ng-model="item.name">
-                    </md-input-container>
-
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Prénom</label>
-                        <input ng-model="item.surn">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row" ng-if="item.type == 4" >
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Code Adhérent</label>
-                    <input ng-model="item.codeAdh">
-                    </md-input-container>
-                    <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
-                    <label>Certification</label>
-                    <md-select ng-model="item.certif" style="min-width:200px;">
-                        <md-option ng-value="0">Aucun</md-option>
-                        <md-option ng-value="1">
-                            Certification Environnementale
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Adresse</label>
-                    <input ng-model="item.adresse">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Code Postal</label>
-                        <input ng-model="item.adresse_cp">
-                    </md-input-container>
-
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Ville</label>
-                        <input ng-model="item.adresse_ville">
-                    </md-input-container>
-                </div>
+            <md-tab-label>
+                Informations principales
+            </md-tab-label>
+            <md-tab-body class="inputs" md-background-bg md-theme="docs-dark" ms-scroll>
                 
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Email</label>
-                    <input type="email" ng-model="item.email">
-                    </md-input-container>
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Téléphone portable</label>
-                        <input type="text" ng-model="item.mobPhone">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                     <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Login</label>
-                    <input type="text" required ng-model="item.login">
-                    </md-input-container>
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Mot de passe</label>
-                    <input type="text" required ng-model="item.pass">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row" ng-if="item.type == 4" >
-                    <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Station d'agréage</label>
-                        <md-select ng-model="item.station" style="min-width:200px;">
-                        <md-option ng-repeat="o in stations" ng-value="o._id">
-                            {{o.code}} - {{o.lib}}
-                        </md-option>    
+                <div style="width:100%;background-color:#ffffff;" layout-padding>
+                    <div layout-gt-sm="row">  
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <md-checkbox ng-model="item.actif" aria-label="Actif">
+                            Actif
+                        </md-checkbox>
+                        </md-input-container>
+                    </div>
+                    <div layout="row"  ng-if="$root.user.type < 4" >
+                        <md-input-container  class="md-input-invalid" ng-if="vm.profil == false" class="md-block" flex-gt-sm>
+                            <label>Type</label>
+                            <md-select  ng-disabled="(vm.profil == true)" required ng-model="item.type" style="min-width:200px;">
+                            <md-option><em>None</em></md-option>
+                            <md-option ng-value="1" ng-if="$root.user.type == 1">
+                                Administrateur
+                            </md-option>
+                            <md-option ng-value="2" ng-if="$root.user.type < 2">
+                                Administrateur OP
+                            </md-option>
+                            <md-option ng-value="3" ng-if="$root.user.type < 3">
+                                Technicien
+                            </md-option>
+                            <md-option ng-value="4">
+                                Producteur
+                            </md-option>
+                            <md-option ng-value="5">
+                                Commercial
+                            </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container  ng-if="item.type >= 2" class="md-block" flex-gt-sm>
+                            <label>Organisation de producteurs</label>
+                            <md-select ng-disabled="($root.user.type > 1) || (vm.profil)" required ng-model="item.orga" style="min-width:200px;">
+                            <md-option ng-repeat="o in orgas" ng-value="o._id">
+                                {{o.lib}}
+                            </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Nom</label>
+                            <input required ng-model="item.name">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Prénom</label>
+                            <input ng-model="item.surn">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row" ng-if="item.type == 4" >
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Code Adhérent</label>
+                        <input ng-model="item.codeAdh">
+                        </md-input-container>
+                        <md-input-container  class="md-input-invalid" class="md-block" flex-gt-sm>
+                        <label>Certification</label>
+                        <md-select ng-model="item.certif" style="min-width:200px;">
+                            <md-option ng-value="0">Aucun</md-option>
+                            <md-option ng-value="1">
+                                Certification Environnementale
+                            </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <md-checkbox ng-model="item.tva" aria-label="Soumis à TVA">
-                        Soumis à TVA
-                    </md-checkbox>
-                    </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Adresse</label>
+                        <input ng-model="item.adresse">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Code Postal</label>
+                            <input ng-model="item.adresse_cp">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Ville</label>
+                            <input ng-model="item.adresse_ville">
+                        </md-input-container>
+                    </div>
+                    
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Email</label>
+                        <input type="email" ng-model="item.email">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Téléphone portable</label>
+                            <input type="text" ng-model="item.mobPhone">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Login</label>
+                        <input type="text" required ng-model="item.login">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Mot de passe</label>
+                        <input type="text" required ng-model="item.pass">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row" ng-if="item.type == 4" >
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Station d'agréage</label>
+                            <md-select ng-model="item.station" style="min-width:200px;">
+                            <md-option ng-repeat="o in stations" ng-value="o._id">
+                                {{o.code}} - {{o.lib}}
+                            </md-option>    
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <md-checkbox ng-model="item.tva" aria-label="Soumis à TVA">
+                            Soumis à TVA
+                        </md-checkbox>
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                        <label>Decription</label>
+                        <textarea ng-model="item.desc" rows="5"></textarea>
+                        </md-input-container>
+                    </div>
+                    
                 </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-inline" flex-gt-sm>
-                    <label>Decription</label>
-                    <textarea ng-model="item.desc" rows="5"></textarea>
-                    </md-input-container>
-                </div>
-                
-            </div>
-        </md-tab-body>
+            </md-tab-body>
         </md-tab>
         <!---->
-        <md-tab  layout-fill ng-if="(item.type == 4) && (profil == false)">
+        <md-tab  layout-fill ng-if="(item.type == 4) && (vm.profil == false)">
             <md-tab-label>
                 <span style="margin-right:25px;">Parcelles</span>
                 <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{vm.gridParcsOptions.data.length}}</span>   
             </md-tab-label>
-        <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-            <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                  <div style="display:block;">
-                    <md-button class="md-icon-button md-primary" ng-click="addParcelle($event)" aria-label="Settings">
-                      <md-icon md-font-icon="icon-plus"></md-icon>
-                    </md-button>
-
-                    <input type="text"  ng-model="vm.parcelleTxtFilter" ng-change="getParcelles(1,vm.parcellePsize)" placeholder="Filtrer..."/>
-                    
-                  </div>
-                <div id="grid1"  ui-grid-pagination layout-fill ui-grid="vm.gridParcsOptions"  class="grid"></div>
-            </md-content>
-            <!--<md-button class="md-icon-button md-primary" ng-click="addParcelle()" style="position:absolute;z-index:8;" aria-label="Settings">
-                <md-icon md-font-icon="icon-plus"></md-icon>
-            </md-button>
-            -->
-            </md-tab-body>
-        </md-tab>
-        <md-tab  layout-fill ng-if="(item.type == 4) && (profil == false)">
-            <md-tab-label>
-                <span style="margin-right:25px;">Parcelles GEO</span>
-            </md-tab-label>
             <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                 <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                    <div id="map" style="width:100%;height:500px;">
+                    <div style="display:block;">
+                        <md-button class="md-icon-button md-primary" ng-click="addParcelle($event)" aria-label="Settings">
+                        <md-icon md-font-icon="icon-plus"></md-icon>
+                        </md-button>
+
+                        <input type="text"  ng-model="vm.parcelleTxtFilter" ng-change="getParcelles(1,vm.parcellePsize)" placeholder="Filtrer..."/>
+                        
+                    </div>
+                    <div id="grid1"  ui-grid-pagination layout-fill ui-grid="vm.gridParcsOptions"  class="grid"></div>
                 </md-content>
             </md-tab-body>
         </md-tab>
-        <md-tab label="Producteurs" layout-fill  ng-if="(item.type == 3) && (profil == false)" >
+        
+        
+        
+        <md-tab  layout-fill ng-if="(item.type == 4) && (vm.profil == false)">
+            <md-tab-label>
+                <span >Parcelles GEO</span>
+            </md-tab-label>
+            <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                    <div id="map" style="width:100%;height:500px;"/>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+        <md-tab  layout-fill ng-if="(item.type == 3) && (vm.profil == false)">
+            <md-tab-label>
+                <span >Producteurs</span>
+            </md-tab-label>
             <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                 <md-content flex layout-fill layout="column" style="overflow:hidden;">
                   <div style="display:block;height:40px;">         
@@ -199,18 +199,9 @@
                 </md-content>
             </md-tab-body>
         </md-tab>
-        <md-tab label="Paramètres personnels" layout-fill  ng-if="(profil == true)" >
-            <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-                <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                  <div style="display:block;height:40px;">         
-                    <input type="text"  ng-model="vm.producteurTxtFilter" style="padding: 15px;" ng-change="loadProducteurs(1,vm.producteurPsize)" placeholder="Filtrer..."/>
-                    </div>
-                    <div id="grid2"  ui-grid-pagination layout-fill ui-grid="vm.gridProducteursOptions"  class="grid"></div>
-                </md-content>
-            </md-tab-body>
-        </md-tab>
     </md-tabs>
-</form></div>
+</form>
+</div>
 
     
     

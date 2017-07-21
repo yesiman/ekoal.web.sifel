@@ -21,6 +21,7 @@
             'app.users',
             'app.planifs',
             'app.stats',
+            'app.stats.agreag',
             'app.produits',
             'app.stations', 
             'app.bons',

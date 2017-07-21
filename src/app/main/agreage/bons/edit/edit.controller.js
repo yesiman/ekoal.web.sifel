@@ -7,7 +7,7 @@
         .controller('BonsEditController',BonsEditController);
 
     /** @ngInject */
-    function BonsEditController($scope,$state, api,$stateParams,$q,bonResolv,standardizer)
+    function BonsEditController($scope,$state, api,$stateParams,$q,bonResolv,standardizer, reports)
     {
         $scope.current =  {userForm : {}};
         $scope.head = {
@@ -69,157 +69,17 @@
                 }
             );
         }
+
+
         $scope.doReport = function() {
+            reports.ba.make(exportthis,$scope.item);
+
             html2canvas(document.getElementById('exportthis'), {
             onrendered: function (canvas) {
                 var data = canvas.toDataURL();
                 var dd = {
-    pageMargins: [40, 80, 40, 150],
-    footer: function(currentPage, pageCount) { 
-        if (currentPage == pageCount)
-        {
-           return  {
-                table: {
-                    widths: ["1%","32%","1%","32%","1%","32%","1%"],
-                    body: [
-                        [
-                            {
-                                border:[false, false, false, false],
-                                text : "\n"
-                            },
-                            [
-                                {
-                                    text : "Signature Agréeur"
-                                },
-                                { 
-                                    image: $scope.item.signatures.sigTechnicien,
-                                    width:200
-                                }
-                            ],
-                            {
-                                border:[false, false, false, false],
-                                text : "\n"
-                            },
-                           [
-                                {
-                                    text : "Signature Agréeur"
-                                },
-                                { 
-                                    image: $scope.item.signatures.sigTechnicien,
-                                    width:200
-                                }
-                            ],
-                            {
-                                border:[false, false, false, false],
-                                text : "\n"
-                            },
-                            [
-                                {
-                                    text : "Signature Producteur"
-                                },
-                                { 
-                                    image: $scope.item.signatures.sigProducteur,
-                                    width:200
-                                }
-                            ],
-                            {
-                                border:[false, false, false, false],
-                                text : "\n"
-                            }
-                        ]
-                    ]
-                }
-            }
-        }
-         
-    },
-    content: [
-        {
-            table: {
-                
-                widths: ["45%","10%", "45%"],
-                body: [
-                    [
-                        {
-                            border:[false, false, false, false],
-                            text : 'Date:' + $scope.item.dateDoc
-                        },
-                        {
-                            border:[false, false, false, false],
-                            text : ""
-                        },
-                        {
-                            
-                            text : "BON d'APPORT N°"
-                        }
-                    ]
-                ]
-            }
-        },
-        {
-            text : "\n"
-        },
-        {
-            table: {
-                
-                widths: ["45%","10%", "45%"],
-                body: [
-                    [
-                        {
-                            alignment: 'center',
-                            text : [
-                                
-                                { text: "PRODUCTEUR\n\n", fontSize: 15},
-                                { text: "N°" + $scope.item.producteur.codeAdh + "\n"}
-                            ]
-                        },
-                        {
-                            border:[false, false, false, false],
-                            text : ""
-                        },
-                        {
-                            alignment: 'center',
-                            text : [
-                                { text: "SCA Fruits de la Réunion\n", fontSize: 15},
-                                { text: "7, chemin de l'Océan - 97450 Saunt Louis\n"},
-                                { text: "97450 Saint Louis\n"},
-                                { text: "SCA Fruits de la Réunion\n"}
-                            ]
-                        }
-                    ]
-                ]
-            }
-        },
-        {
-            text : "\n"
-        },
-        {
-            table: {
-                
-                widths: ["100%"],
-                body: [
-                    [
-                        {
-                            text : [
-                                { text: "Station de conditionnement: " + $scope.item.station.code }
-                            ]
-                        }  
-                    ]
-                ]
-            }
-        },{
-            text : "\n"
-        },
-        {
-            table: {
-                
-                widths: ["14%","14%","14%","14%","14%","14%","14%"],
-                body: [
-                    ['Pal.', 'Produit', 'Calibre', 'Nbre colis','Poid brut','tare','poid net']
-                ]
-            }
-        }
-    ]
+                pageMargins: [40, 80, 40, 150],
+                footer:reports.ba.getFooter()
 }//pdfMake.createPdf(dd).download("Score_Details.pdf");
                 //var mdocument = pdfMake.createPdf(dd);
                 //var docBlob = null;
@@ -231,7 +91,7 @@
                      //$scope.pdf = $sce.trustAsResourceUrl(result);
                 //});
 
-               pdfMake.createPdf(dd).open();
+               //pdfMake.createPdf(dd).open();
             }
         });
         }

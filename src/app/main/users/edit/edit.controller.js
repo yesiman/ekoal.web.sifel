@@ -19,6 +19,7 @@
         //vm.products = Products.data;
         vm.producteurs;
         vm.profil = $stateParams.profil;
+        
         vm.producteurTxtFilter = "";
         vm.producteurPsize = 10;
 

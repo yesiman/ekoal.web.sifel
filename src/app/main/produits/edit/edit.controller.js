@@ -31,6 +31,8 @@
             { field: 'nbWeek', sort:{priority:0}, displayName: 'Numéro semaine de récolte' },
             { name: 'Actions', cellTemplate: actionsHtml, width: "150" }];   
                
+
+        
         vm.gridRulesOptions.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {

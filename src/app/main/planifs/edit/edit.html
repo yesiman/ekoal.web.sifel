@@ -213,16 +213,20 @@
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
                             <div style="display:block;">
-                                <md-button class="md-icon-button md-primary" ng-click="showPlanif()" aria-label="Settings">
-                                    <md-tooltip>Nouvelle ligne</md-tooltip>
-                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                <md-button class="md-accent md-raised" ng-click="showPlanif()">
+                                    <md-icon md-font-icon="icon-plus"></md-icon>
+                                    Nouvelle ligne
+                                    <md-tooltip>Ajouter une nouvelle ligne de plannification</md-tooltip>
                                 </md-button>
                                 <md-select style="display:inline-block;margin:0;" ng-change="vm.ruleChanged()" placeholder="Sélection règle" ng-model="item.rule">
                                     <md-option ng-repeat="r in vm.rules" ng-value="r._id">
                                         {{r.lib}}
                                     </md-option>
+                                    <md-tooltip>Appliquer une règle</md-tooltip>
                                 </md-select>
-                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable"></div>
+                                <div style="display:inline-block;margin:0;" class="md-inline" qte-input ng-change="vm.ruleChanged()" inprequired="false"  ng-model="rendementUpdatable">
+                                    <md-tooltip>Rendement par defaut défini sur la fiche produit</md-tooltip>
+                                </div>
                                 </div>
                             <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="vm.gridRecoltsOptions"  class="grid"></div>
                         </md-content>

@@ -26,7 +26,6 @@
                             <md-icon md-font-icon="icon-message-text-outline" class="icon">
                                 
                             </md-icon>
-                            <span class="badge white-fg" style="background: rgb(244, 67, 54);">12</span>
                             </a>
                             
                     </md-menu-item>
@@ -55,6 +54,10 @@
                 </md-button>
 
                 <md-menu-content width="3">
+                    <md-menu-item class="md-indent" ng-if="($root.user.type == 2)">
+                        <md-icon md-font-icon="icon-account" class="icon"></md-icon>
+                        <md-button ng-click="vm.showOpe()">Mon OP</md-button>
+                    </md-menu-item>
                     <md-menu-item class="md-indent">
                         <md-icon md-font-icon="icon-account" class="icon"></md-icon>
                         <md-button ng-click="vm.showProfil()">Mon profile</md-button>

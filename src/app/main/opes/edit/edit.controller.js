@@ -7,7 +7,7 @@
         .controller('OpesEditController',OpesEditController);
 
     /** @ngInject */
-    function OpesEditController($scope,$state, api,$stateParams,orgaResolv)
+    function OpesEditController($scope,$state, api,$stateParams,orgaResolv,$rootScope)
     {
         $scope.current =  {userForm : {}};
         $scope.head = {
@@ -16,16 +16,23 @@
         };
         $scope.id = $stateParams.id;
         $scope.valid = function(){
+            $rootScope.loadingProgress = true;
             api.orgas.add.post({ id:$scope.id, orga: $scope.item } ,
                 // Success
                 function (response)
                 {
-                    $state.go("app.opes_list");
+                    $rootScope.loadingProgress = false;
+                    //
+                    if ($rootScope.user.type == 1)
+                    {
+                        $state.go("app.opes_list");
+                    }
                     //$scope.item = response;
                 },
                 // Error
                 function (response)
                 {
+                    $rootScope.loadingProgress = false;
                     console.error(response);
                 }
             );

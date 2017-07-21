@@ -241,7 +241,7 @@
                     if ($rootScope.user.type < 4 && !($rootScope.user.type == 1))
                     {
                         msNavigationService.saveItem('agreage', {
-                            title : 'AGREAGE (TEST)',
+                            title : 'AGREAGE',
                             group : true,
                             weight: 4
                         });
@@ -287,7 +287,7 @@
                         msNavigationService.saveItem('agreage.stats', {
                             title : 'Statistiques',
                             icon  : 'icon-chart-line',
-                            state    : 'app.stats_prevs',
+                            state    : 'app.stats_agreag',
                             weight: 2
                         });
                         //

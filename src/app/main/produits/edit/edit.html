@@ -1,4 +1,4 @@
-<div id="prodedit" class="page-layout simple fullwidth  doc-page element-doc-page">
+<div id="prodedit" class="page-layout simple fullwidth  doc-page element-doc-page" form-edit-quit-check>
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="space-between">
         <div form-head-ico-title layout="row" layout-align="start center"></div>  
@@ -16,11 +16,11 @@
               <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
                 <div style="width:100%;">
                     <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Libellé</label>
                         <input required ng-model="vm.item.lib">
                       </md-input-container>
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
                           Actif
                         </md-checkbox>
@@ -28,36 +28,36 @@
                       
                     </div>
                     <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Produit douanier parent</label>
                           <input ng-model="vm.item.parent.lib" readonly ng-click="vm.showParentsDialog($event)">
                         <md-icon ng-if="vm.item.parent" ng-click="vm.clearParentProduct()" md-font-icon="icon-close" style="display:inline-block;color:rgb(213,0,0);margin-right:10px;"><md-tooltip>Vider produit douanier parent</md-tooltip></md-icon>
                         
                       </md-input-container>
-                       <div class="md-inline" qte-input inprequired="true"  ng-model="vm.item.rendement" flex="50"></div>
+                       <div class="md-block"  flex-gt-sm qte-input inprequired="true"  ng-model="vm.item.rendement"></div>
                       
                     </div>
                     <div layout-gt-sm="row">
                      
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Code produit</label>
                         <input required ng-model="vm.item.codeProd">
                       </md-input-container>
                       
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Prix de vente HT</label>
                         <input type="number" ng-model="vm.item.prixVente">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
                      
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Couleur du produit</label>
                         <color-picker style="display:inline;" options="vm.cpOptions" ng-model="vm.item.color"></color-picker>
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">
-                      <md-input-container class="md-inline" flex-gt-sm>
+                      <md-input-container class="md-block" flex-gt-sm>
                         <label>Decription</label>
                         <textarea ng-model="vm.item.desc" rows="5"></textarea>
                       </md-input-container>
@@ -76,7 +76,6 @@
                     <md-button class="md-icon-button md-primary" ng-click="addRule()" aria-label="Settings">
                       <md-icon md-font-icon="icon-plus"></md-icon>
                     </md-button>
-
                     <input type="text" ng-model="vm.ruleTxtFilter" ng-change="vm.loadRulesPage(1,vm.rulePsize)" placeholder="Filtrer..."/>
                     
                   </div>

@@ -69,6 +69,7 @@
         vm.toggleSidenav = toggleSidenav;
         vm.logout = logout;
         vm.showProfil = showProfil;
+        vm.showOpe = showOpe;
         vm.changeLanguage = changeLanguage;
         vm.setUserStatus = setUserStatus;
         vm.toggleHorizontalMobileMenu = toggleHorizontalMobileMenu;
@@ -121,13 +122,12 @@
             $state.go("app.pages_auth_login");
         }
 
-        /**
-         * Logout Function
-         */
+        function showOpe()
+        {
+            $state.go("app.opes_edit", { id:$rootScope.user.orga });
+        }
         function showProfil()
         {
-            //console.log();
-            // Do logout here..
             $state.go("app.users_edit", { id:$rootScope.user._id, profil:true });
         }
 

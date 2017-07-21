@@ -97,6 +97,9 @@
             produitRendHtml += '</div>';
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
+
+        $scope.gridOptions.rowTemplate='<div  ng-mouseover="rowStyle={\'background-color\': \'#dcedc8\',\'cursor\': \'pointer\'};grid.appScope.onRowHover(this);" ng-mouseleave="rowStyle={}"><div  ng-style="rowStyle" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name"  ng-click="grid.appScope.edit(row.entity._id, col.colDef)" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }" ui-grid-cell></div></div>';
+
         $scope.gridOptions.columnDefs = [
                 { field: 'datePlant', displayName: 'Date plantation', cellFilter: 'date:\'dd-MM-yyyy\'' },
                 { field: 'produitLib', displayName: 'Produit' },
@@ -437,7 +440,14 @@
         $scope.add = function() {
             $state.go("app.planifs_edit", { id:-1 });
         };
-        $scope.edit = function(id) {
+        $scope.edit = function(id, col) {
+            if(col)
+            {
+                if (col.name == "actions")
+                {
+                    return;
+                }
+            }
             $state.go("app.planifs_edit", { id:id });
         };
         $scope.remove = function(id,ev) {

@@ -411,15 +411,23 @@
                 item.startAt = d;    
             }
             //
-            if (!item._id)
+            if ((!item._id) && ((!item.id)))
             {
                 item.id = "tmp" + ($scope.item.lines.length + 1);
                 $scope.item.lines.push(item);
             }else {
                 var increm = 0;
                 angular.forEach($scope.item.lines, function(value) {
-                    if (value._id == item._id) {
-                        $scope.item.lines[increm] = item;
+                    if (item._id)
+                    {
+                        if (value._id == item._id) {
+                            $scope.item.lines[increm] = item;
+                        }
+                    }
+                    else {
+                        if (value.id == item.id) {
+                            $scope.item.lines[increm] = item;
+                        }
                     }
                     increm++;
                 });
@@ -457,7 +465,27 @@
             } 
             else 
             {
-                item = {qte:0};
+               
+                if ($scope.item.lines.length > 0)
+                {
+                    //On se position semaine après dernière saisie
+                    console.log($scope.item.lines[$scope.item.lines.length - 1]);
+                    var dtt = new Date($scope.item.lines[$scope.item.lines.length - 1].startAt);
+                    var dt = new Date(dtt.setTime( dtt.getTime() + 7 * 86400000 ));
+                    item = {
+                        semaine:dt.getWeek(),
+                        anne:dt.getFullYear(),
+                        qte:0
+                    };
+                }
+                else {
+                    var dt = new Date();
+                    item = {
+                        semaine:dt.getWeek(),
+                        anne:dt.getFullYear(),
+                        qte:0
+                    };
+                }
             }
             //$scope.dialogItems = response.items;
             var locals = {item: item, onCancel: $scope.closeMe, onValid: $scope.validLine };
