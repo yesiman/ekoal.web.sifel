@@ -31,14 +31,13 @@
         sunday.setMinutes(59);
         sunday.setSeconds(59);
         sunday.setMilliseconds(59);
-        var filters = $rootScope.filters.StatsPrevsController;
+        var filters = $rootScope.filters.StatsAgreaController;
         if (filters)
         {
             filters.dateFrom = new Date(filters.dateFrom);
             filters.dateTo = new Date(filters.dateTo);
             $scope.filters = filters;
-            console.log($rootScope.filters.StatsPrevsControllerObjectifs);
-            vm.objectifs  = $rootScope.filters.StatsPrevsControllerObjectifs;
+            
         }
         else {
             $scope.filters = {
@@ -51,50 +50,106 @@
                 dateTo: sunday,
                 showObjectifs:true,
                 groupMode:"w",
-                unitMode:1
-            }
-        }
-        //On a passe prod en arg
-        if ($stateParams.selectedItems.length > 0)
-        {
-            var found = false;
-            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
-            {
-                if ($scope.filters.selectedItems[i]._id == $stateParams.selectedItems[0]._id)
-                {
-                    found = true;
-                    break;
+                unitMode:1,
+                producteurs: {
+                    selectedItem:null,
+                    searchText: "",
+                    selectedItems:[],
+                    change: function(it)
+                    {
+                        if (!it) { return; }
+                        var found = false;
+                        for (var i = 0;i< $scope.filters.producteurs.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.producteurs.selectedItems[i]._id == it._id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) { $scope.filters.producteurs.selectedItems.push(it);$scope.refresh(); }
+                        $scope.filters.producteurs.searchText = "";
+                    },
+                    remove: function(it)
+                    {
+                        for (var i = 0;i< $scope.filters.producteurs.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.producteurs.selectedItems[i]._id == it)
+                            {
+                                $scope.filters.producteurs.selectedItems.splice(i,1);
+                                break;
+                            }
+                        }
+                        $scope.refresh();
+                    }
+                },
+                produits: {
+                    selectedItem:null,
+                    searchText: "",
+                    selectedItems:[],
+                    change: function(it)
+                    {
+                        if (!it) { return; }
+                        var found = false;
+                        for (var i = 0;i< $scope.filters.produits.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.produits.selectedItems[i]._id == it._id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) { $scope.filters.produits.selectedItems.push(it);$scope.refresh(); }
+                        $scope.filters.produits.searchText = "";
+                    },
+                    remove: function(it)
+                    {
+                        for (var i = 0;i< $scope.filters.produits.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.produits.selectedItems[i]._id == it)
+                            {
+                                $scope.filters.produits.selectedItems.splice(i,1);
+                                break;
+                            }
+                        }
+                        $scope.refresh();
+                    }
+                },
+                stations: {
+                    selectedItem:null,
+                    searchText: "",
+                    selectedItems:[],
+                    change: function(it)
+                    {
+                        if (!it) { return; }
+                        var found = false;
+                        for (var i = 0;i< $scope.filters.stations.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.stations.selectedItems[i]._id == it._id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) { $scope.filters.stations.selectedItems.push(it);$scope.refresh(); }
+                        $scope.filters.stations.searchText = "";
+                    },
+                    remove: function(it)
+                    {
+                        for (var i = 0;i< $scope.filters.stations.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.stations.selectedItems[i]._id == it)
+                            {
+                                $scope.filters.stations.selectedItems.splice(i,1);
+                                break;
+                            }
+                        }
+                        $scope.refresh();
+                    }
                 }
             }
-            if (!found) { $scope.filters.selectedItems.push($stateParams.selectedItems[0]); }
         }
-        //
-        $scope.removeProduit = function(it) {
-            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
-            {
-                if ($scope.filters.selectedItems[i]._id == it)
-                {
-                    $scope.filters.selectedItems.splice(i,1);
-                    break;
-                }
-            }
-            $scope.refresh();
-        }
-        //
-        $scope.filters.produitChange = function(it) {
-            if (!it) { return; }
-            var found = false;
-            for (var i = 0;i< $scope.filters.selectedItems.length;i++)
-            {
-                if ($scope.filters.selectedItems[i]._id == it._id)
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) { $scope.filters.selectedItems.push(it);$scope.refresh(); }
-            $scope.filters.searchText = "";
-        }
+        
         //
         $scope.export = function(chartId) { 
             switch (chartId)
@@ -219,48 +274,11 @@
             return 0;
         }
         $scope.getLabels = function(labels) {
-            var ret = labels;
-            switch($scope.filters.groupMode)
+            var ret = [];
+            console.log("labels",labels);
+            for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
             {
-                case "d":
-                    break;
-                case "m":
-                    for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                    {
-                        var found = false;
-                        for (var reliLab = 0;reliLab < ret.length;reliLab++ )
-                        {
-                            if (ret[reliLab] === ((d.getMonth() + 1) + "/" + d.getFullYear()))
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                            ret.push(((d.getMonth() + 1) + "/" + d.getFullYear()));
-                        }
-                    }
-                    break;
-                case "w":
-                    
-                    for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
-                    {
-                        var found = false;
-                        for (var reliLab = 0;reliLab < ret.length;reliLab++ )
-                        {
-                            if (ret[reliLab] === ("S" + d.getWeek() + "/" + d.getFullYear()))
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                                ret.push("S" + d.getWeek() + "/" + d.getFullYear());
-                        }
-                    }
-                    break;
+                ret.push(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear());
             }
             return ret;
         }
@@ -268,45 +286,38 @@
         $scope.refresh = function(clearSeries) {
             $rootScope.loadingProgress = true;
             $scope.clearSeries = true;
-            $rootScope.filters.StatsPrevsController = $scope.filters;
-            $rootScope.filters.StatsPrevsControllerObjectifs = vm.objectifs;
-            //console.log("$scope.filters",filters);
-            $scope.refreshPrevsByProdukt();
-            $scope.refreshPrevsByProdukteur();
-            $scope.refreshPrevsByLines();
+            $rootScope.filters.StatsAgreaController = $scope.filters;
+            $scope.refreshStatsAgreaGlobals();
+            $scope.refreshStatsAgreaProduits();
+            $scope.refreshStatsAgreaProducteurs();
+            $scope.refreshStatsAgreaStations();
+            //$scope.refreshPrevsByLines();
             $rootScope.loadingProgress = false;
         }
 
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
             //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-            var methodBase = api.products.getAllByLib;
-            var methodArgs = { pid:1,nbp:20,req:$scope.filters.searchText };
+            var methodBase;
+            var methodArgs;
+            switch (type)
+            {
+                case 1:
+                    methodBase = api.products.getAllByLib;
+                    methodArgs = { pid:1,nbp:20,req:$scope.filters.produits.searchText };
+                    break;
+                case 2:
+                    methodBase = api.users.getAllByType;
+                    methodArgs = { pid:1,nbp:20, idt:4,req:$scope.filters.producteurs.searchText };
+                    break;
+                case 3:
+                    methodBase = api.stations.getAll;
+                    methodArgs = { pid:1,nbp:100 };
+                    break;
+            }
             methodBase.get(methodArgs,
                 function (response)
                 {
-                    for (var eo = 0;eo < response.items.length;eo++)
-                    {
-                        var found = false;
-                        if (response.items[eo].objectif)
-                        {
-                            for (var eo2 = 0;eo2 < vm.objectifs.length;eo2++)
-                            {
-                                if (vm.objectifs[eo2])
-                                {
-                                    if (response.items[eo].objectif.produit === vm.objectifs[eo2].produit)
-                                    {
-                                        found = true;
-                                    }
-                                }
-                                
-                            }
-                            if ((!found) && response.items[eo])
-                            {
-                                vm.objectifs.push(response.items[eo].objectif);
-                            }
-                        }
-                    }
                     deferred.resolve( response.items );
                 },
                 // Error
@@ -318,14 +329,9 @@
             );
             return deferred.promise;
         }
-
-        //$scope.$on("$destroy", function(){
-        //    d3.selectAll('.nvtooltip').remove();
-        //});
-        //$scope.refresh();
-
         
         
+
     }
 })();
 

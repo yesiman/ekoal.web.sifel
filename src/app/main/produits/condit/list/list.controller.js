@@ -26,8 +26,10 @@
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
+                { field: 'code', displayName: 'Code' },
                 { field: 'lib', displayName: 'Libellé' },
                 { field: 'poid', displayName: 'Poid (kilos)' },
+                { field: 'nbColis', displayName: 'Nombre colis' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
         
         $scope.loadPageAction = function(id)

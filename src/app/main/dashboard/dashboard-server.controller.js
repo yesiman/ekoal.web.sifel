@@ -19,7 +19,7 @@
                 script.type = "text/javascript";
                 script.id = "googleMaps";
                 script.src = 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAKuOtLqUR5I6LaqCMNADzppolXaH8w2JE&libraries=geometry&callback=mapInit';
-     document.body.appendChild(script);
+     //document.body.appendChild(script);
             window.mapInit = function () {
                 var map = new google.maps.Map(document.getElementById('map'), {center: {lat: -34.397, lng: 150.644},zoom: 8});
             

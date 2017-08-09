@@ -11,48 +11,30 @@
                     ms-sidenav-helper>
             <md-content class="content" ms-scroll>
                 <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">N° LTA</md-subheader>
+                    <md-list-item>
+                        <input type="text" ng-model="filters.lta" ng-change="loadPageAction(1)" placeholder="Premiers charactères..."/>
+                    </md-list-item>
+                    <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Dates</md-subheader>
                     <md-list-item>
                         <p>Du</p>
-                        <md-datepicker class="md-secondary" ng-model="vm.filters.dateFrom" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-list-item>
                         <p>Au</p>
-                        <md-datepicker class="md-secondary" ng-model="vm.filters.dateTo" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Produits</md-subheader>
-                    <md-list-item>
-                        <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="vm.filters.produits.selectedItem" 
-                            md-search-text="vm.filters.produits.searchText"
-                            md-items="item in querySearch(vm.filters.produits.searchText,1)"
-                            md-item-text="item.lib"
-                            placeholder="Premiers charactères..."
-                            md-selected-item-change="vm.filters.produits.change(item)">
-                            <md-item-template>
-                                <span class="item-title">
-                                    <!--icon-cube-unfolded-->
-                                    <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
-                                    <span> {{item.lib}} </span>
-                                </span>
-                            </md-item-template>
-                        </md-autocomplete>
-                    </md-list-item>
-                    <md-list-item ng-repeat="p in vm.filters.produits.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Producteurs</md-subheader>
                     <md-list-item>
                         <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="vm.filters.producteurs.selectedItem" 
-                            md-search-text="vm.filters.producteurs.searchText"
-                            md-items="item in querySearch(vm.filters.producteurs.searchText,2)"
+                            md-selected-item="filters.producteurs.selectedItem" 
+                            md-search-text="filters.producteurs.searchText"
+                            md-items="item in querySearch(filters.producteurs.searchText,2)"
                             md-item-text="item.name"
                             placeholder="Premiers charactères..."
-                            md-selected-item-change="vm.filters.producteurs.change(item)">
+                            md-selected-item-change="filters.producteurs.change(item)">
                             <md-item-template>
                                 <span class="item-title">
                                     <!--icon-cube-unfolded-->
@@ -62,9 +44,9 @@
                             </md-item-template>
                         </md-autocomplete>
                     </md-list-item>
-                    <md-list-item ng-repeat="p in vm.filters.producteurs.selectedItems" tag-bg item="p">
-                        <p> {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    <md-list-item ng-repeat="p in filters.producteurs.selectedItems" tag-bg item="p">
+                        <p> {{ p.codeAdh }} - {{ p.name }} </p>
+                        <md-icon class="md-secondary" ng-click="removeProducteur(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
                     

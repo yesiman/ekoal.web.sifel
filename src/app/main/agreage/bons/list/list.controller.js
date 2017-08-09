@@ -7,7 +7,7 @@
         .controller('BonsListController',BonsListController);
 
     /** @ngInject */
-    function BonsListController($scope,$state, api,$mdDialog,$rootScope,standardizer)
+    function BonsListController($scope,$state, api,$mdDialog,$rootScope,standardizer,$q)
     {
         var vm = this;
         // Data
@@ -24,24 +24,135 @@
             sort: null
         };
         
+
+        var filters = $rootScope.filters.bonsController;
+        
+        if (filters)
+        {
+            filters.dateFrom = new Date(filters.dateFrom);
+            filters.dateTo = new Date(filters.dateTo);
+            $scope.filters = filters;
+        }
+        else {
+            var monday = new Date;
+            monday.setHours(0);
+            monday.setMinutes(0);
+            monday.setSeconds(0);
+            var sunday = new Date(monday);
+            sunday.setMonth(sunday.getMonth() + 6);
+            sunday.setHours(23);
+            sunday.setMinutes(59);
+            sunday.setSeconds(59);
+            sunday.setMilliseconds(59);
+            $scope.filters = {
+                lta: "",
+                selectedProducteurs:[],
+                dateFrom: monday,
+                dateTo: sunday,
+                showObjectifs:true,
+                groupMode:"w",
+                unitMode:1,
+                producteurs: {
+                    selectedItem:null,
+                    searchText: "",
+                    selectedItems:[],
+                    change: function(it)
+                    {
+                        if (!it) { return; }
+                        var found = false;
+                        for (var i = 0;i< $scope.filters.producteurs.selectedItems.length;i++)
+                        {
+                            if ($scope.filters.producteurs.selectedItems[i]._id == it._id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) { $scope.filters.producteurs.selectedItems.push(it);$scope.loadPageAction(1); }
+                        $scope.filters.producteurs.searchText = "";
+                    }
+                }
+            }
+        }
+
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
                 { field: 'dateDoc', displayName: 'Date' },
+                { field: 'numBon', displayName: 'Bon n°' },
                 { field: 'destination', displayName: 'Destination' },
-                { field: 'station', displayName: 'Station' },
-                { field: 'producteur', displayName: 'Producteur' },
+                { field: 'station.lib', displayName: 'Station' },
+                { field: 'producteur.name', displayName: 'Producteur' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
-        
+                
+        $scope.querySearch = function(query, type) {
+            var deferred = $q.defer();
+            //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+            var methodBase;
+            var methodArgs;
+            switch (type)
+            {
+                case 1:
+                    methodBase = api.products.getAllByLib;
+                    methodArgs = { pid:1,nbp:20,req:$scope.filters.produits.searchText };
+                    break;
+                case 2:
+                    methodBase = api.users.getAllByType;
+                    methodArgs = { pid:1,nbp:20, idt:4,req:$scope.filters.producteurs.searchText };
+                    break;
+                case 3:
+                    methodBase = api.users.getParcelles;
+                    methodArgs = { pid:1,nbp:100,id:$scope.item.producteur._id,req:"" };
+                    break;
+            }
+            methodBase.get(methodArgs,
+                function (response)
+                {
+                    deferred.resolve( response.items );
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    //return null;
+                }
+            );
+            return deferred.promise;
+        }
+
+        $scope.removeProducteur = function(it) {
+            for (var i = 0;i< $scope.filters.producteurs.selectedItems.length;i++)
+            {
+                if ($scope.filters.producteurs.selectedItems[i]._id == it)
+                {
+                    $scope.filters.producteurs.selectedItems.splice(i,1);
+                    break;
+                }
+            }
+            $scope.loadPageAction(1);
+        }
+
         $scope.loadPageAction = function(id)
         {
+            $rootScope.filters.bonsController = $scope.filters;
             $rootScope.loadingProgress = true;
             $scope.paginationOptions.pageNumber = id;
             $scope.loadPage();
         }
         // Methods
         $scope.loadPage = function() {
-            api.bons.getAll.get({ pid:$scope.paginationOptions.pageNumber,nbp:$scope.paginationOptions.pageSize },
+            var producteursTmp = [];
+            angular.forEach($scope.filters.producteurs.selectedItems, function(value) {
+                producteursTmp.push(value._id);
+            });
+            api.bons.getAll.post({ 
+                pid:$scope.paginationOptions.pageNumber,
+                nbp:$scope.paginationOptions.pageSize,
+                lta:$scope.filters.lta,
+                producteurs:producteursTmp,
+                dateFrom:$scope.filters.dateFrom,
+                dateTo:$scope.filters.dateTo
+             },
                 // Success
                 function (response)
                 {

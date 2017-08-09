@@ -14,13 +14,13 @@
               <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
                 <div style="width:100%;">
                     <div layout-gt-sm="row">
+                       <md-input-container class="md-inline" flex-gt-sm>
+                        <label>Code</label>
+                        <input required type="text" ng-model="vm.item.code">
+                      </md-input-container>
                       <md-input-container class="md-inline" flex-gt-sm>
                         <label>Libellé</label>
                         <input required ng-model="vm.item.lib">
-                      </md-input-container>
-                      <md-input-container class="md-inline" flex-gt-sm>
-                        <label>Code</label>
-                        <input required type="text" ng-model="vm.item.code">
                       </md-input-container>
                     </div>
                     <div layout-gt-sm="row">

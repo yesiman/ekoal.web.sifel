@@ -241,6 +241,11 @@
                     method: 'GET'
                 }
             }),
+            getAllByTypeActifs: $resource(api.baseUrl + 'users/getAllByType/:pid/:nbp/:idt/:req/:actifs', {pid:'@pid',nbp:'@nbp',idt:'@idt',req:'@req',actifs:'@actifs'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
             getAllByOrga: $resource(api.baseUrl + 'users/getAllByOrga/:pid/:nbp/:ido', {pid:'@pid',nbp:'@nbp',ido:'@ido',req:'@req'} , {
                 post: {
                     method: 'POST'
@@ -387,6 +392,26 @@
         }
         // STATIONS
         api.bons = {
+            getStatGlobal: $resource(api.baseUrl + 'bons/getStatGlobal/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatProduits: $resource(api.baseUrl + 'bons/getStatProduits/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatProducteurs: $resource(api.baseUrl + 'bons/getStatProducteurs/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatStations: $resource(api.baseUrl + 'bons/getStatStations/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
             add: $resource(api.baseUrl + 'bons/add/:id', {id:'@id',bon:'@bon'} , {
                 post: {
                     method: 'POST'
@@ -402,9 +427,9 @@
                     method: 'DELETE'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp'} , {
-                get: {
-                    method: 'GET'
+            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
+                post: {
+                    method: 'POST'
                 }
             })
         }
@@ -449,6 +474,11 @@
                 }
             }),
             getAllByLib: $resource(api.baseUrl + 'products/getAllByLib/:pid/:nbp/:req', {pid:'@pid',nbp:'@nbp',req:'@req'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            getAllByLibActif: $resource(api.baseUrl + 'products/getAllByLib/:pid/:nbp/:req/:actifs', {pid:'@pid',nbp:'@nbp',req:'@req',actifs:'@actifs'} , {
                 get: {
                     method: 'GET'
                 }

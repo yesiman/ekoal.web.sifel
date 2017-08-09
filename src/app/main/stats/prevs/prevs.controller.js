@@ -43,7 +43,6 @@
             filters.dateFrom = new Date(filters.dateFrom);
             filters.dateTo = new Date(filters.dateTo);
             $scope.filters = filters;
-            console.log($rootScope.filters.StatsPrevsControllerObjectifs);
             vm.objectifs  = $rootScope.filters.StatsPrevsControllerObjectifs;
         }
         else {
@@ -270,7 +269,7 @@
             }
             return ret;
         }
-        
+        //
         $scope.refresh = function(clearSeries) {
             $rootScope.loadingProgress = true;
             $scope.clearSeries = true;
@@ -286,8 +285,8 @@
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
             //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-            var methodBase = api.products.getAllByLib;
-            var methodArgs = { pid:1,nbp:20,req:$scope.filters.searchText };
+            var methodBase = api.products.getAllByLibActif;
+            var methodArgs = { pid:1,nbp:20,req:$scope.filters.searchText,actifs:1 };
             methodBase.get(methodArgs,
                 function (response)
                 {

@@ -336,8 +336,8 @@
             switch (type)
             {
                 case 1:
-                    methodBase = api.products.getAllByLib;
-                    methodArgs = { pid:1,nbp:20,req:$scope.item.produitSearch };
+                    methodBase = api.products.getAllByLibActif;
+                    methodArgs = { pid:1,nbp:20,req:$scope.item.produitSearch,actifs:1 };
                     methodBase.get(methodArgs,
                         function (response)
                         {
@@ -352,8 +352,8 @@
                     );
                     break;
                 case 2:
-                    methodBase = api.users.getAllByType;
-                    methodArgs = { pid:1,nbp:1000, idt:4,req:$scope.item.producteurSearch };
+                    methodBase = api.users.getAllByTypeActifs;
+                    methodArgs = { pid:1,nbp:1000, idt:4,req:$scope.item.producteurSearch,actifs:1 };
                     methodBase.get(methodArgs,
                         function (response)
                         {

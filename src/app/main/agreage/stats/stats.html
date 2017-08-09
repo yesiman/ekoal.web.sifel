@@ -12,79 +12,91 @@
                     ms-sidenav-helper>
             <md-content class="content" ms-scroll>
                 <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">N° LTA</md-subheader>
+                    <md-list-item>
+                        <input type="text" ng-model="filters.lta" ng-change="refresh()" placeholder="Premiers charactères..."/>
+                    </md-list-item>
+                    <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Dates</md-subheader>
                     <md-list-item>
                         <p>Du</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
                     </md-list-item>
                     <md-list-item>
                         <p>Au</p>
-                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="refresh(true)" md-placeholder="Enter date"></md-datepicker>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="refresh()" md-placeholder="Enter date"></md-datepicker>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Producteurs</md-subheader>
+                    <md-list-item>
+                        <md-autocomplete ckass="autoc-filter"
+                            md-selected-item="filters.producteurs.selectedItem" 
+                            md-search-text="filters.producteurs.searchText"
+                            md-items="item in querySearch(filters.producteurs.searchText,2)"
+                            md-item-text="item.name"
+                            placeholder="Premiers charactères..."
+                            md-selected-item-change="filters.producteurs.change(item)">
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline"></md-icon>
+                                    <span> {{item.codeAdh}} - {{item.name}} </span>
+                                </span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-list-item>
+                    <md-list-item ng-repeat="p in filters.producteurs.selectedItems" tag-bg item="p">
+                        <p> {{ p.codeAdh }} - {{ p.name }} </p>
+                        <md-icon class="md-secondary" ng-click="filters.producteurs.remove(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Stations</md-subheader>
+                    <md-list-item>
+                        <md-autocomplete ckass="autoc-filter"
+                            md-selected-item="filters.stations.selectedItem" 
+                            md-search-text="filters.stations.searchText"
+                            md-items="item in querySearch(filters.stations.searchText,3)"
+                            md-item-text="item.name"
+                            placeholder="Premiers charactères..."
+                            md-selected-item-change="filters.stations.change(item)">
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline"></md-icon>
+                                    <span> {{item.code}} </span>
+                                </span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-list-item>
+                    <md-list-item ng-repeat="p in filters.stations.selectedItems" tag-bg item="p">
+                        <p> {{ p.code }} </p>
+                        <md-icon class="md-secondary" ng-click="filters.stations.remove(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-subheader class="md-no-sticky">Produits</md-subheader>
                     <md-list-item>
                         <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
-                            md-item-text="item.lib"
+                            md-selected-item="filters.produits.selectedItem" 
+                            md-search-text="filters.produits.searchText"
+                            md-items="item in querySearch(filters.produits.searchText,1)"
+                            md-item-text="item.name"
                             placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-
+                            md-selected-item-change="filters.produits.change(item)">
                             <md-item-template>
                                 <span class="item-title">
                                     <!--icon-cube-unfolded-->
-                                    <md-icon md-font-icon="icon-cube-outline" style="color:{{item.color}}"></md-icon>
+                                    <md-icon md-font-icon="icon-cube-outline"></md-icon>
                                     <span> {{item.codeProd}} - {{item.lib}} </span>
                                 </span>
                             </md-item-template>
-                            <span md-highlight-text="filters.searchText"> </span>
                         </md-autocomplete>
                     </md-list-item>
-                    <md-list-item ng-repeat="p in filters.selectedItems" tag-bg item="p">
-                        <p> {{ p.codeProd }} - {{ p.lib }} </p>
-                        <md-icon class="md-secondary" ng-click="removeProduit(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    <md-list-item ng-repeat="p in filters.produits.selectedItems" tag-bg item="p">
+                        <p> {{ p.codeProd }} - {{p.lib}} </p>
+                        <md-icon class="md-secondary" ng-click="filters.produits.remove(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
                     </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Producteurs</md-subheader>
-                    <!--<md-list-item>
-                        <md-autocomplete ckass="autoc-filter"
-                            md-selected-item="filters.selectedItem" 
-                            md-search-text="filters.searchText"
-                            md-items="item in querySearch(filters.searchText)"
-                            md-item-text="item.lib"
-                            placeholder="Premiers charactères..."
-                            md-selected-item-change="filters.produitChange(item)">
-                            <span md-highlight-text="filters.searchText">{{item.lib}} :: {{item.typ}}</span>
-                        </md-autocomplete>
-                    </md-list-item>-->
-                    <md-list-item class="min-line" ng-repeat="p in producteurs">
-                        <p> {{p.codeAdh}} - {{p.name}} {{p.surn}} </p>
-                        <md-checkbox class="md-secondary" ng-model="p.checked"></md-checkbox>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-subheader class="md-no-sticky">Options</md-subheader>
-                    <md-list-item>
-                        <p>Grouper (produits/producteurs)</p>
-                        <md-switch class="md-secondary"  ng-model="filters.cumProds" ng-change="refresh(true)"></md-switch>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Grouper par</p>
-                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.groupMode" ng-change="refresh(true)">
-                            <md-option value="w" ng-selected="true">semaine</md-option>
-                            <md-option value="m">mois</md-option>
-                        </md-select>
-                    </md-list-item>
-                    <md-list-item>
-                        <p>Unités poids</p>
-                        <md-select class="md-secondary cLines-groupMode" ng-model="filters.unitMode" ng-change="refresh(true)">
-                            <md-option value="1" ng-selected="true">kilos</md-option>
-                            <md-option value="2">Tonnes</md-option>
-                        </md-select>
-                    </md-list-item>
-                    
                 </md-list>
+                
             </md-content>
 
             
@@ -93,20 +105,24 @@
 
         <md-content class="content" style="width:100%;" ms-scroll>
             <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+                <md-tab layout-fill label="Global" >
+                    <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
+                        <stats-agrea-globals refresh-method="injectedObject"></stats-agrea-globals>
+                    </md-tab-content>
+                </md-tab>
                 <md-tab layout-fill label="Produits" >
                     <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
-                        <prevs-by-produkt refresh-method="injectedObject"></prevs-by-produkt>
+                        <stats-agrea-produits refresh-method="injectedObject"></stats-agrea-produits>
                     </md-tab-content>
                 </md-tab>
                 <md-tab layout-fill label="Producteurs" >
                     <md-tab-content class="inputs" md-background-bg md-theme="docs-dark" flex layout-fill  ms-scroll>
-                         <prevs-by-produkteur refresh-method="injectedObject"></prevs-by-produkteur>
+                         <stats-agrea-producteurs refresh-method="injectedObject"></stats-agrea-producteurs>
                     </md-tab-content>
                 </md-tab>
-                <md-tab label="Planifications" layout-fill >
+                <md-tab label="Stations" layout-fill >
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
-                        <prevs-by-lines refresh-method="injectedObject"></prevs-by-lines>
-                        
+                        <stats-agrea-stations refresh-method="injectedObject"></stats-agrea-stations>
                     </md-tab-body>
                 </md-tab>
 

@@ -18,17 +18,27 @@
                                             <md-datepicker ng-model="item.dateDoc"></md-datepicker>
                                         </md-input-container>
                                         <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
-                                            <label>Type</label>
-                                            <md-select  required ng-model="item.type" style="min-width:200px;">
+                                            <label>Destination</label>
+                                            <md-select  required ng-model="item.destination" style="min-width:200px;">
                                                 <md-option><em>None</em></md-option>
-                                                <md-option ng-value="export">
+                                                <md-option value="export">
                                                     Local
                                                 </md-option>
-                                                <md-option ng-value="local">
+                                                <md-option value="local">
                                                     Export
                                                 </md-option>
                                             </md-select>
                                         </md-input-container>
+                                    </div>
+                                    <div layout-gt-sm="row">
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label>N° lot</label>
+                                            <input type="text" ng-model="item.noBon">
+                                        </md-input-container>
+                                        <md-input-container ng-if="item.destination == 'export'" class="md-block" flex-gt-sm>
+                                            <label>N° LTA</label>
+                                            <input required type="text" ng-model="item.noLta">
+                                        </md-input-container>  
                                     </div>
                                     <div layout-gt-sm="row">
                                         <md-autocomplete flex required ng-disabled="$root.user.type == 4"
