@@ -275,7 +275,6 @@
         }
         $scope.getLabels = function(labels) {
             var ret = [];
-            console.log("labels",labels);
             for (var d = new Date($scope.filters.dateFrom);d <= $scope.filters.dateTo;d.setDate(d.getDate() + 1))
             {
                 ret.push(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear());

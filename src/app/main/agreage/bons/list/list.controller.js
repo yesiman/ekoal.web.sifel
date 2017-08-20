@@ -75,6 +75,28 @@
             }
         }
 
+        $scope.getStatusIcon = function(it) {
+            if (it.factu)
+            {
+                return 'icon-check-circle';
+            }
+            else {
+                return 'icon-close-circle-outline';
+            }
+        }
+        $scope.getStatusToolT = function(it) {
+            if (it.factu)
+            {
+                return 'Facture éditée';
+            }
+            else {
+                return 'Facture non éditée';
+            }
+        }
+
+        var typeHtml = '<div class="ui-grid-cell-contents text-center">';
+        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getStatusToolT(row.entity)}}</md-tooltip><md-icon class="warn" md-font-icon="{{grid.appScope.getStatusIcon(row.entity)}}"></md-icon></md-button>';
+        typeHtml += '</div>'
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [
@@ -83,8 +105,29 @@
                 { field: 'destination', displayName: 'Destination' },
                 { field: 'station.lib', displayName: 'Station' },
                 { field: 'producteur.name', displayName: 'Producteur' },
+                { field: 'satus', displayName:"Status",cellTemplate:typeHtml},
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
-                
+        $scope.gridOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                $scope.paginationOptions.pageSize = pageSize;
+                $scope.loadPageAction(newPage);
+                //paginationOptions.pageNumber = newPage;
+                //paginationOptions.pageSize = pageSize;
+                //getPage();
+                //vm.parcellePsize = pageSize;
+                //$scope.getParcelles(newPage,pageSize);
+            });
+        }
+
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
             //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);

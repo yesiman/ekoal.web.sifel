@@ -33,7 +33,7 @@
                                     <div layout-gt-sm="row">
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label>N° lot</label>
-                                            <input type="text" ng-model="item.noBon">
+                                            <input type="text" ng-model="item.noLot">
                                         </md-input-container>
                                         <md-input-container ng-if="item.destination == 'export'" class="md-block" flex-gt-sm>
                                             <label>N° LTA</label>
@@ -94,7 +94,7 @@
                 <md-tab label="produits" layout-fill>
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                            <div id="grid1" style="display:block;"  ui-grid-pagination layout-fill ui-grid="gridProduits"  class="grid"></div>
+                            <div id="gridProduits" style="display:block;"  ui-grid-edit ui-grid-pagination layout-fill ui-grid="gridProduits"  class="grid"></div>
                         </md-content>
                     </md-tab-body>
                 </md-tab>
@@ -103,16 +103,21 @@
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
                             <div id="exportthis">
 
-    </div>
-                            <md-button class="md-button md-primary" ng-click="doReport(1)">
-                                <md-tooltip>Nouvelle ligne</md-tooltip>
+                            </div>
+                            <md-button class="md-button md-primary" ng-click="doReport('ba')">
+                                <md-tooltip>Générer bon d'apport</md-tooltip>
                                 <md-icon md-font-icon="icon-plus"></md-icon>
                                 Bon d'apport
                             </md-button>
-                            <md-button class="md-button md-primary" ng-click="doReport(1)">
-                                <md-tooltip>Nouvelle ligne</md-tooltip>
+                            <md-button class="md-button md-primary" ng-click="doReport('bl')">
+                                <md-tooltip>Générer bon de livraison</md-tooltip>
                                 <md-icon md-font-icon="icon-plus"></md-icon>
                                 Bon de livraison
+                            </md-button>
+                            <md-button class="md-button md-primary" ng-click="doFact('ff')">
+                                <md-tooltip>Générer facture</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                Facture
                             </md-button>
                         </md-content>
                     </md-tab-body>

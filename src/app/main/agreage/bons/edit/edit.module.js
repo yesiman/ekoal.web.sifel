@@ -3,7 +3,8 @@
     'use strict';
 
     angular
-        .module('app.bons.edit', [])
+        .module('app.bons.edit', [
+                'ui.grid.edit'])
         .config(config);
 
     /** @ngInject */

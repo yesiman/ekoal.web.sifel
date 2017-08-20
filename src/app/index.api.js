@@ -427,7 +427,7 @@
                     method: 'DELETE'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
+            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',clients:'@clients',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
                 post: {
                     method: 'POST'
                 }

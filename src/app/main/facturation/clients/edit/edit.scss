@@ -1,4 +1,4 @@
-#opeedit {
+#editClient {
     position: relative;
 
     > .header {
@@ -78,6 +78,7 @@
         bottom: 0;
         right: 0;
         left: 0;
+        padding-top: 0;
 
         > md-sidenav {
             box-shadow: $whiteframe-shadow-1dp;

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.clients.edit', [])
+        .module('app.clients.edit', ['ui.grid.selection'])
         .config(config);
 
     /** @ngInject */

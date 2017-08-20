@@ -1,0 +1,58 @@
+<md-content class="content" layout="column" flex style="overflow:hidden;">
+    <div class="widget-group" layout="row" flex="100" layout-wrap>
+        <ms-widget layout="column" flex="33"  flex-xs="100">
+            <ms-widget-front class="white-bg">
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                    <div class="h3 widget-head">Cumuls par produit</div>
+                    <div>
+                        <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
+                            <md-tooltip>Exporter vers excel</md-tooltip>
+                            <md-icon md-font-icon="icon-export"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <div class="p-16">
+                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutProdutks.options"  chart-series="cDonutProdutks.series"  chart-legend="true"  
+                        chart-data="cDonutProdutks.data" chart-labels="cDonutProdutks.labels" chart-colors="cDonutProdutks.colors"></canvas>
+                </div>
+            </ms-widget-front>
+        </ms-widget>
+        <ms-widget layout="column" flex="33"  flex-xs="100">
+            <ms-widget-front class="white-bg">
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                    <div class="h3 widget-head">Cumuls par producteurs</div>
+                    <div>
+                        <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
+                            <md-tooltip>Exporter vers excel</md-tooltip>
+                            <md-icon md-font-icon="icon-export"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <div class="p-16">
+                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutProdutks.options"  chart-series="cDonutProdutks.series"  chart-legend="true"  
+                        chart-data="cDonutProducteurs.data" chart-labels="cDonutProducteurs.labels" chart-colors="cDonutProducteurs.colors"></canvas>
+                </div>
+            </ms-widget-front>
+        </ms-widget>
+        <ms-widget layout="column" flex="33"  flex-xs="100">
+            <ms-widget-front class="white-bg">
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                    <div class="h3 widget-head">Cumuls par station</div>
+                    <div>
+                        <md-button class="md-icon-button md-primary" ng-click="export(2)" aria-label="Export">
+                            <md-tooltip>Exporter vers excel</md-tooltip>
+                            <md-icon md-font-icon="icon-export"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <div class="p-16">
+                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutProdutks.options"  chart-series="cDonutProdutks.series"  chart-legend="true"  
+                        chart-data="cDonutStations.data" chart-labels="cDonutStations.labels" chart-colors="cDonutStations.colors"></canvas>
+                </div>
+            </ms-widget-front>
+        </ms-widget>
+    </div>
+</md-content>

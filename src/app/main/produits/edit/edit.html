@@ -15,15 +15,31 @@
             <md-tab layout-fill label="Informations principales">
               <md-tab-content class="inputs" md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding ms-scroll>
                 <div style="width:100%;">
+                  <div layout-gt-sm="row">  
+                      <md-input-container class="md-inline" flex-gt-sm>
+                        <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
+                            Actif
+                        </md-checkbox>
+                        </md-input-container>
+                        <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                            <label>Marché</label>
+                            <md-select  required ng-model="vm.item.marches" style="min-width:200px;">
+                                <md-option ng-value="0">
+                                    Local/Export
+                                </md-option>
+                                <md-option ng-value="1">
+                                    Local
+                                </md-option>
+                                <md-option ng-value="2">
+                                    Export
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
                     <div layout-gt-sm="row">
                       <md-input-container class="md-block" flex-gt-sm>
                         <label>Libellé</label>
                         <input required ng-model="vm.item.lib">
-                      </md-input-container>
-                      <md-input-container class="md-block" flex-gt-sm>
-                        <md-checkbox ng-model="vm.item.actif" aria-label="Actif">
-                          Actif
-                        </md-checkbox>
                       </md-input-container>
                       
                     </div>
