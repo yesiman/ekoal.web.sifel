@@ -3,7 +3,8 @@
     'use strict';
 
     angular
-        .module('app.clients', [
+        .module('app.facturation', [
+            'app.factu.edit','app.factu.list',
             'app.clients.list','app.clients.edit'
         ])
         .config(config);

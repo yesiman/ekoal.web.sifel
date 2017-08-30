@@ -15,16 +15,33 @@
             <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
   <div style="width:100%;">
       <form name="current.userForm">
-
         <div  layout-gt-md="row" layout-gt-sm="row">
           <md-input-container class="md-inline" flex-gt-sm>
             <label>Code</label>
             <input required type="text" ng-model="item.code">
           </md-input-container>
-          <md-input-container class="md-inline" flex-gt-sm>
-            <label>Libellé</label>
-            <input required type="text" ng-model="item.lib">
-          </md-input-container>
+          
+            <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                <label>Marché</label>
+                <md-select  required ng-model="item.marches" style="min-width:200px;">
+                    <md-option ng-value="0">
+                        Local/Export
+                    </md-option>
+                    <md-option ng-value="1">
+                        Local
+                    </md-option>
+                    <md-option ng-value="2">
+                        Export
+                    </md-option>
+                </md-select>
+            </md-input-container>
+          
+        </div>
+        <div layout-gt-sm="row">  
+            <md-input-container class="md-inline" flex-gt-sm>
+              <label>Libellé</label>
+              <input required type="text" ng-model="item.lib">
+            </md-input-container>
         </div>
         <div layout-gt-sm="row">
           <md-input-container class="md-inline" flex-gt-sm>

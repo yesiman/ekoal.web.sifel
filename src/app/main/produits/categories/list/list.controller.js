@@ -29,6 +29,23 @@
                 { field: 'code', displayName: 'Code' },
                 { field: 'lib', displayName: 'Libellé' },
                 { name: 'actions', cellEditableContition: false, cellTemplate: actionsHtml, width: "150" }];
+        $scope.gridOptions.onRegisterApi =  function(gridApi) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                if (sortColumns.length == 0) {
+                //paginationOptions.sort = null;
+                } else {
+                //paginationOptions.sort = sortColumns[0].sort.direction;
+                }
+                //getPage();
+            });
+            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+                $scope.paginationOptions.pageSize = pageSize;
+                $scope.loadPageAction(newPage);
+            });
+        }
+
+
         $scope.loadPageAction = function(id)
         {
             $rootScope.loadingProgress = true;

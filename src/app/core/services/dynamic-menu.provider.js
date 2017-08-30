@@ -297,7 +297,7 @@
                             weight: 5,
                             hidden: function()
                             {
-                                return ($rootScope.user.type > 3);
+                                return ($rootScope.user.type > 2);
                             }
                         });
                         msNavigationService.saveItem('facturation.clients', {
@@ -307,7 +307,7 @@
                             weight: 1,
                             hidden: function()
                             {
-                                return ($rootScope.user.type > 3);
+                                return ($rootScope.user.type > 2);
                             }
                         });
                         msNavigationService.saveItem('facturation.clients.list', {
@@ -317,16 +317,34 @@
                             weight: 1,
                             hidden: function()
                             {
-                                return ($rootScope.user.type > 3);
+                                return ($rootScope.user.type > 2);
                             }
                         });
-                        msNavigationService.saveItem('facturation.clients.new', {
+                        /*msNavigationService.saveItem('facturation.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.facturation_list',
+                            weight: 1,
+                            hidden: function()
+                            {
+                                return ($rootScope.user.type > 2);
+                            }
+                        });*/
+                        msNavigationService.saveItem('facturation.list', {
+                            title : 'Liste',
+                            icon  : 'icon-view-list',
+                            state    : 'app.factu_list',
+                            stateParams: {},
+                            weight: 1
+                        });
+                        msNavigationService.saveItem('facturation.new', {
                             title : 'Nouveau',
                             icon  : 'icon-plus-circle-outline',
-                            state    : 'app.clients_edit',
+                            state    : 'app.factu_edit',
                             stateParams: {id:-1},
                             weight: 1
                         });
+                        
                     }
                     else {
                         msNavigationService.deleteItem('agreage');

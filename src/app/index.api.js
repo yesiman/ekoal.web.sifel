@@ -319,6 +319,16 @@
                 get: {
                     method: 'GET'
                 }
+            }),
+            getAllByLib: $resource(api.baseUrl + 'clients/getAllByLib/:pid/:nbp/:req', {pid:'@pid',nbp:'@nbp',req:'@req'} , {
+                get: {
+                    method: 'GET'   
+                }
+            }),
+            getAllByIds: $resource(api.baseUrl + 'clients/getAllByIds/', {pid:'@ids'} , {
+                post: {
+                    method: 'POST'   
+                }
             })
         }
         // ORGAS
@@ -428,6 +438,29 @@
                 }
             }),
             getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',clients:'@clients',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
+                post: {
+                    method: 'POST'
+                }
+            })
+        }
+        // FACTURATION
+        api.facturation = {
+            add: $resource(api.baseUrl + 'facturation/add/:id', {id:'@id',bon:'@bon'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            get: $resource(api.baseUrl + 'facturation/get/:id', {id:'@id'} , {
+                get: {
+                    method: 'GET'
+                }
+            }),
+            delete: $resource(api.baseUrl + 'facturation/delete/:id', {id:'@id'} , {
+                delete: {
+                    method: 'DELETE'
+                }
+            }),
+            getAll: $resource(api.baseUrl + 'facturation/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',clients:'@clients',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
                 post: {
                     method: 'POST'
                 }

@@ -2847,7 +2847,7 @@ _html2canvas.Renderer.Canvas = function(options) {
 
     Util.log("html2canvas: Renderer: Canvas renderer done - returning canvas obj");
 
-    if (options.elements.length === 1) {
+    if ((options.elements.length === 1)) {
       if (typeof options.elements[0] === "object" && options.elements[0].nodeName !== "BODY") {
         // crop image to the bounds of selected (single) element
         bounds = _html2canvas.Util.Bounds(options.elements[0]);
@@ -2856,7 +2856,19 @@ _html2canvas.Renderer.Canvas = function(options) {
         newCanvas.height = Math.ceil(bounds.height);
         ctx = newCanvas.getContext("2d");
 
-        ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
+        if (bounds.width>8192) {
+            var imgData = canvas.getContext("2d").getImageData(bounds.left, bounds.top, bounds.width, bounds.height);
+            ctx.putImageData(imgData, 0, 0);
+        }
+        else {
+            console.log("bounds.left",bounds.left);
+            console.log("bounds.top",bounds.top);
+            console.log("bounds.width",bounds.width);
+            console.log("bounds.height",bounds.height);
+            ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
+        }
+
+        //ctx.drawImage(canvas, bounds.left, bounds.top, bounds.width, bounds.height, 0, 0, bounds.width, bounds.height);
         canvas = null;
         return newCanvas;
       }

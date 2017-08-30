@@ -19,16 +19,31 @@
         {
             return (data.isPal?data.no:"");
         }
+        $scope.getPaleteConditHtml = function(data)
+        {
+            console.log(data);
+            return (data.isPal?data.condit.lib:"");
+        }
         $scope.getProdHtml = function(data)
         {
             return (data.isPal?"":data.produit.lib);
         }
+        $scope.getProdCategHtml = function(data)
+        {
+            return (data.isPal?"":data.categorie.lib);
+        }
         var prodCellHtml = '<div class="ui-grid-cell-contents">';
             prodCellHtml += '{{grid.appScope.getProdHtml(row.entity)}}';
             prodCellHtml += '</div>';
+        var prodCategCellHtml = '<div class="ui-grid-cell-contents">';
+            prodCategCellHtml += '{{grid.appScope.getProdCategHtml(row.entity)}}';
+            prodCategCellHtml += '</div>';
         var palCellHtml = '<div class="ui-grid-cell-contents">';
             palCellHtml += '{{grid.appScope.getPaleteHtml(row.entity)}}';
             palCellHtml += '</div>';
+        var palConditCellHtml = '<div class="ui-grid-cell-contents">';
+            palConditCellHtml += '{{grid.appScope.getPaleteConditHtml(row.entity)}}';
+            palConditCellHtml += '</div>';
         var actionsHtml = '<div class="ui-grid-cell-contents text-center">';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.showPlanif($event,row.entity)"><md-tooltip>Editer</md-tooltip><md-icon class="edit" md-font-icon="icon-table-edit"></md-icon></md-button>';
         actionsHtml += '<md-button class="md-icon-button" aria-label="Settings" ng-click="grid.appScope.removePlanifLine($event,row.entity)"><md-tooltip>Supprimer</md-tooltip><md-icon class="rem" md-font-icon="icon-table-row-remove"></md-icon></md-button>';
@@ -44,13 +59,15 @@
         $scope.gridProduits.useExternalSorting = false;
         $scope.gridProduits.columnDefs = [
             { field: 'iid', enableCellEdit: false, width: '0%' },
-            { field: 'no',grouping: { groupPriority: 0 } , sort:{priority:0}, displayName: 'N° palette', cellTemplate:palCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
+            { field: 'no', sort:{priority:0}, displayName: 'N° palette', cellTemplate:palCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
+            { field: 'condit', sort:{priority:0}, displayName: 'Conditionnement', cellTemplate:palConditCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
             { field: 'produit', displayName: 'Produit', cellTemplate:prodCellHtml, enableCellEdit: false },
-            { field: 'poidNet', displayName: 'Poid brut (kgs)', cellTemplate:poidNetHtml, enableCellEdit: true, type: 'number' },
+            { field: 'calibre', displayName: 'Calibre', enableCellEdit: false },
+            { field: 'categorie', displayName: 'Categorie', cellTemplate:prodCategCellHtml, enableCellEdit: false },
+            { field: 'poidNet', displayName: 'Poid brut (kgs)', cellTemplate:poidNetHtml, enableCellEdit: false, type: 'number' },
             { field: 'tare', displayName: 'Tare (kgs)', enableCellEdit: true, type: 'number' },
             { field: 'poid', displayName: 'Poid net (kgs)', enableCellEdit: true, type: 'number' },
-            { field: 'prixAchat', displayName: 'Prix achat', enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return !$scope.row.entity.isPal;} },
-            { field: 'prixVente', displayName: 'Prix vente', enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return !$scope.row.entity.isPal;} }];
+            { field: 'colisNb', displayName: 'Nombre de colis', enableCellEdit: true, type: 'number' }];
         $scope.gridProduits.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -76,8 +93,8 @@
                         
                         if (rowEntity.iid.indexOf("/") > -1)
                         {
-                            angular.forEach(pal.produits, function(value) {
-                                if (rowEntity.iid.indexOf("/" + value.produit._id) > -1)
+                            angular.forEach(pal.produits, function(value, key) {
+                                if (rowEntity.iid == pal.no + "/" + value.produit._id + "/" + key)
                                 {
                                     value[colDef.name] = newValue;
                                 }
@@ -92,6 +109,7 @@
         }
 
 
+        console.log(bonResolv);
 
         $scope.item = bonResolv;
         $scope.gridProduits.data = [];
@@ -100,8 +118,8 @@
             pal.isPal = true;
             pal.iid = pal.no;
             $scope.gridProduits.data.push(pal);
-            angular.forEach(pal.produits, function(value) {
-                value.iid = pal.no + "/" + value.produit._id;
+            angular.forEach(pal.produits, function(value,key) {
+                value.iid = pal.no + "/" + value.produit._id + "/" + key;
                 $scope.gridProduits.data.push(value);
             });
         });
@@ -143,8 +161,11 @@
         $scope.doReport = function(type) {
             reports.ba.make(exportthis,$scope.item,type);
         };
-        $scope.doFact = function(type) {
-            reports.fact.make(exportthis,$scope.item,type);
+        $scope.docFact = function(type) {
+            //reports.cfact.make(exportthis,$scope.item,type);
+        };
+        $scope.dopFact = function(type) {
+            //reports.pfact.make(exportthis,$scope.item,type);
         };
         $scope.querySearch = function(query, type) {
             var deferred = $q.defer();
@@ -156,38 +177,31 @@
                 case 1:
                     methodBase = api.stations.getAll;
                     methodArgs = { pid:1,nbp:1000 };
-                    methodBase.get(methodArgs,
-                        function (response)
-                        {
-                            deferred.resolve( response.items );
-                        },
-                        // Error
-                        function (response)
-                        {
-                            console.error(response);
-                            //return null;
-                        }
-                    );
                     break;
                 case 2:
                     methodBase = api.users.getAllByType;
                     methodArgs = { pid:1,nbp:1000, idt:4,req:$scope.item.producteurSearch };
-                    methodBase.get(methodArgs,
-                        function (response)
-                        {
-                            deferred.resolve( response.items );
-                        },
-                        // Error
-                        function (response)
-                        {
-                            console.error(response);
-                            //return null;
-                        }
-                    );
+                    break;
+                case 3:
+                    methodBase = api.clients.getAll;
+                    methodArgs = { pid:1,nbp:1000 };
                     break;
                 
             }
-           
+            
+            methodBase.get(methodArgs,
+                function (response)
+                {
+                    deferred.resolve( response.items );
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    //return null;
+                }
+            );
+
             return deferred.promise;
         }
     }

@@ -46,7 +46,7 @@
         };
     }
     /** @ngInject */
-    function listHeadButtonsDirective()
+    function listHeadButtonsDirective($sce)
     {
         return {
             restrict   : 'A',
@@ -55,6 +55,10 @@
             link:function (scope, element, attrs) {
                 scope.upBtClicked = function() {
                     angular.element(document.querySelector('#fileInput')).click();
+                }
+                if (scope.head.custActionsHtml)
+                {
+                    scope.head.custActionsHtml = $sce.trustAsHtml(scope.head.custActionsHtml);  
                 }
             }
         };

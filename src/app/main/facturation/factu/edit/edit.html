@@ -1,0 +1,123 @@
+<div id="editClient" class="page-layout simple fullwidth  doc-page element-doc-page">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div form-head-ico-title layout="row" layout-align="start center"></div>  
+        <div edit-form-heads-buttons  class="right-side layout-row" layout="row" layout-align="start center"></div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+        <div id="exportthis">
+        </div>
+        <form name="current.userForm"  layout-fill>
+            <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+                <md-tab label="Informations principales"  layout-fill>
+                    <md-tab-content class="inputs"   ms-scroll md-background-bg md-theme="docs-dark"   flex layout-fill layout-padding>
+                        <div style="width:100%;">
+                            <div layout-gt-sm="row">  
+                                <md-input-container  class="md-input-invalid" class="md-inline" flex-gt-sm>
+                                    <label>Type de facture</label>
+                                    <md-select  required ng-model="item.type" style="min-width:200px;">
+                                        <md-option ng-value="0">
+                                            Facturation client
+                                        </md-option>
+                                        <md-option ng-value="1">
+                                            Auto-facturation producteur
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-inline formDateInput" flex>
+                                    <h4>Date document</h4>
+                                    <md-datepicker ng-model="item.dateDoc"></md-datepicker>
+                                </md-input-container>
+                            </div>
+                            <div layout-gt-sm="row">
+                                <!--CLIENT-->
+                                <md-autocomplete ng-if="item.type == 0" flex required 
+                                    md-input-name="autocompleteField"
+                                    md-input-minlength="2"
+                                    md-input-maxlength="100"
+                                    md-no-cache="ctrl.noCache"
+                                    md-selected-item="searchs.clients.client"
+                                    md-search-text="searchs.clients.search"
+                                    md-items="item in querySearch(searchs.clients.search,1)"
+                                    md-item-text="item.code + ' - ' + item.name" 
+                                    md-require-match 
+                                    md-floating-label="Sélection client"
+                                    md-selected-item-change="searchs.clients.change(item)">
+                                    <md-item-template>
+                                        <span md-highlight-text="searchs.clients.search">{{item.code}} - {{item.name}}</span>
+                                    </md-item-template>
+                                    <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                        <div ng-message="required">You <b>must</b> have a favorite state.</div>
+                                        <div ng-message="md-require-match">Please select an existing state.</div>
+                                        <div ng-message="minlength">Your entry is not long enough.</div>
+                                        <div ng-message="maxlength">Your entry is too long.</div>
+                                    </div>
+                                </md-autocomplete>
+                                <!--PRODUCTEUR-->
+                                <md-autocomplete ng-if="item.type == 1" flex required 
+                                    md-input-name="autocompleteField"
+                                    md-input-minlength="2"
+                                    md-input-maxlength="100"
+                                    md-no-cache="ctrl.noCache"
+                                    md-selected-item="searchs.producteurs.producteur"
+                                    md-search-text="searchs.producteurs.search"
+                                    md-items="item in querySearch(searchs.producteurs.search,2)"
+                                    md-item-text="item.codeAdh + ' - ' + item.name + ' ' + item.surn" 
+                                    md-require-match 
+                                    md-floating-label="Sélection producteur"
+                                    md-selected-item-change="searchs.producteurs.change(item)">
+                                    <md-item-template>
+                                        <span md-highlight-text="searchs.producteurs.search">{{item.codeAdh}} - {{item.name}} + " " + {{item.surn}}</span>
+                                    </md-item-template>
+                                    <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                                        <div ng-message="required">You <b>must</b> have a favorite state.</div>
+                                        <div ng-message="md-require-match">Please select an existing state.</div>
+                                        <div ng-message="minlength">Your entry is not long enough.</div>
+                                        <div ng-message="maxlength">Your entry is too long.</div>
+                                    </div>
+                                </md-autocomplete>
+                            </div>
+                        </div>
+                    </md-tab-content>
+                </md-tab>
+                
+                <md-tab ng-if="searchs.clients.client || searchs.producteurs.producteur" layout-fill>
+                     <md-tab-label>
+                        <span style="margin-right:25px;">Bons à facturer</span>
+                        <span class="badge white-fg" style="background: rgb(244, 67, 54);">{{vm.gridBons.data.length}}</span>   
+                    </md-tab-label>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div id="gridBons" style="display:block;" ui-grid-selection layout-fill ui-grid="gridBons"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab label="Tarification" ng-if="item.bons.length > 0" layout-fill>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <div id="gridTarifs" style="display:block;" ui-grid-edit layout-fill ui-grid="gridTarifs"  class="grid"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab label="Documents" ng-if="item.bons.length > 0" layout-fill>
+                    <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                        <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                            <md-button class="md-button md-primary" ng-click="docFact('ff')">
+                                <md-tooltip>Générer facture</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                Facture
+                            </md-button>
+                            <md-button class="md-button md-primary" ng-click="dopFact('ff')">
+                                <md-tooltip>Générer bon de livraison</md-tooltip>
+                                <md-icon md-font-icon="icon-plus"></md-icon>
+                                Bon de livraison
+                            </md-button>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </form>
+    </div>       
+</div>

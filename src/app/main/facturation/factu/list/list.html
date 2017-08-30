@@ -1,0 +1,80 @@
+<div id="listBons" class="page-layout simple left-sidenav inner-sidenav">
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+        <div form-head-ico-title-with-sideb layout="row" layout-align="start center"></div> 
+        <div list-head-buttons class="right-side layout-row" layout="row" layout-align="start center"></div>  
+    </div>
+    <!-- / HEADER -->
+    <div class="content" md-background-bg layout="row"  ms-scroll>
+        
+        <md-sidenav class="sidenav main-sidenav md-white-bg" md-is-locked-open="$mdMedia('gt-md')" id="sidenav" md-component-id="sidenav" ms-scroll
+                    ms-sidenav-helper>
+            <md-content class="content" ms-scroll>
+                <md-list ng-cloak>
+                    <md-subheader class="md-no-sticky">N° LTA</md-subheader>
+                    <md-list-item>
+                        <input type="text" ng-model="filters.lta" ng-change="loadPageAction(1)" placeholder="Premiers charactères..."/>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Dates</md-subheader>
+                    <md-list-item>
+                        <p>Du</p>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateFrom" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Au</p>
+                        <md-datepicker class="md-secondary" ng-model="filters.dateTo" ng-change="loadPageAction(1)" md-placeholder="Enter date"></md-datepicker>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">Producteurs</md-subheader>
+                    <md-list-item>
+                        <md-autocomplete ckass="autoc-filter"
+                            md-selected-item="filters.producteurs.selectedItem" 
+                            md-search-text="filters.producteurs.searchText"
+                            md-items="item in querySearch(filters.producteurs.searchText,2)"
+                            md-item-text="item.name"
+                            placeholder="Premiers charactères..."
+                            md-selected-item-change="filters.producteurs.change(item)">
+                            <md-item-template>
+                                <span class="item-title">
+                                    <!--icon-cube-unfolded-->
+                                    <md-icon md-font-icon="icon-cube-outline"></md-icon>
+                                    <span> {{item.name}} </span>
+                                </span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-list-item>
+                    <md-list-item ng-repeat="p in filters.producteurs.selectedItems" tag-bg item="p">
+                        <p> {{ p.codeAdh }} - {{ p.name }} </p>
+                        <md-icon class="md-secondary" ng-click="removeProducteur(p._id)" aria-label="Remove"  md-font-icon="icon-close"></md-icon>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    
+                </md-list>
+                
+            </md-content>
+
+            
+
+        </md-sidenav>
+
+         <md-tabs  layout-fill flex md-border-bottom md-selected="$scope.data.selectedIndex">
+            <md-tab label="Clients" layout-fill>
+                <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                    <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                        <div id="gridClients"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridClients"  class="grid"></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Producteurs" layout-fill>
+                <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
+                    <md-content flex layout-fill layout="column" style="overflow:hidden;">
+                        <div id="gridProducteurs"  flex layout-fill ui-grid-pagination  layout="column"  ui-grid="gridProducteurs"  class="grid"></div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+         </md-tabs>       
+    </div>
+    <!-- / CONTENT -->
+
+</div>
