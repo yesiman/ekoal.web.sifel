@@ -14,7 +14,26 @@
         // Data
         vm.dashboardData = DashboardData;
         vm.chat = [];
- 
+        
+        $scope.import = function(element) {
+            var file = element.files[0];
+            console.log("file",file);
+            var uploadUrl = "/multer";
+            var fd = new FormData();
+            fd.append('file', file);
+            $http.post("https://sifel-srv.herokuapp.com/importer/rulesi/",fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+                alert("ok");
+                //$scope.loadPageAction(1);
+            })
+            .error(function(){
+            console.log("error!!");
+            });
+        }
+
         var script = document.createElement("script");
                 script.type = "text/javascript";
                 script.id = "googleMaps";

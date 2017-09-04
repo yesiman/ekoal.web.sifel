@@ -242,7 +242,7 @@
                 }
             );
         }
-        $scope.print = function() {
+        $scope.doFact = function() {
             if ($scope.item.type == '0')
             {reports.cfact.make(exportthis,$scope.item,"");}
             else {

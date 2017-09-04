@@ -7,7 +7,7 @@
         .controller('FactuListController',FactuListController);
 
     /** @ngInject */
-    function FactuListController($scope,$state, api,$mdDialog,$rootScope,standardizer,$q)
+    function FactuListController($scope,$state, api,$mdDialog,$rootScope,standardizer,$q,$filter)
     {
         var vm = this;
         // Data
@@ -75,34 +75,36 @@
             }
         }
 
-        $scope.getStatusIcon = function(it) {
-            if (it.factu)
+        $scope.getProducteur = function(it) {
+            for (var i = 0;i < $scope.producteurs.length;i++)
             {
-                return 'icon-check-circle';
-            }
-            else {
-                return 'icon-close-circle-outline';
+                var v = $scope.producteurs[i];
+                if(v._id == it)
+                {
+                    return v.name;
+                }
             }
         }
-        $scope.getStatusToolT = function(it) {
-            if (it.factu)
+        $scope.getClient = function(it) {
+            for (var i = 0;i < $scope.clients.length;i++)
             {
-                return 'Facture éditée';
-            }
-            else {
-                return 'Facture non éditée';
+                var v = $scope.clients[i];
+                if(v._id == it)
+                {
+                    return v.name;
+                }
             }
         }
 
-        var typeHtml = '<div class="ui-grid-cell-contents text-center">';
-        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getStatusToolT(row.entity)}}</md-tooltip><md-icon class="warn" md-font-icon="{{grid.appScope.getStatusIcon(row.entity)}}"></md-icon></md-button>';
-        typeHtml += '</div>'
+        var clientHtml = '<div class="ui-grid-cell-contents">';
+        clientHtml += '{{grid.appScope.getClient(row.entity.client)}}';
+        clientHtml += '</div>'
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridClients = standardizer.getGridOptionsStd();
         $scope.gridClients.columnDefs = [
                 { field: 'dateDoc', displayName: 'Date' },
                 { field: 'numFact', displayName: 'Facture n°' },
-                { field: 'client', displayName: 'Client' },
+                { field: 'client', displayName: 'Client', cellTemplate:clientHtml },
                 { field: 'nbBons', displayName: 'Nombre bons liés' },
                 { field: 'ttc', displayName: 'Montant total' },
                 { field: 'status', displayName:"Status"},
@@ -127,12 +129,14 @@
                 //$scope.getParcelles(newPage,pageSize);
             });
         }
-
+        var producteurHtml = '<div class="ui-grid-cell-contents">';
+        producteurHtml += '{{grid.appScope.getProducteur(row.entity.producteur)}}';
+        producteurHtml += '</div>'
         $scope.gridProducteurs = standardizer.getGridOptionsStd();
         $scope.gridProducteurs.columnDefs = [
                 { field: 'dateDoc', displayName: 'Date' },
                 { field: 'numFact', displayName: 'Facture n°' },
-                { field: 'producteur', displayName: 'Producteur' },
+                { field: 'producteur', displayName: 'Producteur', cellTemplate:producteurHtml },
                 { field: 'nbBons', displayName: 'Nombre bons liés' },
                 { field: 'ttc', displayName: 'Montant total' },
                 { field: 'status', displayName:"Status"},
@@ -232,14 +236,21 @@
                     console.log(response);
                     $scope.maxSize = 5;
                     $scope.totalItems = response.count;
-                    $scope.gridClients.totalItems = response.count;
-                    $scope.gridClients.data = response.items;
 
-                    $scope.gridProducteurs.totalItems = response.count;
-                    $scope.gridProducteurs.data = response.items;
+                    var cClis = $filter('filter')(response.items, {type:'0'});
+                    var cProd = $filter('filter')(response.items, {type:'1'});
+
+                    $scope.producteurs = response.producteurs;
+                    $scope.clients = response.clients;
+
+                    $scope.gridClients.totalItems = cClis.length;
+                    $scope.gridClients.data = cClis;
+
+                    $scope.gridProducteurs.totalItems = cProd.length;
+                    $scope.gridProducteurs.data = cProd;
                     
-                    $scope.paginationOptions.total = Math.ceil(response.count / $scope.paginationOptions.pageSize);
-                    $scope.items = response.items;
+                    //$scope.paginationOptions.total = Math.ceil(response.count / $scope.paginationOptions.pageSize);
+                    //$scope.items = response.items;
                     $rootScope.loadingProgress = false;
                 },
                 // Error
