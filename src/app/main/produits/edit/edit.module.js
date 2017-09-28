@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.produits.edit', ['color.picker'])
+        .module('app.produits.edit', ['color.picker','ui.grid.selection'])
         .config(config);
 
     /** @ngInject */

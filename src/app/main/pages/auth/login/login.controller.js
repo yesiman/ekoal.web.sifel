@@ -12,8 +12,8 @@
         //var vm = this;
         // Data
         $scope.user = {
-            login:"",
-            pass:""
+            login:"nretheve@hotmail.fr",
+            pass:"!nico2017"
         };
         // Methods
         $scope.login = function() {
@@ -44,7 +44,7 @@
             );
         }
         
-        //$scope.login();
+        $scope.login();
         //////////
     }
 })();

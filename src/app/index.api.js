@@ -422,7 +422,27 @@
                     method: 'POST'
                 }
             }),
+            getStatProduitsExp: $resource(api.baseUrl + 'bons/getStatProduitsExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatProducteursExp: $resource(api.baseUrl + 'bons/getStatProducteursExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatStationsExp: $resource(api.baseUrl + 'bons/getStatStationsExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
             add: $resource(api.baseUrl + 'bons/add/:id', {id:'@id',bon:'@bon'} , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getLc: $resource(api.baseUrl + 'bons/getLc', {bons:'@bons'} , {
                 post: {
                     method: 'POST'
                 }
@@ -437,7 +457,7 @@
                     method: 'DELETE'
                 }
             }),
-            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',lta:'@lta',produits:'@produits',producteurs:'@producteurs',clients:'@clients',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
+            getAll: $resource(api.baseUrl + 'bons/getAll/:pid/:nbp', {pid:'@pid',nbp:'@nbp',noLock:'@noLock',lta:'@lta',produits:'@produits',producteurs:'@producteurs',clients:'@clients',dateFrom:'@dateFrom',dateTo:'@dateTo'} , {
                 post: {
                     method: 'POST'
                 }

@@ -54,7 +54,7 @@
                         useExternalPagination:true,
                         useExternalSorting: true,
                         enableRowSelection: true,
-                        enableSelectAll: true,
+                        enableSelectAll: false,
                         enableColumnMenus: false,
                         enableSorting: false,
                         saveSelection: false,

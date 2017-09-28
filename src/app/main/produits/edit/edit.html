@@ -117,7 +117,7 @@
                   <div style="display:block;">
                     <input type="text" ng-model="vm.ruleTxtFilter" ng-change="vm.loadRulesPage(1,vm.rulePsize)" placeholder="Filtrer..."/>
                   </div>
-                  <div id="gridCondits"  style="display:block;" ui-grid-pagination layout-fill ui-grid="vm.gridConditsOptions"  class="grid"></div>
+                  <div id="gridCondits"  style="display:block;" ui-grid-selection  ui-grid-pagination layout-fill ui-grid="vm.gridConditsOptions"  class="grid"></div>
                 </md-content>
               </md-tab-body>
             </md-tab>

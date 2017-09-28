@@ -17,7 +17,8 @@
         };
         $scope.id = $stateParams.id;
         $scope.item = factuResolv;
-        
+        $scope.item.dateDoc = new Date($scope.item.dateDoc);
+
         $scope.searchs = {
             clients:{
                 change:function(it) {
@@ -39,7 +40,8 @@
             $scope.item.bons = [];
             var methodArgs = {
                 pid:1,
-                nbp:1000
+                nbp:1000,
+                noLock:$scope.item._id
             };
             if (type == 'c')
             {
@@ -49,15 +51,24 @@
                 methodArgs.producteurs = [it._id];
             }
             api.bons.getAll.post(methodArgs,
-                // Success
+                // Success  
                 function (response)
                 {
                     $scope.maxSize = 5;
+                    $scope.produits = response.produits;
                     $scope.totalItems = response.count;
                     $scope.gridBons.totalItems = response.count;
                     $scope.gridBons.data = response.items;
                     $scope.gridBons.total = Math.ceil(response.count / $scope.gridBons.pageSize);
                     //$scope.items = response.items;
+                    if ($scope.item._id)
+                    {
+                        $scope.gridApi.grid.modifyRows($scope.gridBons.data);
+                        for (var i = 0;i < response.items.length;i++)
+                        {
+                            $scope.gridApi.selection.selectRow($scope.gridBons.data[i]);
+                        }
+                    }
                     $rootScope.loadingProgress = false;
                 },
                 // Error
@@ -155,10 +166,27 @@
             });
         }
         //
+
+        $scope.getProduit = function(it) {
+            for (var i = 0;i < $scope.produits.length;i++)
+            {
+                var v = $scope.produits[i];
+                if(v._id == it._id)
+                {
+                    it.lib = v.lib;
+                    return v.lib;
+                }
+            }
+        }
+
+        var produitHtml = '<div class="ui-grid-cell-contents">';
+        produitHtml += '{{grid.appScope.getProduit(row.entity)}}';
+        produitHtml += '</div>'
+
         actionsHtml = standardizer.getHtmlActions();
         $scope.gridTarifs = standardizer.getGridOptionsStd();
         $scope.gridTarifs.columnDefs = [
-                { field: 'produit', displayName: 'Produit', enableCellEdit: false },
+                { field: 'produit.lib', displayName: 'Produit', cellTemplate:produitHtml, enableCellEdit: false },
                 { field: 'calibre', displayName: 'Calibre', enableCellEdit: false },
                 { field: 'poid', displayName: 'Poid net', enableCellEdit: false },
                 { field: 'tare', displayName: 'Tare', enableCellEdit: false },
@@ -216,6 +244,7 @@
             return deferred.promise;
         }
         $scope.valid = function() {
+            $scope.item.dateDoc = new Date($scope.item.dateDoc);
             if ($scope.item.type == '0')
             {
                 $scope.item.client = $scope.item.client._id;
@@ -242,17 +271,52 @@
                 }
             );
         }
+
+        $scope.doLc = function() {
+            $rootScope.loadingProgress = true;
+            var bs = [];
+            for(var i = 0;i < $scope.item.bons.length;i++)
+            {
+                bs.push($scope.item.bons[i]._id);
+            }
+            api.bons.getLc.post({bons:bs},
+                // Success
+                function (response)
+                {
+                    var anchor = angular.element('<a/>');
+                    anchor.attr({
+                        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
+                        target: '_blank',
+                        download: 'filename.csv'
+                    })[0].click();
+                    $rootScope.loadingProgress = false; 
+                },
+                // Error
+                function (response)
+                {
+                    $rootScope.loadingProgress = false;
+                }
+            );
+        }
         $scope.doFact = function() {
             if ($scope.item.type == '0')
             {reports.cfact.make(exportthis,$scope.item,"");}
             else {
                 reports.pfact.make(exportthis,$scope.item,"");
             }
+            for (var b in $scope.gridBons.data){
+                reports.ba.make(exportthis,$scope.gridBons.data[b],"ba");
+            }
+        }
+        $scope.doBl = function() {
+            for (var b in $scope.gridBons.data){
+                reports.ba.make(exportthis,$scope.gridBons.data[b],"bl");
+            }
+            
         }
         //
         if($scope.item._id)
         {
-            
             if ($scope.item.type == '0')
             {
                 $scope.searchs.clients.client = $scope.item.client;

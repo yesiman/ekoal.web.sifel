@@ -75,27 +75,47 @@
             }
         }
 
-        $scope.getStatusIcon = function(it) {
-            if (it.factu)
+         $scope.getFCStatusClass = function(it) {
+            if (it.facturation && it.facturation.client)
             {
-                return 'icon-check-circle';
+                return 'edit';
             }
             else {
-                return 'icon-close-circle-outline';
+                return 'warn';
             }
         }
-        $scope.getStatusToolT = function(it) {
-            if (it.factu)
+        $scope.getFPStatusClass = function(it) {
+            if (it.facturation && it.facturation.producteur)
             {
-                return 'Facture éditée';
+                return 'edit';
             }
             else {
-                return 'Facture non éditée';
+                return 'warn';
+            }
+        }
+        $scope.getFCStatusToolT = function(it) {
+            if (it.facturation && it.facturation.client)
+            {
+                return 'Facture client éditée';
+            }
+            else {
+                return 'Facture client non éditée';
+            }
+        }
+        $scope.getFPStatusToolT = function(it) {
+            if (it.facturation && it.facturation.producteur)
+            {
+                return 'Facture producteur éditée';
+            }
+            else {
+                return 'Facture producteur non éditée';
             }
         }
 
         var typeHtml = '<div class="ui-grid-cell-contents text-center">';
-        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getStatusToolT(row.entity)}}</md-tooltip><md-icon class="warn" md-font-icon="{{grid.appScope.getStatusIcon(row.entity)}}"></md-icon></md-button>';
+        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getFPStatusToolT(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getFPStatusClass(row.entity)}}" md-font-icon="icon-arrow-left-bold-circle-outline"></md-icon></md-button>';
+        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getFCStatusToolT(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getFCStatusClass(row.entity)}}" md-font-icon="icon-arrow-right-bold-circle-outline"></md-icon></md-button>';
+        
         typeHtml += '</div>'
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();

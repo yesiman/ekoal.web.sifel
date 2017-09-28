@@ -47,16 +47,17 @@
                 vm.rulePsize = pageSize;
                 vm.loadRulesPage(newPage,pageSize);
             });
+            
         }
-
+        //vm.selIds = [];
         vm.gridConditsOptions = standardizer.getGridOptionsStd();
         vm.gridConditsOptions.columnDefs = [
-            { field: 'selected', name: '',cellEditableContition: false, width:"40",type: 'boolean',cellTemplate:'<div class="ui-grid-cell-contents text-center"><md-checkbox ng-click="grid.appScope.addProducteur(row.entity._id)" ng-model="row.entity.selected" ng-checked="grid.appScope.isConditForMe(row.entity)" class="md-warn"></md-checkbox></div>' },
+            { field: 'code', sort:{priority:0}, displayName: 'Code' },   
             { field: 'lib', sort:{priority:0}, displayName: 'Libellé' }];   
                
         vm.gridConditsOptions.onRegisterApi =  function(gridApi) {
-            $scope.gridApi = gridApi;
-            $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+            $scope.gridApiC = gridApi;
+            $scope.gridApiC.core.on.sortChanged($scope, function(grid, sortColumns) {
                 if (sortColumns.length == 0) {
                 //paginationOptions.sort = null;
                 } else {
@@ -64,12 +65,37 @@
                 }
                 //getPage();
             });
-            gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+            $scope.gridApiC.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
                 vm.conditPsize = pageSize;
                 vm.loadConditsPage(newPage,pageSize);
             });
+            $scope.gridApiC.selection.on.rowSelectionChanged($scope,function(row){
+                if (!row.isSelected)
+                {
+                    for (var i = 0;i < vm.item.conditionnements.length;i++) {
+                        if (vm.item.conditionnements[i] == row.entity._id)
+                        {
+                            vm.item.conditionnements.splice(i,1);
+                        }
+                    }
+                }
+                else{
+                    vm.item.conditionnements.push(row.entity._id);
+                }
+                    
+                //}
+            });
+            $scope.gridApiC.core.on.rowsRendered($scope,function() {
+                for (var selId = 0;selId < vm.item.conditionnements.length;selId++) {
+                    for (var rowId = 0;rowId < vm.gridConditsOptions.data.length;rowId++) {
+                        if (vm.item.conditionnements[selId] == vm.gridConditsOptions.data[rowId]._id) {
+                            $scope.gridApiC.selection.selectRow(vm.gridConditsOptions.data[rowId]);
+                        }
+                    }
+                }
+            });
         }
-
+        //
         if (vm.item.objectif)
         {
             vm.mois = vm.item.objectif.lines;
@@ -77,6 +103,11 @@
         else {
             vm.mois = monthsResolv;
         }
+        if (!vm.item.conditionnements)
+        {
+            vm.item.conditionnements = [];
+        }
+        //
         vm.cpOptions = {
             format: 'hex',
             swatchOnly:true 
@@ -128,8 +159,15 @@
                 // Success
                 function (response)
                 {
+                    if (vm.item._id)
+                    {
+                        console.log(vm.item);
+                        //vm.selIds = vm.item.conditionnements;        
+                    }
+
                     vm.gridConditsOptions.totalItems = response.count;
                     vm.gridConditsOptions.data = response.items;
+                    
                     $rootScope.loadingProgress = false;
                 },
                 // Error
@@ -168,6 +206,8 @@
         $scope.id = $stateParams.id;
         $scope.valid = function(){
             vm.item.objectif = vm.mois;
+            //console.log("$scope.selIds",vm.selIds);
+            //vm.item.conditionnements = vm.selIds;
             api.products.add.post({ id:$scope.id, product: vm.item } ,
                 // Success
                 function (response)

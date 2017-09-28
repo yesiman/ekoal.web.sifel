@@ -35,7 +35,7 @@
                         colors: [],
                         data:[],
                         options:{
-                            legend: {display: true}
+                            legend: {display: false}
                         }
                     };
                     scope.cDonutStations = {
@@ -44,7 +44,7 @@
                         colors: [],
                         data:[],
                         options:{
-                            legend: {display: true}
+                            legend: {display: false}
                         }
                     };
                     scope.cDonutProdutks = {
@@ -53,7 +53,7 @@
                         colors: [],
                         data:[],
                         options:{
-                            legend: {display: true}
+                            legend: {display: false}
                         }
                     };
 

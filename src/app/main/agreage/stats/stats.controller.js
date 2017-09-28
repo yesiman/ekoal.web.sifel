@@ -152,13 +152,115 @@
         
         //
         $scope.export = function(chartId) { 
+            var deferred = $q.defer();
+            //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+            var methodBase;
+            var methodArgs = { producteurs:[],dateFrom:$scope.filters.dateFrom,
+                        dateTo:$scope.filters.dateTo  };
+            var filnam;
             switch (chartId)
             {
                 case 1:
-                    
+                    methodBase = api.bons.getStatProducteursExp;
+                    filnam = "cumuls_producteurs_";
+                    break;
+                case 2:
+                    methodBase = api.bons.getStatProduitsExp;
+                    filnam = "cumuls_produits_";
+                    break;
+                case 3:
+                    methodBase = api.bons.getStatStationsExp;
+                    filnam = "cumuls_stations_";
                     break;
             }
-            return exp;
+            methodBase.post(methodArgs,
+                function (response)
+                {
+                    var anchor = angular.element('<a/>');
+                    anchor.attr({
+                        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
+                        target: '_blank',
+                        download: filnam + ".csv"
+                    })[0].click();
+                },
+                // Error
+                function (response)
+                {
+                    console.error(response);
+                    //return null;
+                }
+            );
+            return deferred.promise;
+
+
+
+            var deferred = $q.defer();
+            //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+            var methodBase;
+            var methodArgs;
+            switch (chartId)
+            {
+                case 1:
+                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
+                        dateTo:$scope.filters.dateTo  }
+                     api.bons.getStatProducteursExp.post( args,
+                        // Success
+                        function (response)
+                        {
+                            
+                        },
+                        // Error
+                        function (response)
+                        {
+                            //$rootScope.loadingProgress = false;
+                        }
+                     );
+                    break;
+                case 2:
+                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
+                        dateTo:$scope.filters.dateTo  }
+                     api.bons.getStatProduitsExp.post( args,
+                        // Success
+                        function (response)
+                        {
+                            var anchor = angular.element('<a/>');
+                            anchor.attr({
+                                href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
+                                target: '_blank',
+                                download: 'filename.csv'
+                            })[0].click();
+                        },
+                        // Error
+                        function (response)
+                        {
+                            //$rootScope.loadingProgress = false;
+                        }
+                     );
+                    break;
+                case 3:
+                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
+                        dateTo:$scope.filters.dateTo  }
+                     api.bons.getStatStationsExp.post( args,
+                        // Success
+                        function (response)
+                        {
+                            var anchor = angular.element('<a/>');
+                            anchor.attr({
+                                href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
+                                target: '_blank',
+                                download: 'filename.csv'
+                            })[0].click();
+                        },
+                        // Error
+                        function (response)
+                        {
+                            //$rootScope.loadingProgress = false;
+                        }
+                     );
+                    break;
+            }
+            return deferred.promise;
+            
         }
         
         $scope.getProdsIds = function()

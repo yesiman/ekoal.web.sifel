@@ -98,16 +98,16 @@
                             var ltab = [];
                             ltab.push(pal.no);
                             ltab.push(element.produit.lib + " " + element.calibre);
-                            ltab.push(element.categorie.lib);
+                            ltab.push((element.categorie.lib?element.categorie.lib:""));
                             ltab.push( {text:element.colisNb,alignment:'right'});
                             ltab.push({ text: $filter('number')(element.poid + (element.tare?element.tare:0), 2),alignment:'right'});
                             ltab.push({ text: $filter('number')((element.tare?element.tare:0), 2),alignment:'right'});
                             ltab.push({ text: $filter('number')(element.poid, 2),alignment:'right'});
                             if (type == "bl")
                             {
-                                ltab.push({ text: $filter('number')(element.prixAchat, 2),alignment:'right'});
-                                ltab.push({ text: $filter('number')(element.poid * element.prixAchat, 2),alignment:'right'});
-                                prixTotal += (element.poid * element.prixAchat);
+                                ltab.push({ text: $filter('number')((element.prixAchat?element.prixAchat:0), 2),alignment:'right'});
+                                ltab.push({ text: $filter('number')(element.poid * (element.prixAchat?element.prixAchat:0), 2),alignment:'right'});
+                                prixTotal += (element.poid * (element.prixAchat?element.prixAchat:0));
                             }
                             totalNet += (element.poid);
                             lines.body.push(ltab);
@@ -353,6 +353,7 @@
                 make: function make(el,bon,type){
                     wkbon = bon;
                     //
+                    wkbon.dateDoc = new Date(wkbon.dateDoc);
                     var ddd = wkbon.dateDoc.getDate();
                     var mm = wkbon.dateDoc.getMonth()+1;
                     var yyyy = wkbon.dateDoc.getFullYear();
@@ -413,8 +414,8 @@
                         ltab.push(element.lib + " " + element.calibre);
                         ltab.push({text:$filter('number')(element.poid + (element.tare?element.tare:0),2),alignment:"right"});
                         ltab.push({text:$filter('number')(element.poid,2),alignment:"right"});
-                        ltab.push({text:$filter('number')(element.prix,2),alignment:"right"});
-                        ltab.push({text:$filter('number')(element.poid * element.prix,2),alignment:"right"});
+                        ltab.push({text:$filter('number')((element.prix?element.prix:0),2),alignment:"right"});
+                        ltab.push({text:$filter('number')(element.poid * (element.prix?element.prix:0),2),alignment:"right"});
                         totalNet += (element.poid);
                         totalBrut += (element.poid + (element.tare?element.tare:0));
                         prixTotal += (element.poid * element.prix);

@@ -108,9 +108,6 @@
             });
         }
 
-
-        console.log(bonResolv);
-
         $scope.item = bonResolv;
         $scope.gridProduits.data = [];
         angular.forEach($scope.item.palettes, function(value) {
