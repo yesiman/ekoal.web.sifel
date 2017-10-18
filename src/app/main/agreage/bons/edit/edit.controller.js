@@ -55,11 +55,13 @@
             poidNetHtml += '{{row.entity.poid + row.entity.tare}}';
             poidNetHtml += '</div>';
 
+        $scope.item = bonResolv;
+        $scope.gridProduits.data = [];
+
         $scope.gridProduits.useExternalPagination = false;
         $scope.gridProduits.useExternalSorting = false;
+        
         $scope.gridProduits.columnDefs = [
-            { field: 'iid', enableCellEdit: false, width: '0%' },
-            { field: 'no', sort:{priority:0}, displayName: 'N° palette', cellTemplate:palCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
             { field: 'condit', sort:{priority:0}, displayName: 'Conditionnement', cellTemplate:palConditCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
             { field: 'produit', displayName: 'Produit', cellTemplate:prodCellHtml, enableCellEdit: false },
             { field: 'calibre', displayName: 'Calibre', enableCellEdit: false },
@@ -68,6 +70,16 @@
             { field: 'tare', displayName: 'Tare (kgs)', enableCellEdit: true, type: 'number' },
             { field: 'poid', displayName: 'Poid net (kgs)', enableCellEdit: true, type: 'number' },
             { field: 'colisNb', displayName: 'Nombre de colis', enableCellEdit: true, type: 'number' }];
+        if ($scope.item.destination == "export")
+        {
+            $scope.gridProduits.columnDefs.unshift(
+                { field: 'no', sort:{priority:0}, displayName: 'N° palette', cellTemplate:palCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} }
+            )
+
+        }
+            
+        
+        
         $scope.gridProduits.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
             $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
@@ -108,8 +120,7 @@
             });
         }
 
-        $scope.item = bonResolv;
-        $scope.gridProduits.data = [];
+        
         angular.forEach($scope.item.palettes, function(value) {
             var pal = value;
             pal.isPal = true;

@@ -43,6 +43,11 @@
                 nbp:1000,
                 noLock:$scope.item._id
             };
+            if (!$scope.item._id)
+            {
+                methodArgs.onlyNonUsed = true;
+
+            }
             if (type == 'c')
             {
                 methodArgs.clients = [it._id];
@@ -79,7 +84,23 @@
             );
         }
         //
-        
+            $scope.remove = function() {
+                api.facturation.delete.delete({ id:$scope.id } ,
+                    // Success
+                    function (response)
+                    {
+                        $state.go("app.factu_list");
+                        //$scope.item = response;
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);
+                    }
+                );
+            }
+
+        //
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridBons = standardizer.getGridOptionsStd();
         $scope.gridBons.columnDefs = [
@@ -260,8 +281,7 @@
                 // Success
                 function (response)
                 {
-                    console.log(response);
-                    //$state.go("app.stations_list");
+                    $state.go("app.factu_list");
                     //$scope.item = response;
                 },
                 // Error
@@ -287,7 +307,7 @@
                     anchor.attr({
                         href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
                         target: '_blank',
-                        download: 'filename.csv'
+                        download: 'liste_colisage.csv'
                     })[0].click();
                     $rootScope.loadingProgress = false; 
                 },

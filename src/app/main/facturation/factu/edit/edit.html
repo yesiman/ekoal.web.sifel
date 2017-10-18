@@ -90,14 +90,14 @@
                     </md-tab-label>
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                            <div id="gridBons" style="display:block;" ui-grid-selection layout-fill ui-grid="gridBons"  class="grid"></div>
+                            <div id="gridBons" style="display:block;" flex  ui-grid-selection ui-grid="gridBons"  class="grid"></div>
                         </md-content>
                     </md-tab-body>
                 </md-tab>
                 <md-tab label="Tarification" ng-if="item.bons.length > 0" layout-fill>
                     <md-tab-body layout-fill  md-theme="docs-dark" style="width:100%;height:100%;">
                         <md-content flex layout-fill layout="column" style="overflow:hidden;">
-                            <div id="gridTarifs" style="display:block;" ui-grid-edit layout-fill ui-grid="gridTarifs"  class="grid"></div>
+                            <div id="gridTarifs" style="display:block;" flex ui-grid-edit layout-fill ui-grid="gridTarifs"  class="grid"></div>
                         </md-content>
                     </md-tab-body>
                 </md-tab>

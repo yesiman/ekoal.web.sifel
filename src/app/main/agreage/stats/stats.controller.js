@@ -162,17 +162,23 @@
             {
                 case 1:
                     methodBase = api.bons.getStatProducteursExp;
-                    filnam = "cumuls_producteurs_";
+                    filnam = "cumul_producteurs_";
                     break;
                 case 2:
                     methodBase = api.bons.getStatProduitsExp;
-                    filnam = "cumuls_produits_";
+                    filnam = "cumul_produits_";
                     break;
                 case 3:
                     methodBase = api.bons.getStatStationsExp;
-                    filnam = "cumuls_stations_";
+                    filnam = "cumul_stations_";
+                    break;
+                case 4:
+                    methodBase = api.bons.getStatClientsExp;
+                    filnam = "cumul_clients_";
                     break;
             }
+            filnam += $scope.filters.dateFrom.getFullYear() + ($scope.filters.dateFrom.getMonth()+1) + $scope.filters.dateFrom.getDate();
+            filnam += "_" + $scope.filters.dateTo.getFullYear() + ($scope.filters.dateTo.getMonth()+1) + $scope.filters.dateTo.getDate();
             methodBase.post(methodArgs,
                 function (response)
                 {
@@ -194,72 +200,6 @@
 
 
 
-            var deferred = $q.defer();
-            //$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-            var methodBase;
-            var methodArgs;
-            switch (chartId)
-            {
-                case 1:
-                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
-                        dateTo:$scope.filters.dateTo  }
-                     api.bons.getStatProducteursExp.post( args,
-                        // Success
-                        function (response)
-                        {
-                            
-                        },
-                        // Error
-                        function (response)
-                        {
-                            //$rootScope.loadingProgress = false;
-                        }
-                     );
-                    break;
-                case 2:
-                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
-                        dateTo:$scope.filters.dateTo  }
-                     api.bons.getStatProduitsExp.post( args,
-                        // Success
-                        function (response)
-                        {
-                            var anchor = angular.element('<a/>');
-                            anchor.attr({
-                                href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
-                                target: '_blank',
-                                download: 'filename.csv'
-                            })[0].click();
-                        },
-                        // Error
-                        function (response)
-                        {
-                            //$rootScope.loadingProgress = false;
-                        }
-                     );
-                    break;
-                case 3:
-                    var args = { producteurs:[],dateFrom:$scope.filters.dateFrom,
-                        dateTo:$scope.filters.dateTo  }
-                     api.bons.getStatStationsExp.post( args,
-                        // Success
-                        function (response)
-                        {
-                            var anchor = angular.element('<a/>');
-                            anchor.attr({
-                                href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.content),
-                                target: '_blank',
-                                download: 'filename.csv'
-                            })[0].click();
-                        },
-                        // Error
-                        function (response)
-                        {
-                            //$rootScope.loadingProgress = false;
-                        }
-                     );
-                    break;
-            }
-            return deferred.promise;
             
         }
         

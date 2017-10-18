@@ -9,13 +9,9 @@
 
     </md-button>
 
-    <md-button  ng-if="head.custFactHtml == true" class="md-fab md-primary"  ng-disabled="current.userForm.$invalid" ng-click="validLock(userForm)" aria-label="Valider la facture" style="float:right;">
-        <md-icon md-font-icon="icon-lock"
+    <md-button  ng-if="head.custFactHtml == true" class="md-fab md-primary"  ng-disabled="current.userForm.$invalid" ng-click="remove(userForm)" aria-label="Supprimer la facture" style="float:right;">
+        <md-icon md-font-icon="icon-delete"
                             class="icon s32"></md-icon>
 
     </md-button>
-    <md-button  ng-if="head.custFactHtml == true" class="md-fab md-primary"  ng-disabled="current.userForm.$invalid" ng-click="print(userForm)" aria-label="Imprimer la facture" style="float:right;">
-        <md-icon md-font-icon="icon-printer"
-                            class="icon s32"></md-icon>
-
-    </md-button>
+    

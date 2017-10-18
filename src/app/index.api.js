@@ -422,6 +422,11 @@
                     method: 'POST'
                 }
             }),
+            getStatClients: $resource(api.baseUrl + 'bons/getStatClients/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
             getStatProduitsExp: $resource(api.baseUrl + 'bons/getStatProduitsExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
                 post: {
                     method: 'POST'
@@ -433,6 +438,11 @@
                 }
             }),
             getStatStationsExp: $resource(api.baseUrl + 'bons/getStatStationsExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
+                post: {
+                    method: 'POST'
+                }
+            }),
+            getStatClientsExp: $resource(api.baseUrl + 'bons/getStatClientsExp/', { producteurs:'@producteurs',dateFrom:'@dateFrom',dateTo:'@dateTo' } , {
                 post: {
                     method: 'POST'
                 }

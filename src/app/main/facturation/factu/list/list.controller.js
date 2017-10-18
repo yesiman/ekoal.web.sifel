@@ -261,7 +261,7 @@
             );
         };
         $scope.add = function() {
-            $state.go("app.bons_edit", { id:-1 });
+            $state.go("app.factu_edit", { id:-1 });
         };
         $scope.edit = function(id) {
             $state.go("app.factu_edit", { id:id });
@@ -278,7 +278,7 @@
 
             $mdDialog.show(confirm).then(function() {
                 $rootScope.loadingProgress = true;
-                api.orgas.delete.delete({ id:id } ,
+                api.facturation.delete.delete({ id:id } ,
                 // Success
                 function (response)
                 {

@@ -54,5 +54,23 @@
                 </div>
             </ms-widget-front>
         </ms-widget>
+        <ms-widget layout="column" flex="33"  flex-xs="100">
+            <ms-widget-front class="white-bg">
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                    <div class="h3 widget-head">Cumuls par client</div>
+                    <div>
+                        <md-button class="md-icon-button md-primary" ng-click="export(4)" aria-label="Export">
+                            <md-tooltip>Exporter vers excel</md-tooltip>
+                            <md-icon md-font-icon="icon-export"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <div class="p-16">
+                    <canvas id="donut" style="height:100%;" class="chart chart-doughnut" chart-options="cDonutClients.options"  chart-series="cDonutClients.series"  chart-legend="false"  
+                        chart-data="cDonutClients.data" chart-labels="cDonutClients.labels" chart-colors="cDonutClients.colors"></canvas>
+                </div>
+            </ms-widget-front>
+        </ms-widget>
     </div>
 </md-content>

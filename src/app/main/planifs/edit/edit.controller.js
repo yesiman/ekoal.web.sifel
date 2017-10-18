@@ -101,11 +101,16 @@
                 if (vm.rules[i]._id == $scope.item.rule)
                 {
                     vm.selectedRule = vm.rules[i];
+                    if (vm.selectedRule.rendement){
+                        //console.log(vm.selectedRule.rendement);
+                        $scope.rendementUpdatable = vm.selectedRule.rendement;
+                    }
                     $scope.item.lines = [];
                     var startDate = new Date($scope.item.datePlant);
                     startDate.setDate(startDate.getDate() + vm.selectedRule.delai);
                     var wStart = startDate.getWeek();
                     var surfacePercent = ((100/1)*$scope.item.surface) / 100;
+                    
                     //PASSAGE TOUTES LIGNES EN A SUPPRIMER
                     for (var i = 0;i < vm.selectedRule.nbWeek;i++)
                     { 

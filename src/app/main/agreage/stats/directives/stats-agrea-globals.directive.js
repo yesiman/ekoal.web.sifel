@@ -56,6 +56,15 @@
                             legend: {display: false}
                         }
                     };
+                    scope.cDonutClients = {
+                        labels:[],
+                        series: [],
+                        colors: [],
+                        data:[],
+                        options:{
+                            legend: {display: false}
+                        }
+                    };
 
                     var args = { producteurs:[],dateFrom:scope.filters.dateFrom,
                         dateTo:scope.filters.dateTo  }
@@ -93,6 +102,16 @@
                                     }
                                 });
                                 scope.cDonutProducteurs.data.push(value.count);
+                            });
+                            angular.forEach(response.byClients, function(value) {
+                                var line = value;
+                                angular.forEach(response.clients, function(value) {
+                                    if (value._id == line._id.client)
+                                    {
+                                        scope.cDonutClients.labels.push(value.name + " " + value.surn);
+                                    }
+                                });
+                                scope.cDonutClients.data.push(value.count);
                             });
                         },
                         // Error
