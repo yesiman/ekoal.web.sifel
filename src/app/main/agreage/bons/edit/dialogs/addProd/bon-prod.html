@@ -1,0 +1,54 @@
+<md-dialog class="rule-dialog" aria-label="New Task">
+    <form name="taskForm" class="md-inline-form" novalidate>
+        <md-toolbar class="md-accent md-hue-2">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title">Ajout/modification règle</span>
+                <md-button class="md-icon-button" ng-click="vm.close()">
+                    <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content ms-scroll>
+            <md-input-container class="md-block">
+                <label>Titre</label>
+                <input name="title" ng-model="vm.rule.lib" required md-autofocus>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <table class="simple" ms-responsive-table>
+                <thead>
+                    <tr>
+                    <th>Code</th>
+                    <th>Libellé</th>
+                    <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="it in vm.prods">
+                    <td>{{it.codeProd}}</td>
+                    <td>{{it.lib}}</td>
+                    <td>
+                        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.select(it)"><md-icon md-font-icon="icon-arrow-left-bold-circle-outline"></md-icon></md-button>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+            </md-input-container>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+      <md-button ng-click="vm.close()">
+        Annuler
+      </md-button>
+      <md-button type="submit" ng-click="vm.save()"
+            class="send-button md-accent md-raised"
+            ng-disabled="taskForm.$invalid || taskForm.$pristine"
+            aria-label="Valider">
+                    Valider
+                </md-button>
+    </md-dialog-actions>
+
+
+       
+    </form>
+</md-dialog>

@@ -324,13 +324,33 @@
             else {
                 reports.pfact.make(exportthis,$scope.item,"");
             }
-            for (var b in $scope.gridBons.data){
-                reports.ba.make(exportthis,$scope.gridBons.data[b],"ba");
+            for (var b in $scope.item.bons){
+                api.bons.get.get({'id':$scope.item.bons[b]._id},
+                    // Success
+                    function (response)
+                    {
+                        reports.ba.make(exportthis,response,"ba");    
+                    },
+                    // Error
+                    function (response)
+                    {
+                        console.error(response);   
+                    }
+                );   
             }
         }
         $scope.doBl = function() {
-            for (var b in $scope.gridBons.data){
-                reports.ba.make(exportthis,$scope.gridBons.data[b],"bl");
+            $rootScope.loadingProgress = true;
+            for (var b in $scope.item.bons){
+                api.bons.get.get({'id':$scope.item.bons[b]._id},
+                    function (response)
+                    {
+                        reports.ba.make(exportthis,response,"bl");    
+                    },
+                    // Error
+                    {
+                    }
+                );
             }
             
         }

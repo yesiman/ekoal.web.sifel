@@ -114,9 +114,9 @@
 
         var typeHtml = '<div class="ui-grid-cell-contents text-center">';
         typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getFPStatusToolT(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getFPStatusClass(row.entity)}}" md-font-icon="icon-arrow-left-bold-circle-outline"></md-icon></md-button>';
-        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getFCStatusToolT(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getFCStatusClass(row.entity)}}" md-font-icon="icon-arrow-right-bold-circle-outline"></md-icon></md-button>';
-        
+        typeHtml += '<md-button class="md-icon-button" aria-label="Settings"><md-tooltip>{{grid.appScope.getFCStatusToolT(row.entity)}}</md-tooltip><md-icon class="{{grid.appScope.getFCStatusClass(row.entity)}}" md-font-icon="icon-arrow-right-bold-circle-outline"></md-icon></md-button>';        
         typeHtml += '</div>'
+        
         var actionsHtml = standardizer.getHtmlActions();
         $scope.gridOptions = standardizer.getGridOptionsStd();
         $scope.gridOptions.columnDefs = [

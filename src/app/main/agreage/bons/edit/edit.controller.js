@@ -7,7 +7,7 @@
         .controller('BonsEditController',BonsEditController);
 
     /** @ngInject */
-    function BonsEditController($scope,$state, api,$stateParams,$q,bonResolv,standardizer, reports,$http)
+    function BonsEditController($scope,$state, api,$stateParams,$q,bonResolv,standardizer, reports,$http,$mdDialog,$document)
     {
         $scope.current =  {userForm : {}};
         $scope.head = {
@@ -21,8 +21,7 @@
         }
         $scope.getPaleteConditHtml = function(data)
         {
-            console.log(data);
-            return (data.isPal?data.condit.lib:"");
+            return (data.isPal?(data.condit?data.condit.lib:""):"");
         }
         $scope.getProdHtml = function(data)
         {
@@ -30,7 +29,7 @@
         }
         $scope.getProdCategHtml = function(data)
         {
-            return (data.isPal?"":data.categorie.lib);
+            return (data.isPal?"":(data.categorie?data.categorie.lib:""));
         }
         var prodCellHtml = '<div class="ui-grid-cell-contents">';
             prodCellHtml += '{{grid.appScope.getProdHtml(row.entity)}}';
@@ -64,8 +63,8 @@
         $scope.gridProduits.columnDefs = [
             { field: 'condit', sort:{priority:0}, displayName: 'Conditionnement', cellTemplate:palConditCellHtml, enableCellEdit: true, type: 'number',cellEditableCondition: function($scope){return $scope.row.entity.isPal;} },
             { field: 'produit', displayName: 'Produit', cellTemplate:prodCellHtml, enableCellEdit: false },
-            { field: 'calibre', displayName: 'Calibre', enableCellEdit: false },
-            { field: 'categorie', displayName: 'Categorie', cellTemplate:prodCategCellHtml, enableCellEdit: false },
+            { field: 'calibre', displayName: 'Calibre', enableCellEdit: true,cellEditableCondition: function($scope){return !$scope.row.entity.isPal;} },
+            { field: 'categorie', displayName: 'Categorie', cellTemplate:prodCategCellHtml, enableCellEdit: true,cellEditableCondition: function($scope){return !$scope.row.entity.isPal;} },
             { field: 'poidNet', displayName: 'Poid brut (kgs)', cellTemplate:poidNetHtml, enableCellEdit: false, type: 'number' },
             { field: 'tare', displayName: 'Tare (kgs)', enableCellEdit: true, type: 'number' },
             { field: 'poid', displayName: 'Poid net (kgs)', enableCellEdit: true, type: 'number' },
@@ -78,7 +77,38 @@
 
         }
             
-        
+        $scope.addProd = function(ev,r) {
+            $mdDialog.show({
+                controller         : 'BonProdEditController',
+                controllerAs       : 'vm',
+                templateUrl        : 'app/main/agreage/bons/edit/dialogs/addProd/bon-prod.html',
+                parent             : angular.element($document.body),
+                targetEvent        : ev,
+                clickOutsideToClose: true
+            }).then(function (prod) {
+                if (!$scope.item.palettes)
+                {
+                    $scope.item.palettes = [];
+                }
+                $scope.item.palettes.push({
+                    no:1,
+                    poid:0,
+                    tare:0,
+                    poidBrut:0,
+                    colisNb:0,
+                    produits:[{
+                        poid:0,
+                        tare:0,
+                        poidBrut:0,
+                        colisNb:0,
+                        produit:prod
+                    }]
+                });
+                $scope.bindGridProduits();
+            }, function () {
+            });;
+            //$state.go("app.produits_edit.rules_edit", {id:-1,idProduit:$scope.item._id, prod:$scope.item });
+        }
         
         $scope.gridProduits.onRegisterApi =  function(gridApi) {
             $scope.gridApi = gridApi;
@@ -120,19 +150,29 @@
             });
         }
 
-        
-        angular.forEach($scope.item.palettes, function(value) {
-            var pal = value;
-            pal.isPal = true;
-            pal.iid = pal.no;
-            $scope.gridProduits.data.push(pal);
-            angular.forEach(pal.produits, function(value,key) {
-                value.iid = pal.no + "/" + value.produit._id + "/" + key;
-                $scope.gridProduits.data.push(value);
+        $scope.bindGridProduits = function(){
+            angular.forEach($scope.item.palettes, function(value) {
+                var pal = value;
+                pal.isPal = true;
+                pal.iid = pal.no;
+                $scope.gridProduits.data.push(pal);
+                angular.forEach(pal.produits, function(value,key) {
+                    //console.log();
+                    value.iid = pal.no + "/" + value.produit._id + "/" + key;
+                    $scope.gridProduits.data.push(value);
+                });
             });
-        });
-        $scope.item.dateDoc = new Date($scope.item.dateDoc);
+        }
+        
+        if ($stateParams.id != -1)
+        {
+            $scope.item.dateDoc = new Date($scope.item.dateDoc);
+        }
+        else {
+            $scope.item.dateDoc = new Date();
+        }
         $scope.id = $stateParams.id;
+        $scope.bindGridProduits();
         $scope.valid = function(){
             $scope.item.dateDoc = new Date($scope.item.dateDoc);
             $scope.item.producteur = $scope.item.producteur._id;

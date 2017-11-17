@@ -62,9 +62,16 @@
                 getTableLines: function getTableLines(type)
                 {
                     var lines = {
-                        widths: (type=="ba"?["10%","*","20%","10%","10%","10%","10%"]:
-                            ["10%","*","10%","10%","10%","10%","10%","10%","10%"]),
+                        widths: 
+                            (wkbon.destination == "export"?
+                            (type=="ba"?
+                                    ["10%","*","20%","10%","10%","10%","10%"]:
+                                    ["10%","*","10%","10%","10%","10%","10%","10%","10%"]):
+                            (type=="ba"?
+                                    ["*","20%","10%","10%","10%","10%"]:
+                                    ["*","10%","10%","10%","10%","10%","10%","10%"])),
                         body: [
+                            (wkbon.destination == "export"?
                             (type=="ba"?
                             [
                                 { text: "Palette",  style: 'tableHead'}, 
@@ -84,7 +91,25 @@
                                 { text: 'P. net(kg)',  style: 'tableHead'},
                                 { text: 'Px/kg(€)',  style: 'tableHead'},
                                 { text: 'Px total(€)',  style: 'tableHead'}
-                            ])
+                            ]):
+                             (type=="ba"?
+                            [
+                                { text: "Produit",  style: 'tableHead'}, 
+                                { text: "Catégorie",  style: 'tableHead'}, 
+                                { text: 'Nbre colis',  style: 'tableHead'},
+                                { text: 'P. brut(kg)',  style: 'tableHead'},
+                                { text: 'Tare',  style: 'tableHead'},
+                                { text: 'P. net(kg)',  style: 'tableHead'},
+                            ]:[
+                                { text: "Produit",  style: 'tableHead'}, 
+                                { text: "Catégorie",  style: 'tableHead'}, 
+                                { text: 'Nbre colis',  style: 'tableHead'},
+                                { text: 'P. brut(kg)',  style: 'tableHead'},
+                                { text: 'Tare',  style: 'tableHead'},
+                                { text: 'P. net(kg)',  style: 'tableHead'},
+                                { text: 'Px/kg(€)',  style: 'tableHead'},
+                                { text: 'Px total(€)',  style: 'tableHead'}
+                            ]))
                         ]
                     };
                     var totalNet = 0;
@@ -96,9 +121,9 @@
                         var pal = element;
                         element.produits.forEach(function(element) {
                             var ltab = [];
-                            ltab.push(pal.no);
+                            if(wkbon.destination == "export"){ltab.push(pal.no)};
                             ltab.push(element.produit.lib + " " + element.calibre);
-                            ltab.push((element.categorie.lib?element.categorie.lib:""));
+                            ltab.push((element.categorie?(element.categorie.lib?element.categorie.lib:""):""));
                             ltab.push( {text:element.colisNb,alignment:'right'});
                             ltab.push({ text: $filter('number')(element.poid + (element.tare?element.tare:0), 2),alignment:'right'});
                             ltab.push({ text: $filter('number')((element.tare?element.tare:0), 2),alignment:'right'});
@@ -114,7 +139,8 @@
                         }, this);
                     }, this); 
                    //}
-                    
+                
+                   (wkbon.destination == "export"?
                     lines.body.push((type=="ba"?[
                         {text:"",border:[false, false, false, false]},
                         {text:"",border:[false, false, false, false]},
@@ -133,7 +159,25 @@
                         {text:$filter('number')(totalNet, 2),alignment:'right'},
                         {text:"",border:[false, false, false, false]},
                         {text:$filter('number')(prixTotal, 2),alignment:'right'}
-                    ]));
+                    ])):
+                    lines.body.push((type=="ba"?[
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"TOTAL",alignment:'right',border:[false, false, false, false]},
+                        {text:$filter('number')(totalNet, 2),alignment:'right'}
+                    ]:[
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"",border:[false, false, false, false]},
+                        {text:"TOTAL",alignment:'right',border:[false, false, false, false]},
+                        {text:$filter('number')(totalNet, 2),alignment:'right'},
+                        {text:"",border:[false, false, false, false]},
+                        {text:$filter('number')(prixTotal, 2),alignment:'right'}
+                    ])));
+                   
                     return lines;
                 },
                 getContent: function getContent(type)
@@ -300,10 +344,16 @@
                                                 {
                                                     text : "Signature Agréeur"
                                                 },
-                                                { 
-                                                    image: wkbon.signatures.sigTechnicien,
-                                                    fit: [100, 100]
-                                                }
+                                                (wkbon.signature?
+                                                    { 
+                                                        image: (wkbon.signatures?wkbon.signatures.sigTechnicien:null),
+                                                        fit: [100, 100]
+                                                    }
+                                                    :
+                                                    {
+                                                        text : ""
+                                                    }
+                                                ),
                                             ],
                                             {
                                                 border:[false, false, false, false],
@@ -313,10 +363,16 @@
                                                 {
                                                     text : "Signature Producteur"
                                                 },
-                                                { 
-                                                    image: wkbon.signatures.sigProducteur,
-                                                    fit: [100, 100]
-                                                }
+                                                (wkbon.signature?
+                                                    { 
+                                                        image: (wkbon.signatures?wkbon.signatures.sigProducteur:null),
+                                                        fit: [100, 100]
+                                                    }
+                                                    :
+                                                    {
+                                                        text : ""
+                                                    }
+                                                ),
                                             ]
                                         ]
                                     ]
@@ -682,7 +738,7 @@
                 getTableLines: function getTableLines(type)
                 {
                     var lines = {
-                        widths: ["10%","*","10%","10%","10%","10%","10%"],
+                        widths: ["15%","15%","*","10%","10%","10%","10%"],
                         body: [
                             
                             [
@@ -701,6 +757,22 @@
                     prixTotal = 0;
                    //for (var i = 0;i < 100;i++)
                    //{
+                        console.log(wkbon);
+                    /*wkbon.prods.forEach(function(element) {  
+                        var ltab = [];
+                        ltab.push({text:wkbon.dateDocFormated});
+                        ltab.push({text:wkbon.numBon});
+                        ltab.push({text:element.lib + " " + element.calibre});
+                        ltab.push({text:(element.categorie?element.categorie:"")});
+                        ltab.push({text:element.poid});
+                        ltab.push({text:"0"});
+                        ltab.push({text:"0"});
+                        //totalNet += (element.poid);
+                        //totalBrut += (element.poid + (element.tare?element.tare:0));
+                        //prixTotal += (element.poid * element.prix);
+                        lines.body.push(ltab);
+                    }, this);*/ 
+
                        wkbon.bons.forEach(function(element) { 
                            var bon = element;
                             element.palettes.forEach(function(element) { 
@@ -708,19 +780,41 @@
                                 element.produits.forEach(function(element) { 
                                     var prod = element;
                                     var ltab = [];
-                                    console.log(prod);
-                                    ltab.push({text:bon.dateDoc});
+
+                                    var ddoc = new Date(bon.dateDoc);
+                                    var ddd = ddoc.getDate();
+                                    var mm = ddoc.getMonth()+1;
+                                    var yyyy = ddoc.getFullYear();
+                                    if(ddd<10){
+                                        ddd='0'+ddd;
+                                    } 
+                                    if(mm<10){
+                                        mm='0'+mm;
+                                    } 
+                                    ltab.push({text:ddd+'/'+mm+'/'+yyyy});
                                     ltab.push({text:bon.numBon});
-                                    ltab.push({text:"prod.lib"});
+                                    var f = false;
+                                    wkbon.prods.forEach(function(element) {  
+                                        if (!f & (element._id == prod.produit))
+                                        {
+                                            ltab.push({text:element.lib + " " + prod.calibre});
+                                            f = true;
+                                        }
+                                    }, this);
+                                    if (!f)
+                                    {
+                                        ltab.push({text:""});
+                                    }
                                     ltab.push({text:prod.categorie});
                                     ltab.push({text:prod.poid});
-                                    ltab.push({text:"prod.prix"});
-                                    ltab.push({text:"prod.prix"});
+                                    ltab.push({text:"0"});
+                                    ltab.push({text:"0"});
                                     lines.body.push(ltab);
                                 });
                             });    
                         });
-                       /*console.log("wkbon.palettes",wkbon.palettes);
+                        /*
+                       console.log("wkbon.palettes",wkbon.palettes);
                        wkbon.palettes.forEach(function(element) {  
                         var pal = element;
                         element.produits.forEach(function(element) {
