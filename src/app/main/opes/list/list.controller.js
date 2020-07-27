@@ -42,7 +42,7 @@
                 // Success
                 function (response)
                 {
-                    console.log(response);
+                    console.log("response",response);
                     $scope.maxSize = 5;
                     $scope.totalItems = response.count;
                     $scope.gridOptions.totalItems = response.count;

@@ -178,7 +178,7 @@
         var api = {};
 
         // Base Url
-        api.baseUrl = 'https://sifel-srv.herokuapp.com/';
+        api.baseUrl = 'http://sifel-srv.ekoal.org/';
         // USERS
         api.users = {
             login: $resource(api.baseUrl + 'users/login', {user:'@user'} , {

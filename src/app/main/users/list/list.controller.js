@@ -167,7 +167,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("https://sifel-srv.herokuapp.com/importer/producteurs/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/producteurs/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })

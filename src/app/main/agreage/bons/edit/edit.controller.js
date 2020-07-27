@@ -192,7 +192,7 @@
                     $scope.gridProduits.data.push(value);
                 });
             });
-            $http.post('https://sifel-srv.herokuapp.com/bons/add/' + $scope.item._id, {
+            $http.post('http://sifel-srv.ekoal.org/bons/add/' + $scope.item._id, {
                 bon: $scope.item
             }).
             then(function (response) {

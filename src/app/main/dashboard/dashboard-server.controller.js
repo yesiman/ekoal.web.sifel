@@ -21,7 +21,7 @@
             var uploadUrl = "/multer";
             var fd = new FormData();
             fd.append('file', file);
-            $http.post("https://sifel-srv.herokuapp.com/importer/rulesi/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/rulesi/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
@@ -118,7 +118,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("https://sifel-srv.herokuapp.com/importer/produits/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/produits/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
@@ -136,7 +136,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("https://sifel-srv.herokuapp.com/importer/producteurs/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/producteurs/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
@@ -154,7 +154,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("https://sifel-srv.herokuapp.com/importer/objectifs/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/objectifs/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
@@ -172,7 +172,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("https://sifel-srv.herokuapp.com/importer/parcelles/",fd, {
+            $http.post("http://sifel-srv.ekoal.org/importer/parcelles/",fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
